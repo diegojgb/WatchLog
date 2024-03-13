@@ -1,0 +1,5 @@
+WinToast/
+TaoQuick/
+
+taoQuick.cmake
+nlohmann/json.hpp
