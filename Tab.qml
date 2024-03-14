@@ -71,7 +71,7 @@ TabButton {
             width: 9
             height: 9
             radius: width / 2
-            color: control.enabled ? "#009f00" : "red"
+            color: control.enabled ? "#009f00" : "#dd0000"
         }
     }
 

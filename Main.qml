@@ -102,6 +102,12 @@ ApplicationWindow {
             }
         }
 
+        Rectangle {
+            Layout.fillHeight: true
+            Layout.preferredWidth: 2
+            color: "#2b2b2b"
+        }
+
         // Mainbar
         Rectangle {
             id: mainbar
