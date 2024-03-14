@@ -9,8 +9,9 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
     : QObject{parent}
 {
     m_name = QString::fromStdString(monitorData["name"]);
+    m_enabled = monitorData.value("enabled", true);
     std::string filePath = monitorData["filePath"];
-    m_filePath = QString::fromStdString(filePath);
+    m_filePath = QString::fromStdString(filePath); 
 
     m_file = std::ifstream(filePath);
 
@@ -111,4 +112,24 @@ void Monitor::setFilePath(const QString &newFilePath)
     m_filePath = newFilePath;
 
     emit filePathChanged();
+}
+
+bool Monitor::enabled() const
+{
+    return m_enabled;
+}
+
+void Monitor::setEnabled(bool newEnabled)
+{
+    if (m_enabled == newEnabled)
+        return;
+
+    m_enabled = newEnabled;
+
+    if (newEnabled)
+        emit monitorEnabled(this);
+    else
+        emit monitorDisabled(this);
+
+    emit enabledChanged();
 }

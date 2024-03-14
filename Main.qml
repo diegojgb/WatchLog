@@ -86,6 +86,7 @@ ApplicationWindow {
                             width: parent.width
                             height: 30
                             text: Manager.hashGet(modelData).name
+                            enabled: Manager.hashGet(modelData).enabled
                             selected: tabBar.tabIndex == index
 
                             property int index: tabRepeater.model.indexOf(

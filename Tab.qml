@@ -6,9 +6,9 @@ TabButton {
     id: control
 
     property alias contentAnchors: content.anchors
-    property alias imageSource: image.source
     property color textColor: "#fff"
     property bool selected
+    property bool enabled
 
     checked: control.selected
     font.pointSize: 10
@@ -40,31 +40,38 @@ TabButton {
         }
     }
 
-    contentItem: Row {
+    contentItem: RowLayout {
         id: content
-        spacing: 6
+        spacing: 5
         anchors.fill: parent
-        anchors.leftMargin: 20
-
-        Image {
-            anchors.verticalCenter: parent.verticalCenter
-            id: image
-        }
 
         Text {
-            anchors.verticalCenter: parent.verticalCenter
-            bottomPadding: 3
+            Layout.leftMargin: 22
+            bottomPadding: 8
             text: "»"
             font.pointSize: 14
             color: control.textColor
         }
 
         Text {
-            anchors.verticalCenter: parent.verticalCenter
+            bottomPadding: 6
             text: control.text
             font: control.font
             color: control.textColor
             renderType: Text.NativeRendering
+        }
+
+        Item {
+            Layout.fillWidth: true
+        }
+
+        Rectangle {
+            Layout.rightMargin: 16
+            Layout.bottomMargin: 5
+            width: 10
+            height: 10
+            radius: width / 2
+            color: control.enabled ? "#00b100" : "red"
         }
     }
 

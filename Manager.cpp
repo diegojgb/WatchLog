@@ -11,9 +11,11 @@ Manager::Manager(QObject *parent, const json &monitorsData)
             QString filePath = QString::fromStdString(item["filePath"]);
 
             m_monitorsHash.insert(filePath, newMonitor);
-            m_monitorsOrder.append(QString::fromStdString(item["filePath"]));
+            m_monitorsOrder.append(filePath);
 
             QObject::connect(newMonitor, &Monitor::filePathChangedOverload, this, &Manager::changeFilePath);
+            QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
+            QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
         }
 
         m_fileWatcher.addAllMonitors();
@@ -38,6 +40,16 @@ void Manager::changeFilePath(const QString& oldKey, const QString& newKey)
     }
     m_fileWatcher.removeFilePath(oldKey);
     m_fileWatcher.addFilePath(newKey);
+}
+
+void Manager::disableMonitor(const Monitor* monitor)
+{
+    m_fileWatcher.removeFilePath(monitor->filePath());
+}
+
+void Manager::enableMonitor(const Monitor* monitor)
+{
+    m_fileWatcher.addFilePath(monitor->filePath());
 }
 
 QStringList Manager::monitorsOrder() const

@@ -16,6 +16,7 @@ class Monitor : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged FINAL)
     Q_PROPERTY(QString filePath READ filePath WRITE setFilePath NOTIFY filePathChanged FINAL)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
 
@@ -31,6 +32,9 @@ public:
     QString filePath() const;
     void setFilePath(const QString &newFilePath);
 
+    bool enabled() const;
+    void setEnabled(bool newEnabled);
+
 public slots:
     int nListLength() const;
     Notifier* nListAt(int i) const;
@@ -42,14 +46,18 @@ signals:
     void nameChanged();
     void filePathChanged();
     void filePathChangedOverload(const QString& oldFilePath, const QString& newFilePath);
+    void enabledChanged();
+    void monitorEnabled(const Monitor* monitor);
+    void monitorDisabled(const Monitor* monitor);
 
 private:
     QString m_name;
     QList<Notifier*> m_notifiers;
+    QString m_filePath;
+    bool m_enabled;
 
     void readNotifiers(const json &data);
     auto jsonFindByKey(const json &data, const std::string &key);
-    QString m_filePath;
 };
 
 #endif // MONITOR_H

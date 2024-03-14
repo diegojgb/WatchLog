@@ -28,8 +28,20 @@ Item {
             renderType: Text.NativeRendering
         }
 
+        CusSwitch {
+            Layout.topMargin: 14
+            Layout.leftMargin: -5
+            backgroundColor_on: root.accentColor
+            checked: monitor.enabled
+            text: "Enabled"
+
+            onCheckedChanged: {
+                monitor.enabled = checked
+            }
+        }
+
         RowLayout {
-            Layout.topMargin: 24
+            Layout.topMargin: 14
             Layout.rightMargin: 10
 
             FileDialog {

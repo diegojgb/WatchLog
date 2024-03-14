@@ -28,6 +28,8 @@ public:
 public slots:
     Monitor* hashGet(const QString& key);
     void changeFilePath(const QString& oldKey, const QString& newKey);
+    void disableMonitor(const Monitor* monitor);
+    void enableMonitor(const Monitor* monitor);
 
 signals:
     void monitorsOrderChanged();
