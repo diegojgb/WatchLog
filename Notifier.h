@@ -22,13 +22,15 @@ class Notifier : public QObject
     Q_PROPERTY(QString duration READ duration WRITE setDuration NOTIFY durationChanged FINAL)
     Q_PROPERTY(bool toastEnabled READ toastEnabled WRITE setToastEnabled NOTIFY toastEnabledChanged FINAL)
     Q_PROPERTY(bool soundEnabled READ soundEnabled WRITE setSoundEnabled NOTIFY soundEnabledChanged FINAL)
+    Q_PROPERTY(bool sticky READ sticky WRITE setSticky NOTIFY stickyChanged FINAL)
 
 public:
     std::regex regex;
     WinToastTemplate templ;
 
     explicit Notifier(QObject *parent, QString name, QString regexStr, QString title,
-                      QString desc, QString imagePath, QString duration, bool toastEnabled, bool soundEnabled);
+                      QString desc, QString imagePath, QString duration, bool toastEnabled,
+                      bool soundEnabled, bool sticky);
 
     QString title() const;
     void setTitle(const QString &newTitle);
@@ -54,6 +56,9 @@ public:
     bool soundEnabled() const;
     void setSoundEnabled(bool newSoundEnabled);
 
+    bool sticky() const;
+    void setSticky(bool newSticky);
+
 signals:
     void titleChanged();
     void descChanged();
@@ -63,6 +68,7 @@ signals:
     void nameChanged();
     void toastEnabledChanged();
     void soundEnabledChanged();
+    void stickyChanged();
     void disabled(Notifier* notifier);
     void enabled(Notifier* notifier);
 
@@ -75,9 +81,11 @@ private:
     QString m_duration;
     bool m_soundEnabled;
     bool m_toastEnabled;
+    bool m_sticky;
 
     WinToastTemplate::Duration toWinToastDuration(const QString& duration);
     WinToastTemplate::AudioOption mapAudioOption(bool soundEnabled) const;
+    void updateSticky();
 };
 
 #endif // NOTIFIER_H

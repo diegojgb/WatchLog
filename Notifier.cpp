@@ -2,10 +2,10 @@
 
 
 Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString title,
-                   QString desc, QString imagePath, QString duration, bool toastEnabled, bool soundEnabled)
+                   QString desc, QString imagePath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent}, m_name{name}, m_regexStr{regexStr}, m_title{title},
       m_desc{desc}, m_imagePath{imagePath}, m_duration{duration}, m_toastEnabled{toastEnabled},
-      m_soundEnabled{soundEnabled}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
+      m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
 {
     regex = std::regex(regexStr.toStdString());
 
@@ -14,6 +14,20 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
     templ.setTextField(desc.toStdWString(), WinToastTemplate::SecondLine);
     templ.setDuration(toWinToastDuration(m_duration));
     templ.setAudioOption(mapAudioOption(soundEnabled));
+    updateSticky();
+}
+
+void Notifier::updateSticky() {
+    if (m_sticky)
+    {
+        templ.addAction(L"Dismiss");
+        templ.setScenario(WinToastTemplate::Scenario::Reminder);
+    }
+    else
+    {
+        templ.removeAction(L"Dismiss");
+        templ.setScenario(WinToastTemplate::Scenario::Default);
+    }
 }
 
 WinToastTemplate::Duration Notifier::toWinToastDuration(const QString& duration) {
@@ -23,7 +37,8 @@ WinToastTemplate::Duration Notifier::toWinToastDuration(const QString& duration)
         return WinToastTemplate::Duration::Long;
     else if (duration == "System")
         return WinToastTemplate::Duration::System;
-    else {
+    else
+    {
         QMessageBox::critical(nullptr, tr("WatchLog"), tr("Invalid toast duration value."));
     }
 }
@@ -170,4 +185,20 @@ void Notifier::setSoundEnabled(bool newSoundEnabled)
     templ.setAudioOption(mapAudioOption(newSoundEnabled));
 
     emit soundEnabledChanged();
+}
+
+bool Notifier::sticky() const
+{
+    return m_sticky;
+}
+
+void Notifier::setSticky(bool newSticky)
+{
+    if (m_sticky == newSticky)
+        return;
+
+    m_sticky = newSticky;
+    updateSticky();
+
+    emit stickyChanged();
 }

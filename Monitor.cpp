@@ -46,9 +46,10 @@ void Monitor::readNotifiers(const json &data)
         QString duration = QString::fromStdString(item.value("duration", "System"));
         bool toastEnabled = item.value("toast", true);
         bool soundEnabled = item.value("sound", true);
+        bool sticky = item.value("sticky", false);
 
         Notifier* newNotifier = new Notifier(this, name, regexStr, title, desc, imagePath,
-                                             duration, toastEnabled, soundEnabled);
+                                             duration, toastEnabled, soundEnabled, sticky);
 
         m_notifiers.append(newNotifier);
 
