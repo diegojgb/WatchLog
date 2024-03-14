@@ -19,7 +19,7 @@ Item {
         anchors.leftMargin: 25
         anchors.topMargin: 30
         anchors.rightMargin: 28
-        spacing: 5
+        spacing: 3
 
         Label {
             text: monitor.name
@@ -29,7 +29,7 @@ Item {
         }
 
         CusSwitch {
-            Layout.topMargin: 14
+            Layout.topMargin: 16
             Layout.leftMargin: -5
             backgroundColor_on: root.accentColor
             checked: monitor.enabled
@@ -41,7 +41,7 @@ Item {
         }
 
         RowLayout {
-            Layout.topMargin: 14
+            Layout.topMargin: 16
             Layout.rightMargin: 10
 
             FileDialog {
@@ -79,10 +79,17 @@ Item {
             }
         }
 
+        Label {
+            Layout.topMargin: 30
+            text: "Notifications"
+            font.pointSize: 14
+            font.weight: Font.DemiBold
+            renderType: Text.NativeRendering
+        }
+
         Row {
             spacing: 20
             Layout.alignment: Qt.AlignRight
-            Layout.topMargin: 20
             Layout.rightMargin: 8
 
             Label {
@@ -139,6 +146,7 @@ Item {
                     }
                 }
                 Rectangle {
+                    visible: modelData < monitor.nListLength() - 1
                     height: 1
                     color: '#bbb'
                     Layout.fillWidth: true

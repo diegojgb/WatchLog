@@ -68,10 +68,10 @@ TabButton {
         Rectangle {
             Layout.rightMargin: 16
             Layout.bottomMargin: 5
-            width: 10
-            height: 10
+            width: 9
+            height: 9
             radius: width / 2
-            color: control.enabled ? "#00b100" : "red"
+            color: control.enabled ? "#009f00" : "red"
         }
     }
 
