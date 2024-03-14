@@ -29,27 +29,74 @@ ApplicationWindow {
             id: sidebar
 
             Layout.fillHeight: true
-            Layout.preferredWidth: 180
+            Layout.preferredWidth: 190
             color: '#2d2e30'
 
-            Repeater {
-                id: tabBar
-                anchors.fill: parent
+            ColumnLayout {
+                anchors.left: parent.left
+                anchors.right: parent.right
 
-                property int tabIndex: 0
+                Row {
+                    Layout.topMargin: 15
+                    Layout.leftMargin: 14
+                    spacing: 8
 
-                model: Manager.monitorsOrder
+                    Image {
+                        id: logo
+                        source: "assets/watchlog-logo.png"
+                    }
+                    Label {
+                        height: parent.height
+                        verticalAlignment: Text.AlignVCenter
+                        text: "WatchLog"
+                        color: "#fff"
+                        font.pointSize: 13
+                        font.weight: Font.DemiBold
+                    }
+                }
 
-                Tab {
-                    width: parent.width
-                    height: 48
-                    text: Manager.hashGet(modelData).name
-                    checked: tabBar.tabIndex == index
+                Rectangle {
+                    Layout.fillWidth: true
+                    Layout.topMargin: 8
+                    Layout.rightMargin: 12
+                    Layout.leftMargin: 12
+                    height: 1
+                    color: '#444'
+                }
 
-                    property int index: tabBar.model.indexOf(modelData)
+                Label {
+                    Layout.topMargin: 1
+                    Layout.leftMargin: 12
+                    text: "Monitors"
+                    color: '#888'
+                }
 
-                    onClicked: {
-                        tabBar.tabIndex = tabBar.model.indexOf(modelData)
+                Column {
+                    id: tabBar
+                    Layout.fillWidth: true
+                    Layout.topMargin: 10
+
+                    property int tabIndex: 0
+
+                    Repeater {
+                        id: tabRepeater
+
+                        model: Manager.monitorsOrder
+
+                        Tab {
+                            width: parent.width
+                            height: 30
+                            text: Manager.hashGet(modelData).name
+                            checked: tabBar.tabIndex == index
+
+                            property int index: tabRepeater.model.indexOf(
+                                                    modelData)
+
+                            onClicked: {
+                                tabBar.tabIndex = tabRepeater.model.indexOf(
+                                            modelData)
+                            }
+                        }
                     }
                 }
             }

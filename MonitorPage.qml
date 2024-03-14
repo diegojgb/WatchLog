@@ -54,7 +54,7 @@ Item {
                 renderType: Text.NativeRendering
 
                 background: Rectangle {
-                    color: "#e6e6e6"
+                    color: "#e0e0e0"
                     border.color: "#bbb"
                 }
             }

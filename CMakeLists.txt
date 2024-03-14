@@ -43,6 +43,7 @@ qt_add_qml_module(appFallGuysNotifier
     RESOURCES
     assets/notification.png
     assets/crown-logo.ico
+    assets/watchlog-logo.png
 )
 
 #-- JSON ------------------------------

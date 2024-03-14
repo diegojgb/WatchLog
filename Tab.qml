@@ -7,6 +7,7 @@ TabButton {
 
     property alias contentAnchors: content.anchors
     property alias imageSource: image.source
+    property color textColor: "#fff"
 
     font.pointSize: 10
 
@@ -27,7 +28,7 @@ TabButton {
 
     contentItem: Row {
         id: content
-        spacing: 9
+        spacing: 6
         anchors.fill: parent
         anchors.leftMargin: 15
 
@@ -37,12 +38,18 @@ TabButton {
         }
 
         Text {
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            verticalAlignment: Text.AlignVCenter
+            anchors.verticalCenter: parent.verticalCenter
+            bottomPadding: 3
+            text: "»"
+            font.pointSize: 14
+            color: control.textColor
+        }
+
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
             text: control.text
             font: control.font
-            color: '#fff'
+            color: control.textColor
             renderType: Text.NativeRendering
         }
     }
