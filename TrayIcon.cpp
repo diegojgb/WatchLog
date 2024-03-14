@@ -50,14 +50,6 @@ void TrayIcon::initWinToast()
 
     if (!WinToast::instance()->initialize())
         throw std::runtime_error("Error, could not initialize WinToast!");
-
-    // WinToastTemplate templ = WinToastTemplate(WinToastTemplate::ImageAndText02);
-    // templ.setImagePath(L"C:/xpaste_qt_creator/FallGuysNotifier/assets/face-logo.png");
-    // templ.setTextField(L"title", WinToastTemplate::FirstLine);
-    // templ.setTextField(L"subtitle", WinToastTemplate::SecondLine);
-    // templ.setDuration(WinToastTemplate::Duration::Short);
-    // templ.addAction(L"Dismiss");
-    // templ.setScenario(WinToastTemplate::Scenario::Reminder);
 }
 
 void TrayIcon::sendNotification(const WinToastTemplate& templ)

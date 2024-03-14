@@ -8,12 +8,17 @@ TabButton {
     property alias contentAnchors: content.anchors
     property alias imageSource: image.source
     property color textColor: "#fff"
+    property bool selected
 
+    checked: control.selected
     font.pointSize: 10
 
     background: Rectangle {
         id: background
         anchors.fill: parent
+        anchors.leftMargin: 10
+        anchors.rightMargin: 10
+        radius: 7
 
         color: {
             if (control.hovered) {
@@ -24,13 +29,22 @@ TabButton {
                 return "transparent"
             }
         }
+
+        Rectangle {
+            anchors.verticalCenter: parent.verticalCenter
+            height: 16
+            width: 3
+            radius: 10
+            color: root.accentColor
+            visible: control.selected
+        }
     }
 
     contentItem: Row {
         id: content
         spacing: 6
         anchors.fill: parent
-        anchors.leftMargin: 15
+        anchors.leftMargin: 20
 
         Image {
             anchors.verticalCenter: parent.verticalCenter

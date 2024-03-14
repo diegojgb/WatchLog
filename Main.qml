@@ -7,7 +7,7 @@ ApplicationWindow {
     id: root
 
     visible: true
-    title: qsTr("Hello World")
+    title: qsTr("WatchLog")
 
     width: 840
     height: 560
@@ -65,7 +65,6 @@ ApplicationWindow {
                 }
 
                 Label {
-                    Layout.topMargin: 1
                     Layout.leftMargin: 12
                     text: "Monitors"
                     color: '#888'
@@ -87,7 +86,7 @@ ApplicationWindow {
                             width: parent.width
                             height: 30
                             text: Manager.hashGet(modelData).name
-                            checked: tabBar.tabIndex == index
+                            selected: tabBar.tabIndex == index
 
                             property int index: tabRepeater.model.indexOf(
                                                     modelData)
