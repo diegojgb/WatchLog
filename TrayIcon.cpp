@@ -10,7 +10,7 @@ TrayIcon::TrayIcon(QObject* parent, QObject* root)
 
     QSystemTrayIcon *trayIcon = new QSystemTrayIcon(m_root);
     trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":/FallGuysNotifier/assets/crown-logo.ico"));
+    trayIcon->setIcon(QIcon(":/FallGuysNotifier/assets/watchlog-logo.ico"));
     trayIcon->show();
 
     initWinToast();
