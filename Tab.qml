@@ -67,7 +67,7 @@ TabButton {
 
         Rectangle {
             Layout.rightMargin: 16
-            Layout.bottomMargin: 5
+            Layout.bottomMargin: 4
             width: 9
             height: 9
             radius: width / 2

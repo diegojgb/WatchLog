@@ -5,13 +5,15 @@ import QtQuick.Dialogs
 import TaoQuick 1.0
 
 Item {
+    id: page
+
     property var monitor
 
     Layout.fillHeight: true
     Layout.fillWidth: true
 
     ColumnLayout {
-        id: page
+        id: content
 
         anchors.top: parent.top
         anchors.left: parent.left
@@ -110,41 +112,10 @@ Item {
             ColumnLayout {
                 Layout.fillWidth: true
 
-                RowLayout {
-                    width: parent.width
-
-                    Text {
-                        Layout.leftMargin: 5
-                        font.pointSize: 10
-                        renderType: Text.NativeRendering
-                        text: monitor.nListAt(modelData).name
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-                    }
-
-                    Row {
-                        spacing: 8
-
-                        CusSwitch {
-                            checked: monitor.nListAt(modelData).toastEnabled
-                            backgroundColor_on: root.accentColor
-                            onCheckedChanged: {
-                                monitor.nListAt(
-                                            modelData).toastEnabled = checked
-                            }
-                        }
-                        CusSwitch {
-                            checked: monitor.nListAt(modelData).soundEnabled
-                            backgroundColor_on: root.accentColor
-                            onCheckedChanged: {
-                                monitor.nListAt(
-                                            modelData).soundEnabled = checked
-                            }
-                        }
-                    }
+                NotifierPreview {
+                    notifier: monitor.nListAt(modelData)
                 }
+
                 Rectangle {
                     visible: modelData < monitor.nListLength() - 1
                     height: 1
