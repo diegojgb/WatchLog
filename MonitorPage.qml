@@ -21,7 +21,6 @@ Item {
         anchors.leftMargin: 25
         anchors.topMargin: 30
         anchors.rightMargin: 28
-        spacing: 3
 
         Label {
             text: monitor.name
@@ -31,7 +30,7 @@ Item {
         }
 
         CusSwitch {
-            Layout.topMargin: 16
+            Layout.topMargin: 19
             Layout.leftMargin: -5
             backgroundColor_on: root.accentColor
             checked: monitor.enabled
@@ -43,7 +42,7 @@ Item {
         }
 
         RowLayout {
-            Layout.topMargin: 16
+            Layout.topMargin: 19
             Layout.rightMargin: 10
 
             FileDialog {
@@ -68,7 +67,7 @@ Item {
                 renderType: Text.NativeRendering
 
                 background: Rectangle {
-                    color: "#e0e0e0"
+                    color: "#e6e6e6"
                     border.color: "#bbb"
                 }
             }
@@ -82,7 +81,7 @@ Item {
         }
 
         Label {
-            Layout.topMargin: 30
+            Layout.topMargin: 31
             text: "Notifications"
             font.pointSize: 14
             font.weight: Font.DemiBold
@@ -109,18 +108,34 @@ Item {
         Repeater {
             model: monitor.nListLength()
 
-            ColumnLayout {
+            Column {
                 Layout.fillWidth: true
 
                 NotifierPreview {
                     notifier: monitor.nListAt(modelData)
+                    onCustomClicked: exp.show = !exp.show
+                }
+
+                Item {
+                    height: 3
+                    width: 1
                 }
 
                 Rectangle {
                     visible: modelData < monitor.nListLength() - 1
+                    anchors.left: parent.left
+                    anchors.right: parent.right
                     height: 1
                     color: '#bbb'
-                    Layout.fillWidth: true
+                }
+
+                Expandable {
+                    id: exp
+
+                    Item {
+                        width: 1
+                        height: 70
+                    }
                 }
             }
         }
