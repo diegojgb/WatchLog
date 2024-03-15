@@ -2,6 +2,7 @@
 # Add a char limit to the name of a Notifier.
 # Handle case with invalid JSON syntax.
 # Figure out a way to just take the CusSwitch from TaoQuick.
+# Re-check if there is a way to make the regex checks more efficient.
 
 cmake_minimum_required(VERSION 3.16)
 

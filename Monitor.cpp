@@ -126,8 +126,10 @@ void Monitor::setEnabled(bool newEnabled)
 
     m_enabled = newEnabled;
 
-    if (newEnabled)
+    if (newEnabled) {
+        m_file.seekg(0, std::ios::end);
         emit monitorEnabled(this);
+    }
     else
         emit monitorDisabled(this);
 

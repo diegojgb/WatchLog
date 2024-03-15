@@ -5,3 +5,5 @@ taoQuick.cmake
 nlohmann/json.hpp
 
 CMakeLists.txt.user
+
+*.autosave

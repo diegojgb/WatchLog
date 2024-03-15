@@ -30,7 +30,7 @@ Item {
         }
 
         CusSwitch {
-            Layout.topMargin: 19
+            Layout.topMargin: 17
             Layout.leftMargin: -5
             backgroundColor_on: root.accentColor
             checked: monitor.enabled
@@ -42,7 +42,7 @@ Item {
         }
 
         RowLayout {
-            Layout.topMargin: 19
+            Layout.topMargin: 15
             Layout.rightMargin: 10
 
             FileDialog {
@@ -81,7 +81,7 @@ Item {
         }
 
         Label {
-            Layout.topMargin: 31
+            Layout.topMargin: 30
             text: "Notifications"
             font.pointSize: 14
             font.weight: Font.DemiBold

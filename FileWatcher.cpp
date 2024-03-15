@@ -15,7 +15,8 @@ void FileWatcher::addFilePath(const QString &filePath) {
 
 void FileWatcher::addAllMonitors() {
     for (auto i = m_monitorsHash.cbegin(), end = m_monitorsHash.cend(); i != end; ++i) {
-        addFilePath(i.key());
+        if (i.value()->enabled())
+            addFilePath(i.key());
     }
 }
 
