@@ -46,6 +46,7 @@ qt_add_qml_module(appFallGuysNotifier
     NotifierPreview.qml
     FileBrowser.qml
     NotifierOptions.qml
+    MaterialCheckBox.qml
 
     SOURCES
     FileWatcher.h FileWatcher.cpp
@@ -54,6 +55,7 @@ qt_add_qml_module(appFallGuysNotifier
     Notifier.h Notifier.cpp
     TrayIcon.h TrayIcon.cpp
     ToastHandler.h
+    SystemMedia.h SystemMedia.cpp
 
     RESOURCES
     assets/notification.png
@@ -61,7 +63,6 @@ qt_add_qml_module(appFallGuysNotifier
     assets/watchlog-logo.png
     assets/watchlog-logo.ico
     assets/right-arrow.png
-    QML_FILES MaterialCheckBox.qml
 )
 
 #-- JSON ----------------

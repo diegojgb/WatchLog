@@ -31,8 +31,8 @@ signals:
 
 private:
     QFileSystemWatcher m_watcher;
+    QHash<QString, std::wstring> m_soundsHash;
     const QHash<QString, Monitor*> &m_monitorsHash;
-    TCHAR m_defaultSoundFilePath[MAX_PATH];
 };
 
 #endif // FILEWATCHER_H

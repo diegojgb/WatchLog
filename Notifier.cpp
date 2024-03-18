@@ -2,9 +2,9 @@
 
 
 Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString title,
-                   QString desc, QString imagePath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
+                   QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent}, m_name{name}, m_regexStr{regexStr}, m_title{title},
-      m_desc{desc}, m_imagePath{imagePath}, m_duration{duration}, m_toastEnabled{toastEnabled},
+      m_desc{desc}, m_imagePath{imagePath}, m_soundPath{soundPath}, m_duration{duration}, m_toastEnabled{toastEnabled},
       m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
 {
     regex = std::regex(regexStr.toStdString());

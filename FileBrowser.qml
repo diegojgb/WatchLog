@@ -10,12 +10,15 @@ RowLayout {
     property color backgroundColor: "#e6e6e6"
     property int fieldHeight: 25
 
+    signal fileAccepted(string filePath)
+
     FileDialog {
         id: fileDialog
         title: "Select a file"
         selectedFile: "file:///" + control.filePath
         onAccepted: {
             control.filePath = selectedFile.toString().slice(8)
+            control.fileAccepted(control.filePath)
         }
     }
 

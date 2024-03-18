@@ -84,6 +84,10 @@ Item {
                 backgroundColor: "#fff"
                 fieldHeight: 23
                 filePath: notifier.imagePath
+
+                onFileAccepted: {
+                    notifier.imagePath = filePath
+                }
             }
         }
 
@@ -101,6 +105,10 @@ Item {
                 backgroundColor: "#fff"
                 fieldHeight: 23
                 filePath: notifier.soundPath
+
+                onFileAccepted: {
+                    notifier.soundPath = filePath
+                }
             }
         }
 

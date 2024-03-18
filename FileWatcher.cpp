@@ -5,20 +5,6 @@ FileWatcher::FileWatcher(QObject* parent, const QHash<QString, Monitor*> &monito
     : QObject{parent}, m_monitorsHash{monitorsHash}
 {
     connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &FileWatcher::onFileChanged);
-
-    TCHAR windir[MAX_PATH];
-
-    if (GetWindowsDirectory(windir, MAX_PATH) == 0)
-        throw std::runtime_error("FileWatcher: Error getting Windows directory.");
-
-    if (PathCombine(m_defaultSoundFilePath, windir, TEXT("Media\\Windows Notify System Generic.wav")) == NULL)
-        throw std::runtime_error("FileWatcher: Error getting Windows Notification Sound path.");
-
-    std::wstring command = L"open \"" + std::wstring(m_defaultSoundFilePath) + L"\" type waveaudio alias NotificationSound";
-    LPCWSTR lpcwCommand = command.c_str();
-
-    if (mciSendString(lpcwCommand, NULL, 0, NULL) != 0)
-        throw std::runtime_error("FileWatcher: Error opening sound file.");
 }
 
 void FileWatcher::addAllMonitors()
@@ -71,11 +57,25 @@ void FileWatcher::onFileChanged(const QString &path)
                 if (enabled && std::regex_search(line, match, notifier->regex)) {
                     if (notifier->toastEnabled())
                         emit matchFound(notifier->templ);
-                    else
-                        // PlaySound(TEXT("Notification.Default"), NULL, SND_ASYNC);
-                        // PlaySound(m_defaultSoundFilePath, NULL, SND_FILENAME | SND_ASYNC);
-                        mciSendString(L"play NotificationSound from 0", NULL, 0, NULL);
+                    else {
+                        std::wstring playCommand;
 
+                        if (m_soundsHash.contains(notifier->soundPath())) {
+                            playCommand = m_soundsHash[notifier->soundPath()];
+                        } else {
+                            std::wstring soundAlias = L"NotificationSound" + std::to_wstring(m_soundsHash.size());
+                            std::wstring command = L"open \"" + notifier->soundPath().toStdWString() + L"\" type waveaudio alias " + soundAlias;
+
+                            if (mciSendString(command.c_str(), NULL, 0, NULL) != 0)
+                                throw std::runtime_error("FileWatcher: Error opening sound file.");
+
+                            playCommand = L"play " + soundAlias + L" from 0";
+
+                            m_soundsHash.insert(notifier->soundPath(), playCommand);
+                        }
+
+                        mciSendString(playCommand.c_str(), NULL, 0, NULL);
+                    }
                     qDebug() << "Found: " << match.str();
                     enabled = false;
                 }

@@ -1,4 +1,5 @@
 #include "Monitor.h"
+#include "SystemMedia.h"
 
 #include <QApplication>
 #include <fstream>
@@ -51,6 +52,7 @@ void Monitor::readNotifiers(const json &data)
         QString regexStr = QString::fromStdString(jsonFindByKey(item, "pattern").get<std::string>());
         QString title = QString::fromStdString(item.value("title", "Match found!"));
         QString desc = QString::fromStdString(item.value("desc", "For regex: " + item["pattern"].get<std::string>()));
+        QString soundPath = QString::fromStdString(item.value("soundFile", SystemMedia::getDefaultSoundAsStdString()));
         QString imagePath = QString::fromStdString(item.value("image", "D:/Diego/Windows folder sources/Desktop/FallGuysNotifier/assets/fg-faceplate.png"));
         QString duration = QString::fromStdString(item.value("duration", "System"));
         bool toastEnabled = item.value("toast", true);
@@ -58,7 +60,7 @@ void Monitor::readNotifiers(const json &data)
         bool sticky = item.value("sticky", false);
 
         Notifier* newNotifier = new Notifier(this, name, regexStr, title, desc, imagePath,
-                                             duration, toastEnabled, soundEnabled, sticky);
+                                             soundPath, duration, toastEnabled, soundEnabled, sticky);
 
         m_notifiers.append(newNotifier);
 

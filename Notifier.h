@@ -30,7 +30,7 @@ public:
     WinToastTemplate templ;
 
     explicit Notifier(QObject *parent, QString name, QString regexStr, QString title,
-                      QString desc, QString imagePath, QString duration, bool toastEnabled,
+                      QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled,
                       bool soundEnabled, bool sticky);
 
     QString title() const;
@@ -67,6 +67,7 @@ signals:
     void titleChanged();
     void descChanged();
     void imagePathChanged();
+    void soundPathChanged();
     void durationChanged();
     void regexStrChanged();
     void nameChanged();
@@ -76,13 +77,12 @@ signals:
     void disabled(Notifier* notifier);
     void enabled(Notifier* notifier);
 
-    void soundPathChanged();
-
 private:
     QString m_name;
     QString m_title;
     QString m_desc;
     QString m_imagePath;
+    QString m_soundPath;
     QString m_regexStr;
     QString m_duration;
     bool m_soundEnabled;
@@ -92,7 +92,7 @@ private:
     WinToastTemplate::Duration toWinToastDuration(const QString& duration);
     WinToastTemplate::AudioOption mapAudioOption(bool soundEnabled) const;
     void updateSticky();
-    QString m_soundPath;
+
 };
 
 #endif // NOTIFIER_H

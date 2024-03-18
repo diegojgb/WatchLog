@@ -45,6 +45,10 @@ Item {
             Layout.topMargin: 15
             Layout.rightMargin: 10
             filePath: monitor.filePath
+
+            onFileAccepted: {
+                monitor.filePath = filePath
+            }
         }
 
         Label {
