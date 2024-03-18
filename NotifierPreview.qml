@@ -39,7 +39,7 @@ MouseArea {
             RotationAnimator {
                 id: arrowRotation
                 target: arrow
-                duration: 1000
+                duration: 200
             }
         }
 
