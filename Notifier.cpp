@@ -202,3 +202,18 @@ void Notifier::setSticky(bool newSticky)
 
     emit stickyChanged();
 }
+
+QString Notifier::soundPath() const
+{
+    return m_soundPath;
+}
+
+void Notifier::setSoundPath(const QString &newSoundPath)
+{
+    if (m_soundPath == newSoundPath)
+        return;
+
+    m_soundPath = newSoundPath;
+
+    emit soundPathChanged();
+}

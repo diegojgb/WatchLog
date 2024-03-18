@@ -14,7 +14,7 @@ Rectangle {
 
     Loader {
         id: expanded
-        anchors.horizontalCenter: info.horizontalCenter
+        width: parent.width
         y: info.height - height
     }
 

@@ -35,6 +35,8 @@ public:
     bool enabled() const;
     void setEnabled(bool newEnabled);
 
+    void startFile();
+
 public slots:
     int nListLength() const;
     Notifier* nListAt(int i) const;

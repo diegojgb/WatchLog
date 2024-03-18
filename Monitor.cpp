@@ -10,18 +10,26 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
 {
     m_name = QString::fromStdString(monitorData["name"]);
     m_enabled = monitorData.value("enabled", true);
-    std::string filePath = monitorData["filePath"];
-    m_filePath = QString::fromStdString(filePath); 
+    m_filePath = QString::fromStdString(monitorData["filePath"]);
 
-    m_file = std::ifstream(filePath);
+    startFile();
+    readNotifiers(monitorData["notifiers"]);
+}
 
-    if (!m_file.is_open()) {
-        qDebug() << "Error opening file: " << filePath << "\n";
+void Monitor::startFile()
+{
+    if (m_file.is_open())
+        m_file.close();
+
+    m_file = std::ifstream(m_filePath.toStdString());
+
+    if (!m_file.is_open())
+    {
+        qDebug() << "Error opening file: " << m_filePath << "\n";
         throw std::runtime_error("Error opening file.");
     }
-    m_file.seekg(0, std::ios::end);
 
-    readNotifiers(monitorData["notifiers"]);
+    m_file.seekg(0, std::ios::end);
 }
 
 auto Monitor::jsonFindByKey(const json &data, const std::string &key) {
@@ -111,6 +119,7 @@ void Monitor::setFilePath(const QString &newFilePath)
 
     m_filePath = newFilePath;
 
+    startFile();
     emit filePathChanged();
 }
 
@@ -126,8 +135,9 @@ void Monitor::setEnabled(bool newEnabled)
 
     m_enabled = newEnabled;
 
-    if (newEnabled) {
-        m_file.seekg(0, std::ios::end);
+    if (newEnabled)
+    {
+        startFile();
         emit monitorEnabled(this);
     }
     else

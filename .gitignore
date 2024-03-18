@@ -7,3 +7,5 @@ nlohmann/json.hpp
 CMakeLists.txt.user
 
 *.autosave
+
+assets/right-arrow - Copy.png

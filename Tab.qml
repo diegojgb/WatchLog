@@ -43,18 +43,18 @@ TabButton {
     contentItem: RowLayout {
         id: content
         spacing: 5
-        anchors.fill: parent
+        anchors.fill: background
 
+        // Text {
+        //     Layout.leftMargin: 22
+        //     bottomPadding: 8
+        //     text: "»"
+        //     font.pointSize: 14
+        //     color: control.textColor
+        // }
         Text {
-            Layout.leftMargin: 22
-            bottomPadding: 8
-            text: "»"
-            font.pointSize: 14
-            color: control.textColor
-        }
-
-        Text {
-            bottomPadding: 6
+            Layout.leftMargin: 12
+            topPadding: 1
             text: control.text
             font: control.font
             color: control.textColor
@@ -66,8 +66,8 @@ TabButton {
         }
 
         Rectangle {
-            Layout.rightMargin: 16
-            Layout.bottomMargin: 4
+            Layout.rightMargin: 22
+            Layout.topMargin: 3
             width: 9
             height: 9
             radius: width / 2

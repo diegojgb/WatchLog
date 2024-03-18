@@ -6,6 +6,9 @@
 #include <QObject>
 #include <QFileSystemWatcher>
 #include <QHash>
+#include <windows.h>
+#include <mmsystem.h>
+#include <regex>
 
 
 class FileWatcher: public QObject
@@ -24,10 +27,12 @@ public slots:
 
 signals:
     void matchFound(const WinToastTemplate& templ);
+    void fileReset();
 
 private:
     QFileSystemWatcher m_watcher;
     const QHash<QString, Monitor*> &m_monitorsHash;
+    TCHAR m_defaultSoundFilePath[MAX_PATH];
 };
 
 #endif // FILEWATCHER_H

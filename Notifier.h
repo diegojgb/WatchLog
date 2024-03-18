@@ -19,6 +19,7 @@ class Notifier : public QObject
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged FINAL)
     Q_PROPERTY(QString desc READ desc WRITE setDesc NOTIFY descChanged FINAL)
     Q_PROPERTY(QString imagePath READ imagePath WRITE setimagePath NOTIFY imagePathChanged FINAL)
+    Q_PROPERTY(QString soundPath READ soundPath WRITE setSoundPath NOTIFY soundPathChanged FINAL)
     Q_PROPERTY(QString duration READ duration WRITE setDuration NOTIFY durationChanged FINAL)
     Q_PROPERTY(bool toastEnabled READ toastEnabled WRITE setToastEnabled NOTIFY toastEnabledChanged FINAL)
     Q_PROPERTY(bool soundEnabled READ soundEnabled WRITE setSoundEnabled NOTIFY soundEnabledChanged FINAL)
@@ -59,6 +60,9 @@ public:
     bool sticky() const;
     void setSticky(bool newSticky);
 
+    QString soundPath() const;
+    void setSoundPath(const QString &newSoundPath);
+
 signals:
     void titleChanged();
     void descChanged();
@@ -71,6 +75,8 @@ signals:
     void stickyChanged();
     void disabled(Notifier* notifier);
     void enabled(Notifier* notifier);
+
+    void soundPathChanged();
 
 private:
     QString m_name;
@@ -86,6 +92,7 @@ private:
     WinToastTemplate::Duration toWinToastDuration(const QString& duration);
     WinToastTemplate::AudioOption mapAudioOption(bool soundEnabled) const;
     void updateSticky();
+    QString m_soundPath;
 };
 
 #endif // NOTIFIER_H

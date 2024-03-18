@@ -1,8 +1,18 @@
 # To-Do
-# Add a char limit to the name of a Notifier.
-# Handle case with invalid JSON syntax.
-# Figure out a way to just take the CusSwitch from TaoQuick.
-# Re-check if there is a way to make the regex checks more efficient.
+# • Add a char limit to the name of a Notifier.
+# • Handle case with invalid JSON syntax.
+# • Figure out a way to just take the CusSwitch from TaoQuick.
+# • Re-check if there is a way to make the regex checks more efficient.
+# • Check the behavior of broken notifications after spamming them. Do they ever come back to working normally or are they broken until app restart?
+
+# BUGS:
+# • After multiple hours, it stops working. If I disable and re-enable, it fixes.
+#   When I disable and re-enable this are the actions that take place:
+#      1. It removes the filePath from the QFileSystemWatcher and adds it back again.
+#      2. It executes: "m_file.seekg(0, std::ios::end);" on the Monitor.
+# • Whenever I run the application in Debug mode, everytime a notification is shown, despite it working fine, it shows this error:
+#   onecoreuap\base\diagnosis\platform\notifications\developer\basenotification.cpp(35)\wpnapps.dll!00007FF92DD64B52: (caller: 00007FF92DD6123E) LogHr(1) tid(1334) 80070490 Element not found.
+#    I tonly happens while Debugging.
 
 cmake_minimum_required(VERSION 3.16)
 
@@ -32,6 +42,10 @@ qt_add_qml_module(appFallGuysNotifier
     Main.qml
     Tab.qml
     MonitorPage.qml
+    Expandable.qml
+    NotifierPreview.qml
+    FileBrowser.qml
+    NotifierOptions.qml
 
     SOURCES
     FileWatcher.h FileWatcher.cpp
@@ -46,12 +60,11 @@ qt_add_qml_module(appFallGuysNotifier
     assets/crown-logo.ico
     assets/watchlog-logo.png
     assets/watchlog-logo.ico
-    QML_FILES Expandable.qml
-    QML_FILES NotifierPreview.qml
-    RESOURCES  assets/right-arrow.png
+    assets/right-arrow.png
+    QML_FILES MaterialCheckBox.qml
 )
 
-#-- JSON ------------------------------
+#-- JSON ----------------
 
 # set(JSON_INC_PATH C:/dev/vcpkg/packages/nlohmann-json_x64-windows/include)
 # target_include_directories(appFallGuysNotifier PUBLIC ${JSON_INC_PATH})
@@ -78,6 +91,7 @@ target_link_libraries(appFallGuysNotifier
     PRIVATE Qt6::Widgets
     PRIVATE dwmapi
     PRIVATE WinToast
+    PRIVATE Winmm
 )
 
 include(GNUInstallDirs)

@@ -41,43 +41,10 @@ Item {
             }
         }
 
-        RowLayout {
+        FileBrowser {
             Layout.topMargin: 15
             Layout.rightMargin: 10
-
-            FileDialog {
-                id: fileDialog
-                title: "Select a file"
-                selectedFile: "file:///" + monitor.filePath
-                onSelectedFileChanged: {
-                    monitor.filePath = selectedFile.toString().slice(8)
-                }
-            }
-
-            TextField {
-                id: pathField
-                Layout.fillWidth: true
-                Layout.preferredHeight: 25
-                enabled: false
-                text: monitor.filePath
-                verticalAlignment: Text.AlignVCenter
-                leftPadding: 5
-                bottomPadding: 4
-                placeholderText: "No file selected..."
-                renderType: Text.NativeRendering
-
-                background: Rectangle {
-                    color: "#e6e6e6"
-                    border.color: "#bbb"
-                }
-            }
-
-            Button {
-                Layout.preferredWidth: 80
-                Layout.preferredHeight: 26
-                text: "Browse..."
-                onClicked: fileDialog.open()
-            }
+            filePath: monitor.filePath
         }
 
         Label {
@@ -132,9 +99,14 @@ Item {
                 Expandable {
                     id: exp
 
-                    Item {
-                        width: 1
-                        height: 70
+                    NotifierOptions {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.leftMargin: 10
+                        anchors.rightMargin: 22
+                        cusTopMargin: 20
+                        custBottomMargin: 10
+                        notifier: monitor.nListAt(modelData)
                     }
                 }
             }
