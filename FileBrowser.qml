@@ -40,7 +40,7 @@ RowLayout {
         }
     }
 
-    Button {
+    CustomButton {
         Layout.preferredWidth: 80
         Layout.preferredHeight: control.fieldHeight + 1
         text: "Browse..."

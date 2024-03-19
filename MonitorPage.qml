@@ -16,6 +16,12 @@ ScrollView {
         contentHeight: content.height + content.anchors.topMargin + content.anchors.bottomMargin
         boundsBehavior: Flickable.StopAtBounds
 
+        // Makes widgets lose focus when clicked outside.
+        Pane {
+            anchors.fill: parent
+            focusPolicy: Qt.ClickFocus
+        }
+
         ColumnLayout {
             id: content
 

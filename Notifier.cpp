@@ -10,8 +10,8 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
     regex = std::regex(regexStr.toStdString());
 
     templ.setImagePath(imagePath.toStdWString());
-    templ.setTextField(title.toStdWString(), WinToastTemplate::FirstLine);
-    templ.setTextField(desc.toStdWString(), WinToastTemplate::SecondLine);
+    templ.setTextField(title.replace("${regex}", regexStr).toStdWString(), WinToastTemplate::FirstLine);
+    templ.setTextField(desc.replace("${regex}", regexStr).toStdWString(), WinToastTemplate::SecondLine);
     templ.setDuration(toWinToastDuration(m_duration));
     templ.setAudioOption(mapAudioOption(soundEnabled));
     updateSticky();
@@ -119,6 +119,18 @@ void Notifier::setRegexStr(const QString &newRegexStr)
         return;
 
     m_regexStr = newRegexStr;
+
+    if (m_title.contains("${regex}")) {
+        QString titleCopy = m_title;
+        titleCopy.replace("${regex}", newRegexStr);
+        templ.setTextField(titleCopy.toStdWString(), WinToastTemplate::FirstLine);
+    }
+
+    if (m_desc.contains("${regex}")) {
+        QString descCopy = m_desc;
+        descCopy.replace("${regex}", newRegexStr);
+        templ.setTextField(descCopy.toStdWString(), WinToastTemplate::SecondLine);
+    }
 
     emit regexStrChanged();
 }

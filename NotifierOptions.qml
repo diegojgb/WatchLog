@@ -32,6 +32,10 @@ Item {
                 leftPadding: 5
                 text: notifier.regexStr
                 renderType: Text.NativeRendering
+
+                onEditingFinished: {
+                    notifier.regexStr = text
+                }
             }
         }
 
@@ -50,6 +54,10 @@ Item {
                 leftPadding: 5
                 text: notifier.title
                 renderType: Text.NativeRendering
+
+                onEditingFinished: {
+                    notifier.title = text
+                }
             }
         }
 
@@ -67,6 +75,10 @@ Item {
                 leftPadding: 5
                 text: notifier.desc
                 renderType: Text.NativeRendering
+
+                onEditingFinished: {
+                    notifier.desc = text
+                }
             }
         }
 
