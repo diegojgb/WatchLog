@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import TaoQuick 1.0
 
-ApplicationWindow {
+Window {
     id: root
 
     visible: true
@@ -15,6 +15,7 @@ ApplicationWindow {
     property color accentColor: "#0078d4"
 
     // Hide the window instead of closing it when the close button is clicked
+    // @disable-check M16
     onClosing: close => {
                    hide()
                    close.accepted = false

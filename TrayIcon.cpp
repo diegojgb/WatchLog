@@ -16,8 +16,8 @@ TrayIcon::TrayIcon(QObject* parent, QObject* root)
     initWinToast();
     m_toastHandler = new ToastHandler();
 
-    connect(this, SIGNAL(singleClick()), m_root, SLOT(showNormal()));
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &TrayIcon::trayIconActivated);
+    connect(this, SIGNAL(singleClick()), m_root, SLOT(showNormal()));
 }
 
 void TrayIcon::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -36,6 +36,8 @@ QMenu* TrayIcon::createMenu()
     QMenu *trayIconMenu = new QMenu();
     trayIconMenu->addAction(restoreAction);
     trayIconMenu->addAction(quitAction);
+    trayIconMenu->setStyleSheet("QMenu::item:selected { color: white; background-color: #0078d4; }\
+                                QMenu::item { color: black; background-color: transparent; }");
 
     return trayIconMenu;
 }
