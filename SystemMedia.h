@@ -10,13 +10,14 @@
 class SystemMedia
 {
 public:
-    static const TCHAR* getDefaultSound();
-    static const std::string getDefaultSoundAsStdString();
+    static const std::string getDefaultSound();
 
 private:
-    static TCHAR m_defaultSoundPath[MAX_PATH];
-    static bool initializeDefaultSoundPath();
+    static std::string m_defaultSoundPath;
     static bool m_initialized;
+
+    static bool initializeDefaultSoundPath();
+    static void replaceAll(std::string& source, const std::string& from, const std::string& to);
 };
 
 #endif // SYSTEMMEDIA_H
