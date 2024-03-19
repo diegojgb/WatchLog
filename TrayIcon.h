@@ -17,10 +17,15 @@ public:
 
 public slots:
     void sendNotification(const WinToastTemplate& templ);
+    void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+
+signals:
+    void singleClick();
 
 private:
     QObject* m_root;
     ToastHandler* m_toastHandler;
+    QSystemTrayIcon* m_trayIcon;
 
     QMenu* createMenu();
     void initWinToast();

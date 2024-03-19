@@ -8,32 +8,33 @@ TrayIcon::TrayIcon(QObject* parent, QObject* root)
 {
     QMenu* trayIconMenu = createMenu();
 
-    QSystemTrayIcon *trayIcon = new QSystemTrayIcon(m_root);
-    trayIcon->setContextMenu(trayIconMenu);
-    trayIcon->setIcon(QIcon(":/FallGuysNotifier/assets/watchlog-logo.ico"));
-    trayIcon->show();
+    m_trayIcon = new QSystemTrayIcon(m_root);
+    m_trayIcon->setContextMenu(trayIconMenu);
+    m_trayIcon->setIcon(QIcon(":/FallGuysNotifier/assets/watchlog-logo.ico"));
+    m_trayIcon->show();
 
     initWinToast();
-
     m_toastHandler = new ToastHandler();
+
+    connect(this, SIGNAL(singleClick()), m_root, SLOT(showNormal()));
+    connect(m_trayIcon, &QSystemTrayIcon::activated, this, &TrayIcon::trayIconActivated);
+}
+
+void TrayIcon::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::Trigger)
+       emit singleClick();
 }
 
 QMenu* TrayIcon::createMenu()
 {
-    QAction *minimizeAction = new QAction(QObject::tr("Mi&nimize"), m_root);
-    m_root->connect(minimizeAction, SIGNAL(triggered()), m_root, SLOT(hide()));
-    QAction *maximizeAction = new QAction(QObject::tr("Ma&ximize"), m_root);
-    m_root->connect(maximizeAction, SIGNAL(triggered()), m_root, SLOT(showMaximized()));
     QAction *restoreAction = new QAction(QObject::tr("&Restore"), m_root);
     m_root->connect(restoreAction, SIGNAL(triggered()), m_root, SLOT(showNormal()));
     QAction *quitAction = new QAction(QObject::tr("&Quit"), m_root);
     m_root->connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
     QMenu *trayIconMenu = new QMenu();
-    trayIconMenu->addAction(minimizeAction);
-    trayIconMenu->addAction(maximizeAction);
     trayIconMenu->addAction(restoreAction);
-    trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
 
     return trayIconMenu;

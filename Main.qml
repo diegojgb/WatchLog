@@ -14,6 +14,12 @@ ApplicationWindow {
 
     property color accentColor: "#0078d4"
 
+    // Hide the window instead of closing it when the close button is clicked
+    onClosing: close => {
+                   hide()
+                   close.accepted = false
+               }
+
     // Makes widgets lose focus when clicked outside.
     Pane {
         anchors.fill: parent
