@@ -71,7 +71,7 @@ void Manager::updateJSON() const
     if (outFile.is_open()) {
         outFile << obj.dump(4); // dump(4) prettifies it with 4 spaces indentation.
         outFile.close();
-        std::cout << "JSON data saved to output.json\n";
+        qDebug() << "JSON data saved to output.json\n";
     } else {
         std::cerr << "Failed to open output.json for writing\n";
         throw std::runtime_error("Manager: Failed to open data.json for writing");

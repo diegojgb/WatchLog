@@ -58,8 +58,13 @@ ScrollView {
                 checked: monitor.enabled
                 text: "Enabled"
 
+                property bool loaded: false
+                Component.onCompleted: loaded = true
+
                 onCheckedChanged: {
                     monitor.enabled = checked
+                    if (loaded)
+                        root.saveEnabled = true
                 }
             }
 
@@ -70,6 +75,7 @@ ScrollView {
 
                 onFileAccepted: {
                     monitor.filePath = filePath
+                    root.saveEnabled = true
                 }
             }
 

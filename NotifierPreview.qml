@@ -74,16 +74,26 @@ MouseArea {
                 checked: notifier.toastEnabled
                 backgroundColor_on: root.accentColor
 
+                property bool loaded: false
+                Component.onCompleted: loaded = true
+
                 onCheckedChanged: {
                     notifier.toastEnabled = checked
+                    if (loaded)
+                        root.saveEnabled = true
                 }
             }
             CusSwitch {
                 checked: notifier.soundEnabled
                 backgroundColor_on: root.accentColor
 
+                property bool loaded: false
+                Component.onCompleted: loaded = true
+
                 onCheckedChanged: {
                     notifier.soundEnabled = checked
+                    if (loaded)
+                        root.saveEnabled = true
                 }
             }
         }

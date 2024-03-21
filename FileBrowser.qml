@@ -11,6 +11,7 @@ RowLayout {
     property int fieldHeight: 25
 
     signal fileAccepted
+    signal selectedFileChanged(string newFilePath)
 
     FileDialog {
         id: fileDialog
@@ -20,6 +21,7 @@ RowLayout {
             control.filePath = selectedFile.toString().slice(8)
             control.fileAccepted()
         }
+        onSelectedFileChanged: control.selectedFileChanged(selectedFile)
     }
 
     TextField {

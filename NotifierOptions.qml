@@ -28,13 +28,23 @@ Item {
             }
             TextField {
                 id: field
+
+                property string initValue
+
                 Layout.fillWidth: true
                 leftPadding: 5
                 text: notifier.regexStr
                 renderType: Text.NativeRendering
 
+                onActiveFocusChanged: {
+                    if (activeFocus)
+                        initValue = text
+                }
+
                 onEditingFinished: {
                     notifier.regexStr = text
+                    if (initValue !== text)
+                        root.saveEnabled = true
                 }
             }
         }
@@ -55,8 +65,17 @@ Item {
                 text: notifier.title
                 renderType: Text.NativeRendering
 
+                property string initValue
+
+                onActiveFocusChanged: {
+                    if (activeFocus)
+                        initValue = text
+                }
+
                 onEditingFinished: {
                     notifier.title = text
+                    if (initValue !== text)
+                        root.saveEnabled = true
                 }
             }
         }
@@ -76,8 +95,17 @@ Item {
                 text: notifier.desc
                 renderType: Text.NativeRendering
 
+                property string initValue
+
+                onActiveFocusChanged: {
+                    if (activeFocus)
+                        initValue = text
+                }
+
                 onEditingFinished: {
                     notifier.desc = text
+                    if (initValue !== text)
+                        root.saveEnabled = true
                 }
             }
         }
@@ -97,8 +125,13 @@ Item {
                 fieldHeight: 23
                 filePath: notifier.imagePath
 
-                onFileAccepted: {
-                    notifier.imagePath = filePath
+                property bool loaded: false
+                Component.onCompleted: loaded = true
+
+                onFileAccepted: notifier.imagePath = filePath
+                onSelectedFileChanged: {
+                    if (loaded)
+                        root.saveEnabled = true
                 }
             }
         }
@@ -118,8 +151,13 @@ Item {
                 fieldHeight: 23
                 filePath: notifier.soundPath
 
-                onFileAccepted: {
-                    notifier.soundPath = filePath
+                property bool loaded: false
+                Component.onCompleted: loaded = true
+
+                onFileAccepted: notifier.soundPath = filePath
+                onSelectedFileChanged: {
+                    if (loaded)
+                        root.saveEnabled = true
                 }
             }
         }
@@ -130,8 +168,14 @@ Item {
             text: "Sticky notification"
             checked: notifier.sticky
             Layout.leftMargin: descLabel.width - 3
+
+            property bool loaded: false
+            Component.onCompleted: loaded = true
+
             onCheckedChanged: {
                 notifier.sticky = checked
+                if (loaded)
+                    root.saveEnabled = true
             }
         }
     }
