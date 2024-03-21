@@ -45,20 +45,20 @@ TabButton {
         spacing: 5
         anchors.fill: background
 
-        // Text {
-        //     Layout.leftMargin: 22
-        //     bottomPadding: 8
-        //     text: "»"
-        //     font.pointSize: 14
-        //     color: control.textColor
-        // }
         Text {
+            Layout.fillWidth: true
             Layout.leftMargin: 12
             topPadding: 1
             text: control.text
             font: control.font
             color: control.textColor
+            elide: Text.ElideRight
+            maximumLineCount: 1
             renderType: Text.NativeRendering
+
+            ToolTip.text: control.text
+            ToolTip.visible: truncated && mouseArea.containsMouse
+            ToolTip.delay: 1000
         }
 
         Item {

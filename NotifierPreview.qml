@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import TaoQuick 1.0
 
 MouseArea {
@@ -7,13 +8,14 @@ MouseArea {
     anchors.left: parent.left
     anchors.right: parent.right
     height: childrenRect.height
+    hoverEnabled: true
 
     signal customClicked
     property bool rotated: false
     property var notifier
 
-    onClicked: {
-        if (rotated) {
+    function handleClick() {
+        if (control.rotated) {
             arrowRotation.from = 90
             arrowRotation.to = 0
         } else {
@@ -22,8 +24,10 @@ MouseArea {
         }
         arrowRotation.running = true
         control.customClicked()
-        rotated = !rotated
+        control.rotated = !control.rotated
     }
+
+    onClicked: control.handleClick()
 
     RowLayout {
         anchors.left: parent.left
@@ -44,14 +48,23 @@ MouseArea {
         }
 
         Text {
+            Layout.fillWidth: true
             Layout.bottomMargin: 3
             font.pointSize: 10
-            renderType: Text.NativeRendering
             text: notifier.name
-        }
+            elide: Text.ElideRight
+            maximumLineCount: 1
+            renderType: Text.NativeRendering
 
-        Item {
-            Layout.fillWidth: true
+            ToolTip.text: notifier.name
+            ToolTip.visible: truncated && mouseArea.containsMouse
+            ToolTip.delay: 1000
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: control.handleClick()
+            }
         }
 
         Row {

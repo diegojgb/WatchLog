@@ -33,10 +33,22 @@ ScrollView {
             anchors.rightMargin: 28
 
             Label {
+                Layout.fillWidth: true
                 text: monitor.name
                 font.pointSize: 20
                 font.bold: true
+                elide: Text.ElideRight
+                maximumLineCount: 1
                 renderType: Text.NativeRendering
+
+                ToolTip.text: monitor.name
+                ToolTip.visible: truncated && mouseArea.containsMouse
+                ToolTip.delay: 1000
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                }
             }
 
             CusSwitch {
