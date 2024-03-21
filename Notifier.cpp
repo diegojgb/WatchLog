@@ -57,6 +57,7 @@ WinToastTemplate::Duration Notifier::toWinToastDuration(const QString& duration)
     else
     {
         QMessageBox::critical(nullptr, tr("WatchLog"), tr("Invalid toast duration value."));
+        throw std::runtime_error("Notifier: Error opening sound file.");
     }
 }
 
@@ -77,6 +78,9 @@ void Notifier::setTitle(const QString &newTitle)
 
     m_title = newTitle;
 
+    QString titleCopy = newTitle;
+    templ.setTextField(titleCopy.replace("${regex}", m_regexStr).toStdWString(), WinToastTemplate::FirstLine);
+
     emit titleChanged();
 }
 
@@ -92,6 +96,9 @@ void Notifier::setDesc(const QString &newDesc)
 
     m_desc = newDesc;
 
+    QString descCopy = newDesc;
+    templ.setTextField(descCopy.replace("${regex}", m_regexStr).toStdWString(), WinToastTemplate::SecondLine);
+
     emit descChanged();
 }
 
@@ -100,12 +107,13 @@ QString Notifier::imagePath() const
     return m_imagePath;
 }
 
-void Notifier::setimagePath(const QString &newimagePath)
+void Notifier::setImagePath(const QString &newImagePath)
 {
-    if (m_imagePath == newimagePath)
+    if (m_imagePath == newImagePath)
         return;
 
-    m_imagePath = newimagePath;
+    m_imagePath = newImagePath;
+    templ.setImagePath(newImagePath.toStdWString());
 
     emit imagePathChanged();
 }
@@ -121,6 +129,7 @@ void Notifier::setDuration(QString newDuration)
         return;
 
     m_duration = newDuration;
+    templ.setDuration(toWinToastDuration(newDuration));
 
     emit durationChanged();
 }

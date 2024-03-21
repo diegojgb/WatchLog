@@ -20,7 +20,7 @@ class Notifier : public QObject
     Q_PROPERTY(QString regexStr READ regexStr WRITE setRegexStr NOTIFY regexStrChanged FINAL)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged FINAL)
     Q_PROPERTY(QString desc READ desc WRITE setDesc NOTIFY descChanged FINAL)
-    Q_PROPERTY(QString imagePath READ imagePath WRITE setimagePath NOTIFY imagePathChanged FINAL)
+    Q_PROPERTY(QString imagePath READ imagePath WRITE setImagePath NOTIFY imagePathChanged FINAL)
     Q_PROPERTY(QString soundPath READ soundPath WRITE setSoundPath NOTIFY soundPathChanged FINAL)
     Q_PROPERTY(QString duration READ duration WRITE setDuration NOTIFY durationChanged FINAL)
     Q_PROPERTY(bool toastEnabled READ toastEnabled WRITE setToastEnabled NOTIFY toastEnabledChanged FINAL)
@@ -42,7 +42,7 @@ public:
     void setDesc(const QString &newDesc);
 
     QString imagePath() const;
-    void setimagePath(const QString &newimagePath);
+    void setImagePath(const QString &newimagePath);
 
     QString duration() const;
     void setDuration(QString newDuration);
