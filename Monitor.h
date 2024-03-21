@@ -35,6 +35,7 @@ public:
     void setEnabled(bool newEnabled);
 
     void startFile();
+    json toJSON() const;
 
 public slots:
     int nListLength() const;

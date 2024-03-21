@@ -6,8 +6,10 @@
 #include <QObject>
 #include <regex>
 #include <QMessageBox>
+#include <nlohmann/json.hpp>
 
 using namespace WinToastLib;
+using json = nlohmann::json;
 
 
 class Notifier : public QObject
@@ -62,6 +64,8 @@ public:
 
     QString soundPath() const;
     void setSoundPath(const QString &newSoundPath);
+
+    json toJSON() const;
 
 signals:
     void titleChanged();

@@ -17,6 +17,23 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
     updateSticky();
 }
 
+json Notifier::toJSON() const
+{
+    json obj;
+
+    obj["name"] = m_name.toStdString();
+    obj["pattern"] = m_regexStr.toStdString();
+    obj["title"] = m_title.toStdString();
+    obj["desc"] = m_desc.toStdString();
+    obj["image"] = m_imagePath.toStdString();
+    obj["duration"] = m_duration.toStdString();
+    obj["toast"] = m_toastEnabled;
+    obj["sound"] = m_soundEnabled;
+    obj["sticky"] = m_sticky;
+
+    return obj;
+}
+
 void Notifier::updateSticky() {
     if (m_sticky)
     {

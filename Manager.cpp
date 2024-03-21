@@ -4,10 +4,8 @@
 Manager::Manager(QObject *parent, const json &monitorsData)
     : QObject{parent}, m_fileWatcher{this, m_monitorsHash}, m_error{false}
 {
-    try
-    {
-        for (const auto& item: monitorsData)
-        {
+    try {
+        for (const auto& item: monitorsData) {
             Monitor* newMonitor = new Monitor(this, item);
             QString filePath = QString::fromStdString(item["filePath"]);
 
@@ -22,15 +20,26 @@ Manager::Manager(QObject *parent, const json &monitorsData)
 
         m_fileWatcher.addAllMonitors();
     }
-    catch(const std::exception& e)
-    {
+    catch(const std::exception& e) {
         std::cerr << "Exception caught: " << e.what() << std::endl;
         m_error = true;
     }
 }
 
-Monitor* Manager::hashGet(const QString& key) {
+Monitor* Manager::hashGet(const QString& key)
+{
     return m_monitorsHash[key];
+}
+
+json Manager::toJSON() const
+{
+    json rootArray = json::array();
+
+    for (const Monitor* monitor: m_monitorsHash) {
+        rootArray.push_back(monitor->toJSON());
+    }
+
+    return rootArray;
 }
 
 void Manager::changeFilePath(const QString& oldKey, const QString& newKey)

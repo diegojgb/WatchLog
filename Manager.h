@@ -8,6 +8,8 @@
 #include <QHash>
 #include <QStringList>
 
+using json = nlohmann::json;
+
 
 class Manager: public QObject
 {
@@ -24,6 +26,7 @@ public:
     void setMonitorsOrder(const QStringList &newMonitorsOrder);
 
     bool hadInitErrors() const;
+    json toJSON() const;
 
 public slots:
     Monitor* hashGet(const QString& key);

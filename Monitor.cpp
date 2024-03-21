@@ -33,6 +33,22 @@ void Monitor::startFile()
     m_file.seekg(0, std::ios::end);
 }
 
+json Monitor::toJSON() const
+{
+    json obj;
+
+    obj["name"] = m_name.toStdString();
+    obj["filePath"] = m_filePath.toStdString();
+    obj["enabled"] = m_enabled;
+    obj["notifiers"] = json::array();
+
+    for (const Notifier* notifier: m_notifiers) {
+        obj["notifiers"].push_back(notifier->toJSON());
+    }
+
+    return obj;
+}
+
 auto Monitor::jsonFindByKey(const json &data, const std::string &key) {
     if (data.contains(key))
     {
