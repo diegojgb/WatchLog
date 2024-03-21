@@ -107,6 +107,50 @@ Window {
                     }
                 }
             }
+
+            // Save button
+            Rectangle {
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.leftMargin: 30
+                anchors.rightMargin: 30
+                anchors.bottomMargin: 25
+
+                height: 35
+                radius: 3
+                color: "#4d4d4d"
+                border.color: "#666"
+                border.width: 1
+
+                Row {
+                    anchors.left: parent.left
+                    anchors.leftMargin: 10
+                    height: parent.height
+                    spacing: 8
+
+                    Image {
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: "assets/save.png"
+                        width: 20
+                        height: 20
+                    }
+                    Text {
+                        height: parent.height
+                        verticalAlignment: Text.AlignVCenter
+                        bottomPadding: 2
+                        text: "Save changes"
+                        color: "#fff"
+                        font.pointSize: 9
+                        renderType: Text.NativeRendering
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: Manager.updateJSON()
+                }
+            }
         }
 
         Rectangle {

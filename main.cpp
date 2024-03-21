@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
     // Instantiation of functional parts.
     std::ifstream file("data.json");
     json data = json::parse(file);
+    file.close();
 
     Manager manager(&app, data);
 
@@ -43,7 +44,6 @@ int main(int argc, char *argv[])
                                              "on this system."));
         return 1;
     }
-    // QApplication::setQuitOnLastWindowClosed(false);
 
     QQmlApplicationEngine engine;
 

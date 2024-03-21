@@ -63,6 +63,21 @@ void Manager::enableMonitor(const Monitor* monitor)
     m_fileWatcher.addFilePath(monitor->filePath());
 }
 
+void Manager::updateJSON() const
+{
+    json obj = toJSON();
+    std::ofstream outFile("data.json");
+
+    if (outFile.is_open()) {
+        outFile << obj.dump(4); // dump(4) prettifies it with 4 spaces indentation.
+        outFile.close();
+        std::cout << "JSON data saved to output.json\n";
+    } else {
+        std::cerr << "Failed to open output.json for writing\n";
+        throw std::runtime_error("Manager: Failed to open data.json for writing");
+    }
+}
+
 QStringList Manager::monitorsOrder() const
 {
     return m_monitorsOrder;
