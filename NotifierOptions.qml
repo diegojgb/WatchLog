@@ -177,6 +177,7 @@ Item {
 
             CustomComboBox {
                 anchors.verticalCenter: parent.verticalCenter
+                enabled: !checkbox.checked
 
                 property var indexToString: {
                     "0": "System",
@@ -188,6 +189,7 @@ Item {
                     "Short": "1",
                     "Long": "2"
                 }
+
                 property bool loaded: false
                 Component.onCompleted: loaded = true
 
@@ -202,6 +204,7 @@ Item {
             }
 
             MaterialCheckBox {
+                id: checkbox
                 text: "Sticky notification"
                 checked: notifier.sticky
 
