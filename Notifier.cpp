@@ -50,10 +50,16 @@ json Notifier::toJSON() const
 
     obj["name"] = m_name.toStdString();
     obj["pattern"] = m_regexStr.toStdString();
-    obj["title"] = m_title.toStdString();
-    obj["desc"] = m_desc.toStdString();
-    obj["image"] = m_imagePath.toStdString();
-    obj["duration"] = m_duration.toStdString();
+    if (m_title != defaultTitle)
+        obj["title"] = m_title.toStdString();
+    if (m_desc != defaultDesc)
+        obj["desc"] = m_desc.toStdString();
+    if (m_soundPath.toStdString() != SystemMedia::getDefaultSound())
+        obj["soundFile"] = m_soundPath.toStdString();
+    if (m_imagePath != defaultImg)
+        obj["image"] = m_imagePath.toStdString();
+    if (m_duration != "System")
+        obj["duration"] = m_duration.toStdString();
     obj["toast"] = m_toastEnabled;
     obj["sound"] = m_soundEnabled;
     obj["sticky"] = m_sticky;

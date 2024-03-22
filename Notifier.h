@@ -2,6 +2,7 @@
 #define NOTIFIER_H
 
 #include "wintoastlib.h"
+#include "SystemMedia.h"
 
 #include <QObject>
 #include <QMessageBox>
