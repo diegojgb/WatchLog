@@ -49,6 +49,7 @@ qt_add_qml_module(appFallGuysNotifier
     MaterialCheckBox.qml
     CustomButton.qml
     SaveButton.qml
+    CustomComboBox.qml
 
     SOURCES
     FileWatcher.h FileWatcher.cpp

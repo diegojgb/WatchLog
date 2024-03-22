@@ -162,20 +162,57 @@ Item {
             }
         }
 
-        MaterialCheckBox {
+        Row {
             id: lastItem
             Layout.bottomMargin: control.custBottomMargin
-            text: "Sticky notification"
-            checked: notifier.sticky
-            Layout.leftMargin: descLabel.width - 3
+            spacing: 5
 
-            property bool loaded: false
-            Component.onCompleted: loaded = true
+            Label {
+                width: descLabel.width
+                anchors.verticalCenter: parent.verticalCenter
+                horizontalAlignment: Text.AlignRight
+                text: "Duration:"
+                renderType: Text.NativeRendering
+            }
 
-            onCheckedChanged: {
-                notifier.sticky = checked
-                if (loaded)
-                    root.saveEnabled = true
+            CustomComboBox {
+                anchors.verticalCenter: parent.verticalCenter
+
+                property var indexToString: {
+                    "0": "System",
+                    "1": "Short",
+                    "2": "Long"
+                }
+                property var stringToIndex: {
+                    "System": "0",
+                    "Short": "1",
+                    "Long": "2"
+                }
+                property bool loaded: false
+                Component.onCompleted: loaded = true
+
+                currentIndex: parseInt(stringToIndex[notifier.duration])
+                model: ["System", "Short", "Long"]
+
+                onCurrentIndexChanged: {
+                    notifier.duration = indexToString[currentIndex.toString()]
+                    if (loaded)
+                        root.saveEnabled = true
+                }
+            }
+
+            MaterialCheckBox {
+                text: "Sticky notification"
+                checked: notifier.sticky
+
+                property bool loaded: false
+                Component.onCompleted: loaded = true
+
+                onCheckedChanged: {
+                    notifier.sticky = checked
+                    if (loaded)
+                        root.saveEnabled = true
+                }
             }
         }
     }

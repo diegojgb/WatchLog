@@ -137,7 +137,7 @@ ScrollView {
                             anchors.leftMargin: 10
                             anchors.rightMargin: 22
                             cusTopMargin: 20
-                            custBottomMargin: 10
+                            custBottomMargin: 12
                             notifier: monitor.nListAt(modelData)
                         }
                     }

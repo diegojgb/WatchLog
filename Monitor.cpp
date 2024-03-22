@@ -24,8 +24,7 @@ void Monitor::startFile()
 
     m_file = std::ifstream(m_filePath.toStdString());
 
-    if (!m_file.is_open())
-    {
+    if (!m_file.is_open()) {
         qDebug() << "Error opening file: " << m_filePath << "\n";
         throw std::runtime_error("Error opening file.");
     }
@@ -50,12 +49,10 @@ json Monitor::toJSON() const
 }
 
 auto Monitor::jsonFindByKey(const json &data, const std::string &key) {
-    if (data.contains(key))
-    {
+    if (data.contains(key)) {
         return data[key];
     }
-    else
-    {
+    else {
         QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: Need a \"%1\" for every Notifier in data.json").arg(QString::fromStdString(key)));
         throw std::runtime_error("Error: Need a \"" + key + "\" for every Notifier in data.json");
     }
