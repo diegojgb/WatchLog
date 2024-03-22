@@ -108,52 +108,8 @@ Window {
                     }
                 }
             }
-
             // Save button
-            Rectangle {
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: 25
-                anchors.rightMargin: 25
-                anchors.bottomMargin: 25
-
-                height: 35
-                radius: 3
-                color: root.saveEnabled ? "#005ba1" : "#404040"
-
-                Row {
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 1
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    height: parent.height
-                    spacing: 8
-
-                    Image {
-                        anchors.verticalCenter: parent.verticalCenter
-                        source: "assets/save.png"
-                    }
-
-                    Text {
-                        height: parent.height
-                        verticalAlignment: Text.AlignVCenter
-                        text: "Save changes"
-                        color: "#fff"
-                        font.pointSize: 9
-                        renderType: Text.NativeRendering
-                    }
-                }
-
-                MouseArea {
-                    anchors.fill: parent
-                    enabled: root.saveEnabled
-                    onClicked: {
-                        Manager.updateJSON()
-                        root.saveEnabled = false
-                    }
-                }
-            }
+            SaveButton {}
         }
 
         Rectangle {
