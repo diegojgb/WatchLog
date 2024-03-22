@@ -1,6 +1,33 @@
 #include "Notifier.h"
 
 
+QString Notifier::defaultTitle;
+QString Notifier::defaultDesc;
+QString Notifier::defaultImg;
+
+const QString& Notifier::getDefaultTitle() {
+    initializeConstants();
+    return defaultTitle;
+}
+
+const QString& Notifier::getDefaultDesc() {
+    initializeConstants();
+    return defaultDesc;
+}
+
+const QString& Notifier::getDefaultImg() {
+    initializeConstants();
+    return defaultImg;
+}
+
+void Notifier::initializeConstants() {
+    if (defaultTitle.isEmpty() || defaultDesc.isEmpty() || defaultImg.isEmpty()) {
+        defaultTitle = "Match found!";
+        defaultDesc = "For regex: ${regex} in ${name}";
+        defaultImg = QCoreApplication::applicationDirPath() + "/assets/information.png";
+    }
+}
+
 Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString title,
                    QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent}, m_name{name}, m_regexStr{regexStr}, m_title{title},

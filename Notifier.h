@@ -4,8 +4,9 @@
 #include "wintoastlib.h"
 
 #include <QObject>
-#include <regex>
 #include <QMessageBox>
+#include <QApplication>
+#include <regex>
 #include <nlohmann/json.hpp>
 
 using namespace WinToastLib;
@@ -28,6 +29,10 @@ class Notifier : public QObject
     Q_PROPERTY(bool sticky READ sticky WRITE setSticky NOTIFY stickyChanged FINAL)
 
 public:
+    static const QString& getDefaultTitle();
+    static const QString& getDefaultDesc();
+    static const QString& getDefaultImg();
+
     std::regex regex;
     WinToastTemplate templ;
 
@@ -82,6 +87,12 @@ signals:
     void enabled(Notifier* notifier);
 
 private:
+    static QString defaultTitle;
+    static QString defaultDesc;
+    static QString defaultImg;
+
+    static void initializeConstants();
+
     QString m_name;
     QString m_title;
     QString m_desc;
@@ -96,7 +107,6 @@ private:
     WinToastTemplate::Duration toWinToastDuration(const QString& duration);
     WinToastTemplate::AudioOption mapAudioOption(bool soundEnabled) const;
     void updateSticky();
-
 };
 
 #endif // NOTIFIER_H

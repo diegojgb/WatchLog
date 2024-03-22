@@ -1,7 +1,6 @@
 #include "Monitor.h"
 #include "SystemMedia.h"
 
-#include <QApplication>
 #include <fstream>
 #include <QMessageBox>
 
@@ -63,10 +62,10 @@ void Monitor::readNotifiers(const json &data)
     for (const auto& item: data) {
         QString name = QString::fromStdString(jsonFindByKey(item, "name").get<std::string>());
         QString regexStr = QString::fromStdString(jsonFindByKey(item, "pattern").get<std::string>());
-        QString title = QString::fromStdString(item.value("title", "Match found!"));
-        QString desc = QString::fromStdString(item.value("desc", "For regex: ${regex}"));
+        QString title = QString::fromStdString(item.value("title", Notifier::getDefaultTitle().toStdString()));
+        QString desc = QString::fromStdString(item.value("desc", Notifier::getDefaultDesc().toStdString()));
         QString soundPath = QString::fromStdString(item.value("soundFile", SystemMedia::getDefaultSound()));
-        QString imagePath = QString::fromStdString(item.value("image", QCoreApplication::applicationDirPath().toStdString() + "/assets/information.png"));
+        QString imagePath = QString::fromStdString(item.value("image", Notifier::getDefaultImg().toStdString()));
         QString duration = QString::fromStdString(item.value("duration", "System"));
         bool toastEnabled = item.value("toast", true);
         bool soundEnabled = item.value("sound", true);
