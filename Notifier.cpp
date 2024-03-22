@@ -22,8 +22,8 @@ const QString& Notifier::getDefaultImg() {
 
 void Notifier::initializeConstants() {
     if (defaultTitle.isEmpty() || defaultDesc.isEmpty() || defaultImg.isEmpty()) {
-        defaultTitle = "Match found!";
-        defaultDesc = "For regex: ${regex} in ${name}";
+        defaultTitle = "Match found in ${name}";
+        defaultDesc = "For regex: ${regex}";
         defaultImg = QCoreApplication::applicationDirPath() + "/assets/information.png";
     }
 }
@@ -37,8 +37,14 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
     regex = std::regex(regexStr.toStdString());
 
     templ.setImagePath(imagePath.toStdWString());
-    templ.setTextField(title.replace("${regex}", regexStr).toStdWString(), WinToastTemplate::FirstLine);
-    templ.setTextField(desc.replace("${regex}", regexStr).toStdWString(), WinToastTemplate::SecondLine);
+    templ.setTextField(title
+                       .replace("${regex}", regexStr)
+                       .replace("${name}", name)
+                       .toStdWString(), WinToastTemplate::FirstLine);
+    templ.setTextField(desc
+                       .replace("${regex}", regexStr)
+                       .replace("${name}", name)
+                       .toStdWString(), WinToastTemplate::SecondLine);
     templ.setDuration(toWinToastDuration(m_duration));
     templ.setAudioOption(mapAudioOption(soundEnabled));
     updateSticky();
@@ -112,7 +118,10 @@ void Notifier::setTitle(const QString &newTitle)
     m_title = newTitle;
 
     QString titleCopy = newTitle;
-    templ.setTextField(titleCopy.replace("${regex}", m_regexStr).toStdWString(), WinToastTemplate::FirstLine);
+    templ.setTextField(titleCopy
+                       .replace("${regex}", m_regexStr)
+                       .replace("${name}", m_name)
+                       .toStdWString(), WinToastTemplate::FirstLine);
 
     emit titleChanged();
 }
@@ -130,7 +139,10 @@ void Notifier::setDesc(const QString &newDesc)
     m_desc = newDesc;
 
     QString descCopy = newDesc;
-    templ.setTextField(descCopy.replace("${regex}", m_regexStr).toStdWString(), WinToastTemplate::SecondLine);
+    templ.setTextField(descCopy
+                       .replace("${regex}", m_regexStr)
+                       .replace("${name}", m_name)
+                       .toStdWString(), WinToastTemplate::SecondLine);
 
     emit descChanged();
 }
