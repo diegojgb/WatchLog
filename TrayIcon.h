@@ -8,22 +8,25 @@
 #include <QSystemTrayIcon>
 #include "ToastHandler.h"
 #include "wintoastlib.h"
+#include <Windows.h>
 
 class TrayIcon : public QObject
 {
     Q_OBJECT
 public:
-    explicit TrayIcon(QObject *parent, QObject *root);
+    explicit TrayIcon(QObject *parent, QObject *root, HWND hwnd);
 
 public slots:
     void sendNotification(const WinToastTemplate& templ);
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
+    void bringToTop();
 
 signals:
     void singleClick();
 
 private:
     QObject* m_root;
+    HWND m_hwnd;
     ToastHandler* m_toastHandler;
     QSystemTrayIcon* m_trayIcon;
 

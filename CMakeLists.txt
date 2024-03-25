@@ -1,19 +1,3 @@
-# To-Do
-# • Add a char limit to the name of a Notifier.
-# • Handle case with invalid JSON syntax.
-# • Figure out a way to just take the CusSwitch from TaoQuick.
-# • Re-check if there is a way to make the regex checks more efficient.
-# • Check the behavior of broken notifications after spamming them. Do they ever come back to working normally or are they broken until app restart?
-
-# BUGS:
-# • After multiple hours, it stops working. If I disable and re-enable, it fixes.
-#   When I disable and re-enable this are the actions that take place:
-#      1. It removes the filePath from the QFileSystemWatcher and adds it back again.
-#      2. It executes: "m_file.seekg(0, std::ios::end);" on the Monitor.
-# • Whenever I run the application in Debug mode, everytime a notification is shown, despite it working fine, it shows this error:
-#   onecoreuap\base\diagnosis\platform\notifications\developer\basenotification.cpp(35)\wpnapps.dll!00007FF92DD64B52: (caller: 00007FF92DD6123E) LogHr(1) tid(1334) 80070490 Element not found.
-#    I tonly happens while Debugging.
-
 cmake_minimum_required(VERSION 3.16)
 
 project(FallGuysNotifier VERSION 0.1 LANGUAGES CXX)
@@ -70,16 +54,6 @@ qt_add_qml_module(appFallGuysNotifier
     assets/save.png
     assets/save-disabled.png
 )
-
-#-- JSON ----------------
-
-# set(JSON_INC_PATH C:/dev/vcpkg/packages/nlohmann-json_x64-windows/include)
-# target_include_directories(appFallGuysNotifier PUBLIC ${JSON_INC_PATH})
-
-# set(JSON_LIB_PATH C:/dev/vcpkg/packages/nlohmann-json_x64-windows/lib)
-# target_link_directories(appFallGuysNotifier PUBLIC ${JSON_LIB_PATH})
-
-#----------------------------------------
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

@@ -8,12 +8,13 @@
 Monitor::Monitor(QObject *parent, const json &monitorData)
     : QObject{parent}
 {
-    m_name = QString::fromStdString(monitorData["name"]);
+    m_name = QString::fromStdString(jsonFindByKey(monitorData, "name").get<std::string>());
+    m_filePath = QString::fromStdString(jsonFindByKey(monitorData, "filePath").get<std::string>());
     m_enabled = monitorData.value("enabled", true);
-    m_filePath = QString::fromStdString(monitorData["filePath"]);
 
     startFile();
-    readNotifiers(monitorData["notifiers"]);
+
+    readNotifiers(jsonFindByKey(monitorData, "notifiers"));
 }
 
 void Monitor::startFile()
@@ -47,19 +48,24 @@ json Monitor::toJSON() const
     return obj;
 }
 
-auto Monitor::jsonFindByKey(const json &data, const std::string &key) {
+json Monitor::jsonFindByKey(const json &data, const std::string &key) {
     if (data.contains(key)) {
         return data[key];
     }
     else {
         QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: Need a \"%1\" for every Notifier in data.json").arg(QString::fromStdString(key)));
-        throw std::runtime_error("Error: Need a \"" + key + "\" for every Notifier in data.json");
+        throw std::runtime_error("Error: Missing a \"" + key + "\" in JSON object");
     }
 }
 
 void Monitor::readNotifiers(const json &data)
 {
-    for (const auto& item: data) {
+    if (!data.is_array() || data.size() == 0) {
+        QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: Invalid notifiers array in JSON"));
+        throw std::runtime_error("Error: Invalid notifiers array in JSON");
+    }
+
+    for (const json& item: data) {
         QString name = QString::fromStdString(jsonFindByKey(item, "name").get<std::string>());
         QString regexStr = QString::fromStdString(jsonFindByKey(item, "pattern").get<std::string>());
         QString title = QString::fromStdString(item.value("title", Notifier::getDefaultTitle().toStdString()));

@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 
     // Tray icon (using Qt Widgets).
     QObject *root = engine.rootObjects().at(0);
-    TrayIcon trayIcon(&app, root);
+    TrayIcon trayIcon(&app, root, windowHandle);
 
     QObject::connect(&manager.m_fileWatcher, &FileWatcher::matchFound, &trayIcon, &TrayIcon::sendNotification);
 

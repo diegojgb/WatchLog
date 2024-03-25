@@ -3,8 +3,8 @@
 using namespace WinToastLib;
 
 
-TrayIcon::TrayIcon(QObject* parent, QObject* root)
-    : QObject{parent}, m_root{root}
+TrayIcon::TrayIcon(QObject* parent, QObject* root, HWND hwnd)
+    : QObject{parent}, m_root{root}, m_hwnd{hwnd}
 {
     QMenu* trayIconMenu = createMenu();
 
@@ -18,18 +18,25 @@ TrayIcon::TrayIcon(QObject* parent, QObject* root)
 
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &TrayIcon::trayIconActivated);
     connect(this, SIGNAL(singleClick()), m_root, SLOT(showNormal()));
+    connect(this, SIGNAL(singleClick()), this, SLOT(bringToTop()));
 }
 
 void TrayIcon::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger)
-       emit singleClick();
+        emit singleClick();
+}
+
+void TrayIcon::bringToTop()
+{
+    SetForegroundWindow(m_hwnd);
 }
 
 QMenu* TrayIcon::createMenu()
 {
     QAction *restoreAction = new QAction(QObject::tr("&Restore"), m_root);
     m_root->connect(restoreAction, SIGNAL(triggered()), m_root, SLOT(showNormal()));
+    m_root->connect(restoreAction, SIGNAL(triggered()), this, SLOT(bringToTop()));
     QAction *quitAction = new QAction(QObject::tr("&Quit"), m_root);
     m_root->connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 

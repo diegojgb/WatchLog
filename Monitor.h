@@ -23,6 +23,8 @@ public:
     std::ifstream m_file;
     QVarLengthArray<Notifier*> m_enabledNotifiers;
 
+    static json jsonFindByKey(const json &data, const std::string &key);
+
     explicit Monitor(QObject *parent, const json &monitorData);
 
     QString name() const;
@@ -59,7 +61,6 @@ private:
     bool m_enabled;
 
     void readNotifiers(const json &data);
-    auto jsonFindByKey(const json &data, const std::string &key);
 };
 
 #endif // MONITOR_H
