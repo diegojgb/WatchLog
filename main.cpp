@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("taoQuickImportPath", TaoQuickImportPath);
     engine.rootContext()->setContextProperty("Manager", &manager);
 
-    const QUrl url(u"qrc:/FallGuysNotifier/Main.qml"_qs);
+    const QUrl url(u"qrc:/WatchLog/Main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
