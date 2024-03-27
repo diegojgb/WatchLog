@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Fusion
 import QtQuick.Dialogs
-import TaoQuick 1.0
 
 ScrollView {
     id: page

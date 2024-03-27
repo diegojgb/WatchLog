@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import TaoQuick 1.0
 
 Window {
     id: root

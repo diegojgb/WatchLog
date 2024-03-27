@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import TaoQuick 1.0
 
 MouseArea {
     id: control

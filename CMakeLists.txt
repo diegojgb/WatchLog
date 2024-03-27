@@ -12,11 +12,7 @@ add_subdirectory(WinToast)
 
 set(app_icon_resource "${CMAKE_CURRENT_SOURCE_DIR}/assets/watchlog.rc")
 
-if (CMAKE_BUILD_TYPE MATCHES "Release")
-qt_add_executable(appWatchLog main.cpp ${TaoQuickRes} ${app_icon_resource})
-else()
 qt_add_executable(appWatchLog main.cpp ${app_icon_resource})
-endif()
 
 qt_add_qml_module(appWatchLog
     URI WatchLog
@@ -34,6 +30,7 @@ qt_add_qml_module(appWatchLog
     CustomButton.qml
     SaveButton.qml
     CustomComboBox.qml
+    CusSwitch.qml
 
     SOURCES
     FileWatcher.h FileWatcher.cpp
@@ -76,7 +73,7 @@ target_link_libraries(appWatchLog
 )
 
 include(GNUInstallDirs)
-include(taoQuick.cmake)
+
 install(TARGETS appWatchLog
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
