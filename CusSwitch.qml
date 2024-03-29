@@ -67,7 +67,9 @@ Switch {
         horizontalAlignment: Text.AlignHCenter
         elide: Text.ElideRight
         leftPadding: cusSwitch.indicator.width + cusSwitch.spacing
+        bottomPadding: 2
         text: cusSwitch.text
+        font: cusSwitch.font
         renderType: Text.NativeRendering
     }
 

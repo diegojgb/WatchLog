@@ -55,6 +55,7 @@ ScrollView {
                 Layout.leftMargin: -5
                 backgroundColor_on: root.accentColor
                 checked: monitor.enabled
+                font.pointSize: 10
                 text: "Enabled"
 
                 property bool loaded: false
