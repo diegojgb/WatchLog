@@ -66,7 +66,6 @@ Switch {
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         elide: Text.ElideRight
-        color: "#5c5c5c"
         leftPadding: cusSwitch.indicator.width + cusSwitch.spacing
         text: cusSwitch.text
         renderType: Text.NativeRendering

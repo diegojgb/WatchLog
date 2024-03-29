@@ -27,7 +27,6 @@ signals:
 private:
     QObject* m_root;
     HWND m_hwnd;
-    ToastHandler* m_toastHandler;
     QSystemTrayIcon* m_trayIcon;
 
     QMenu* createMenu();

@@ -14,7 +14,6 @@ TrayIcon::TrayIcon(QObject* parent, QObject* root, HWND hwnd)
     m_trayIcon->show();
 
     initWinToast();
-    m_toastHandler = new ToastHandler();
 
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &TrayIcon::trayIconActivated);
     connect(this, SIGNAL(singleClick()), m_root, SLOT(showNormal()));
@@ -64,9 +63,7 @@ void TrayIcon::initWinToast()
 
 void TrayIcon::sendNotification(const WinToastTemplate& templ)
 {
-    WinToast::WinToastError error;
-
-    if (WinToast::instance()->showToast(templ, m_toastHandler, &error) == -1L) {
+    if (WinToast::instance()->showToast(templ, new ToastHandler()) < 0) {
         throw std::runtime_error("Error: Could not launch your toast notification!");
     }
 }
