@@ -77,7 +77,7 @@ Window {
                     color: '#888'
                 }
 
-                Column {
+                ColumnLayout {
                     id: tabBar
                     Layout.fillWidth: true
                     Layout.topMargin: 10
@@ -90,8 +90,8 @@ Window {
                         model: Manager.monitorsOrder
 
                         Tab {
-                            width: parent.width
-                            height: 30
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 30
                             text: Manager.hashGet(modelData).name
                             enabled: Manager.hashGet(modelData).enabled
                             selected: tabBar.tabIndex == index

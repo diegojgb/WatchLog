@@ -44,8 +44,8 @@ json Manager::toJSON() const
 {
     json rootArray = json::array();
 
-    for (const Monitor* monitor: m_monitorsHash) {
-        rootArray.push_back(monitor->toJSON());
+    for (const QString& monitorPath: m_monitorsOrder) {
+        rootArray.push_back(m_monitorsHash[monitorPath]->toJSON());
     }
 
     return rootArray;

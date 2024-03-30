@@ -48,7 +48,7 @@ TabButton {
         Text {
             Layout.fillWidth: true
             Layout.leftMargin: 12
-            topPadding: 1
+            topPadding: 2
             text: control.text
             font: control.font
             color: control.textColor
