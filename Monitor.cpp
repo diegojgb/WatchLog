@@ -11,6 +11,7 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
     m_name = QString::fromStdString(jsonFindByKey(monitorData, "name").get<std::string>());
     m_filePath = QString::fromStdString(jsonFindByKey(monitorData, "filePath").get<std::string>());
     m_enabled = monitorData.value("enabled", true);
+    manyPerUpdate = monitorData.value("manyPerUpdate", true);
 
     startFile();
 

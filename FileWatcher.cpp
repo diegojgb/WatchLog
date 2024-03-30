@@ -44,7 +44,6 @@ void FileWatcher::onFileChanged(const QString &path)
 
     if (monitor->m_file.is_open()) {
         std::string line;
-        bool enabled = true;
 
         if (!std::getline(monitor->m_file, line)) { // In case weird modifications were made, and the cursor is broken.
             emit fileReset();
@@ -53,7 +52,7 @@ void FileWatcher::onFileChanged(const QString &path)
 
         do {
             for (const Notifier* notifier: monitor->m_enabledNotifiers) {
-                if (enabled && std::regex_search(line, notifier->regex)) {
+                if (std::regex_search(line, notifier->regex)) {
                     if (notifier->toastEnabled())
                         emit matchFound(notifier->templ);
                     else {
@@ -75,7 +74,10 @@ void FileWatcher::onFileChanged(const QString &path)
 
                         mciSendString(playCommand.c_str(), NULL, 0, NULL);
                     }
-                    enabled = false;
+                    if (!monitor->manyPerUpdate) {
+                        monitor->m_file.seekg(0, std::ios::end);
+                        return;
+                    }
                 }
             }
         } while (std::getline(monitor->m_file, line));

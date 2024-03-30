@@ -22,6 +22,7 @@ class Monitor : public QObject
 public:
     std::ifstream m_file;
     QVarLengthArray<Notifier*> m_enabledNotifiers;
+    bool manyPerUpdate;
 
     static json jsonFindByKey(const json &data, const std::string &key);
 
