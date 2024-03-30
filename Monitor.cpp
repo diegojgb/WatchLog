@@ -41,6 +41,7 @@ json Monitor::toJSON() const
     obj["filePath"] = m_filePath.toStdString();
     obj["enabled"] = m_enabled;
     obj["notifiers"] = json::array();
+    obj["manyPerUpdate"] = manyPerUpdate;
 
     for (const Notifier* notifier: m_notifiers) {
         obj["notifiers"].push_back(notifier->toJSON());
