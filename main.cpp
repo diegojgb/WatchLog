@@ -24,6 +24,8 @@ using json = nlohmann::json;
 int main(int argc, char *argv[])
 {
     qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
+    qputenv("QSG_NO_VSYNC", "1");
+
     QApplication app(argc, argv);
 
     std::ifstream file("data.json");
