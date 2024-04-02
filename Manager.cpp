@@ -16,7 +16,7 @@ Manager::Manager(QObject *parent, const json &monitorsData)
     try {
         for (const json& item: monitorsData) {
             Monitor* newMonitor = new Monitor(this, item);
-            QString filePath = QString::fromStdString(Monitor::jsonFindByKey(item, "filePath").get<std::string>());
+            QString filePath = QString::fromStdString(item["filePath"].get<std::string>());
 
             m_monitorsHash.insert(filePath, newMonitor);
             m_monitorsOrder.append(filePath);

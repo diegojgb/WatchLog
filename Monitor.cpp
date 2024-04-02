@@ -8,10 +8,10 @@
 Monitor::Monitor(QObject *parent, const json &monitorData)
     : QObject{parent}
 {
-    m_name = QString::fromStdString(jsonFindByKey(monitorData, "name").get<std::string>());
-    m_filePath = QString::fromStdString(jsonFindByKey(monitorData, "filePath").get<std::string>());
-    m_enabled = monitorData.value("enabled", true);
-    manyPerUpdate = monitorData.value("manyPerUpdate", true);
+    m_name = QString::fromStdString(jsonGetValue<std::string>(monitorData, "name"));
+    m_filePath = QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath"));
+    m_enabled = jsonGetValue<bool>(monitorData, "enabled", true);
+    manyPerUpdate = jsonGetValue<bool>(monitorData, "manyPerUpdate", true);
 
     startFile();
 
@@ -60,6 +60,52 @@ json Monitor::jsonFindByKey(const json &data, const std::string &key) {
     }
 }
 
+void Monitor::showTypeError(json::type_error e, const std::string& key)
+{
+    std::string errorStr = std::string(e.what());
+    std::regex toRemove("\\[.*\\] *");
+    std::string newErrorStr = std::regex_replace(errorStr, toRemove, " ");
+
+    QMessageBox::critical(nullptr, tr("WatchLog"), tr(("JSON: \""+key+"\"" + newErrorStr).c_str()));
+    throw std::runtime_error("Error: " + errorStr);
+}
+
+template <typename T>
+T Monitor::jsonGetValue(const json& data, const std::string& key)
+{
+    T property;
+
+    json item = jsonFindByKey(data, key);
+
+    try
+    {
+        property = item.get<T>();
+    }
+    catch (const json::type_error& e)
+    {
+        showTypeError(e, key);
+    }
+
+    return property;
+}
+
+template <typename T>
+T Monitor::jsonGetValue(const json& data, const std::string& key, const T defaultValue)
+{
+    T property;
+
+    try
+    {
+        property = data.value(key, defaultValue);
+    }
+    catch (const json::type_error& e)
+    {
+        showTypeError(e, key);
+    }
+
+    return property;
+}
+
 void Monitor::readNotifiers(const json &data)
 {
     if (!data.is_array() || data.size() == 0) {
@@ -68,16 +114,16 @@ void Monitor::readNotifiers(const json &data)
     }
 
     for (const json& item: data) {
-        QString name = QString::fromStdString(jsonFindByKey(item, "name").get<std::string>());
-        QString regexStr = QString::fromStdString(jsonFindByKey(item, "pattern").get<std::string>());
-        QString title = QString::fromStdString(item.value("title", Notifier::getDefaultTitle().toStdString()));
-        QString desc = QString::fromStdString(item.value("desc", Notifier::getDefaultDesc().toStdString()));
-        QString soundPath = QString::fromStdString(item.value("soundFile", SystemMedia::getDefaultSound()));
-        QString imagePath = QString::fromStdString(item.value("image", Notifier::getDefaultImg().toStdString()));
-        QString duration = QString::fromStdString(item.value("duration", "System"));
-        bool toastEnabled = item.value("toast", true);
-        bool soundEnabled = item.value("sound", true);
-        bool sticky = item.value("sticky", false);
+        QString name = QString::fromStdString(jsonGetValue<std::string>(item, "name"));
+        QString regexStr = QString::fromStdString(jsonGetValue<std::string>(item, "pattern"));
+        QString title = QString::fromStdString(jsonGetValue<std::string>(item, "title", Notifier::getDefaultTitle().toStdString()));
+        QString desc = QString::fromStdString(jsonGetValue<std::string>(item, "desc", Notifier::getDefaultDesc().toStdString()));
+        QString soundPath = QString::fromStdString(jsonGetValue<std::string>(item, "soundFile", SystemMedia::getDefaultSound()));
+        QString imagePath = QString::fromStdString(jsonGetValue<std::string>(item, "image", Notifier::getDefaultImg().toStdString()));
+        QString duration = QString::fromStdString(jsonGetValue<std::string>(item, "duration", "System"));
+        bool toastEnabled = jsonGetValue<bool>(item, "toast", true);
+        bool soundEnabled = jsonGetValue<bool>(item, "sound", true);
+        bool sticky = jsonGetValue<bool>(item, "sticky", false);
 
         Notifier* newNotifier = new Notifier(this, name, regexStr, title, desc, imagePath,
                                              soundPath, duration, toastEnabled, soundEnabled, sticky);

@@ -40,6 +40,14 @@ public:
     void startFile();
     json toJSON() const;
 
+    template<typename T>
+    T jsonGetValue(const json &data, const std::string &key);
+
+    template<typename T>
+    T jsonGetValue(const json &data, const std::string &key, const T defaultValue);
+
+    void showTypeError(json::type_error e, const std::string &key);
+
 public slots:
     int nListLength() const;
     Notifier* nListAt(int i) const;
