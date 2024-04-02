@@ -9,12 +9,13 @@ RowLayout {
     required property var filePath
     property color backgroundColor: "#e6e6e6"
     property int fieldHeight: 25
+    property FileDialog fileDialog: fileDialogItem
 
     signal fileAccepted
     signal selectedFileChanged(string newFilePath)
 
     FileDialog {
-        id: fileDialog
+        id: fileDialogItem
         title: "Select a file"
         selectedFile: "file:///" + control.filePath
         onAccepted: {

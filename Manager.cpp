@@ -1,14 +1,17 @@
 #include "Manager.h"
 
 
-Manager::Manager(QObject *parent, const json &monitorsData)
+Manager::Manager(QObject *parent, const json &data)
     : QObject{parent}, m_fileWatcher{this, m_monitorsHash}, m_error{false}
 {
-    if (monitorsData.empty()) {
+    if (data.empty()) {
         QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: The JSON file is empty"));
         throw std::runtime_error("Error: The JSON file is empty");
     }
-    else if (!monitorsData.is_array() || monitorsData.size() == 0) {
+
+    json monitorsData = Monitor::jsonFindByKey(data, "monitors");
+
+    if (!monitorsData.is_array() || monitorsData.size() == 0) {
         QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: Invalid monitors array in JSON"));
         throw std::runtime_error("Error: Invalid monitors array in JSON");
     }

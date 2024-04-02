@@ -124,6 +124,7 @@ Item {
                 backgroundColor: "#fff"
                 fieldHeight: 23
                 filePath: notifier.imagePath
+                fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"]
 
                 property bool loaded: false
                 Component.onCompleted: loaded = true
@@ -150,6 +151,7 @@ Item {
                 backgroundColor: "#fff"
                 fieldHeight: 23
                 filePath: notifier.soundPath
+                fileDialog.nameFilters: ["WAV files (*.wav)"]
 
                 property bool loaded: false
                 Component.onCompleted: loaded = true
