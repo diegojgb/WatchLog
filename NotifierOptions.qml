@@ -187,15 +187,15 @@ Item {
                     "2": "Long"
                 }
                 property var stringToIndex: {
-                    "System": "0",
-                    "Short": "1",
-                    "Long": "2"
+                    "System": 0,
+                    "Short": 1,
+                    "Long": 2
                 }
 
                 property bool loaded: false
                 Component.onCompleted: loaded = true
 
-                currentIndex: parseInt(stringToIndex[notifier.duration])
+                currentIndex: stringToIndex[notifier.duration]
                 model: ["System", "Short", "Long"]
 
                 onCurrentIndexChanged: {
