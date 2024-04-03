@@ -28,6 +28,11 @@ void Notifier::initializeConstants() {
     }
 }
 
+void Notifier::throwError(std::string errorStr) {
+    QMessageBox::critical(nullptr, tr("WatchLog"), tr(errorStr.c_str()));
+    throw std::runtime_error(errorStr);
+}
+
 Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString title,
                    QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent}, m_name{name}, m_regexStr{regexStr}, m_title{title},
@@ -35,25 +40,20 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
       m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
 {
     if (duration != "System" && duration != "Short" && duration != "Long") {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr("Invalid duration value: must be either \"System\", \"Short\" or \"Long\""));
-        throw std::runtime_error("Error: invalid Notifier duration value");
+        throwError("Invalid duration value: must be either \"System\", \"Short\" or \"Long\"");
     }
     if (std::filesystem::path(soundPath.toStdString()).extension() != ".wav") {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Invalid soundFile type (must be .wav): " + soundPath.toStdString()).c_str()));
-        throw std::runtime_error("Error: invalid soundFile type (must be .wav): " + soundPath.toStdString());
+        throwError("Invalid soundFile type (must be .wav): " + soundPath.toStdString());
     }
     if (!std::filesystem::exists(soundPath.toStdString())) {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Specified soundFile doesn't exist: " + soundPath.toStdString()).c_str()));
-        throw std::runtime_error("Error: specified soundFile doesn't exist: " + soundPath.toStdString());
+        throwError("Specified soundFile doesn't exist: " + soundPath.toStdString());
     }
     auto imageExtension = std::filesystem::path(imagePath.toStdString()).extension();
     if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png") {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString()).c_str()));
-        throw std::runtime_error("Error: invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString());
+        throwError("Invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString());
     }
     if (!std::filesystem::exists(imagePath.toStdString())) {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Specified image file doesn't exist: " + imagePath.toStdString()).c_str()));
-        throw std::runtime_error("Error: specified image file doesn't exist: " + imagePath.toStdString());
+        throwError("Specified image file doesn't exist: " + imagePath.toStdString());
     }
 
     regex = std::regex(regexStr.toStdString());

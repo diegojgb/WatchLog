@@ -109,6 +109,7 @@ private:
     WinToastTemplate::Duration toWinToastDuration(const QString& duration);
     WinToastTemplate::AudioOption mapAudioOption(bool soundEnabled) const;
     void updateSticky();
+    void throwError(std::string errorStr);
 };
 
 #endif // NOTIFIER_H
