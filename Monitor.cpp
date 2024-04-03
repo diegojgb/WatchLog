@@ -26,8 +26,8 @@ void Monitor::startFile()
     m_file = std::ifstream(m_filePath.toStdString());
 
     if (!m_file.is_open()) {
-        qDebug() << "Error opening file: " << m_filePath << "\n";
-        throw std::runtime_error("Error opening file.");
+        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Error opening file: " + m_filePath.toStdString()).c_str()));
+        throw std::runtime_error("Error opening file: " + m_filePath.toStdString());
     }
 
     m_file.seekg(0, std::ios::end);

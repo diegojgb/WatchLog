@@ -101,7 +101,7 @@ WinToastTemplate::Duration Notifier::toWinToastDuration(const QString& duration)
     else
     {
         QMessageBox::critical(nullptr, tr("WatchLog"), tr("Invalid toast duration value."));
-        throw std::runtime_error("Notifier: Error opening sound file.");
+        throw std::runtime_error("Notifier: Invalid toast duration value.");
     }
 }
 
