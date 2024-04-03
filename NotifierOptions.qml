@@ -181,11 +181,6 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 enabled: !checkbox.checked
 
-                property var indexToString: {
-                    "0": "System",
-                    "1": "Short",
-                    "2": "Long"
-                }
                 property var stringToIndex: {
                     "System": 0,
                     "Short": 1,
@@ -199,7 +194,7 @@ Item {
                 model: ["System", "Short", "Long"]
 
                 onCurrentIndexChanged: {
-                    notifier.duration = indexToString[currentIndex.toString()]
+                    notifier.duration = model[currentIndex]
                     if (loaded)
                         root.saveEnabled = true
                 }
