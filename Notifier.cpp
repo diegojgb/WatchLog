@@ -28,11 +28,6 @@ void Notifier::initializeConstants() {
     }
 }
 
-void Notifier::throwError(std::string errorStr) {
-    QMessageBox::critical(nullptr, tr("WatchLog"), tr(errorStr.c_str()));
-    throw std::runtime_error(errorStr);
-}
-
 Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString title,
                    QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent}, m_name{name}, m_regexStr{regexStr}, m_title{title},
@@ -40,20 +35,20 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
       m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
 {
     if (duration != "System" && duration != "Short" && duration != "Long") {
-        throwError("Invalid duration value: must be either \"System\", \"Short\" or \"Long\"");
+        Utils::throwError("Invalid duration value: must be either \"System\", \"Short\" or \"Long\"");
     }
     if (std::filesystem::path(soundPath.toStdString()).extension() != ".wav") {
-        throwError("Invalid soundFile type (must be .wav): " + soundPath.toStdString());
+        Utils::throwError("Invalid soundFile type (must be .wav): " + soundPath.toStdString());
     }
     if (!std::filesystem::exists(soundPath.toStdString())) {
-        throwError("Specified soundFile doesn't exist: " + soundPath.toStdString());
+        Utils::throwError("Specified soundFile doesn't exist: " + soundPath.toStdString());
     }
     auto imageExtension = std::filesystem::path(imagePath.toStdString()).extension();
     if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png") {
-        throwError("Invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString());
+        Utils::throwError("Invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString());
     }
     if (!std::filesystem::exists(imagePath.toStdString())) {
-        throwError("Specified image file doesn't exist: " + imagePath.toStdString());
+        Utils::throwError("Specified image file doesn't exist: " + imagePath.toStdString());
     }
 
     regex = std::regex(regexStr.toStdString());
@@ -116,10 +111,7 @@ WinToastTemplate::Duration Notifier::toWinToastDuration(const QString& duration)
     else if (duration == "System")
         return WinToastTemplate::Duration::System;
     else
-    {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr("Invalid toast duration value."));
-        throw std::runtime_error("Notifier: Invalid toast duration value.");
-    }
+        Utils::throwError("Invalid toast duration value.");
 }
 
 WinToastTemplate::AudioOption Notifier::mapAudioOption(bool soundEnabled) const

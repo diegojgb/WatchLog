@@ -65,7 +65,7 @@ void FileWatcher::onFileChanged(const QString &path)
                             std::wstring command = L"open \"" + notifier->soundPath().toStdWString() + L"\" type waveaudio alias " + soundAlias;
 
                             if (mciSendString(command.c_str(), NULL, 0, NULL) != 0)
-                                throw std::runtime_error("FileWatcher: Error opening sound file.");
+                                Utils::throwError("FileWatcher: Error opening sound file");
 
                             playCommand = L"play " + soundAlias + L" from 0";
 
@@ -83,10 +83,10 @@ void FileWatcher::onFileChanged(const QString &path)
         } while (std::getline(monitor->m_file, line));
 
         if (!monitor->m_file.eof())
-             throw std::runtime_error("Error reading file.");
+            Utils::throwError("FileWatcher: error reading file");
 
         monitor->m_file.clear();
     } else {
-        throw std::runtime_error("File's not open.");
+        Utils::throwError("FileWatcher: file's not open");
     }
 }

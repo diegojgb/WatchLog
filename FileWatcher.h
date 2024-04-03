@@ -2,6 +2,7 @@
 #define FILEWATCHER_H
 
 #include "Monitor.h"
+#include "Utils.h"
 
 #include <QObject>
 #include <QFileSystemWatcher>

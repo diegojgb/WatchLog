@@ -51,19 +51,19 @@ QMenu* TrayIcon::createMenu()
 void TrayIcon::initWinToast()
 {
     if (!WinToast::isCompatible())
-        throw std::runtime_error("WinToast: Error, your system in not supported!");
+        Utils::throwError("WinToast: Error, your system in not supported!");
 
     WinToast::instance()->setAppName(L"WatchLog");
     const auto aumi = WinToast::configureAUMI(L"Obin XYZ", L"WatchLog", L"MatchNotification", L"1.0");
     WinToast::instance()->setAppUserModelId(aumi);
 
     if (!WinToast::instance()->initialize())
-        throw std::runtime_error("Error, could not initialize WinToast!");
+        Utils::throwError("Error, could not initialize WinToast!");
 }
 
 void TrayIcon::sendNotification(const WinToastTemplate& templ)
 {
     if (WinToast::instance()->showToast(templ, new ToastHandler()) < 0) {
-        throw std::runtime_error("Error: Could not launch your toast notification!");
+        Utils::throwError("Could not launch your toast notification!");
     }
 }

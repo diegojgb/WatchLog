@@ -3,6 +3,7 @@
 
 #include "wintoastlib.h"
 #include "SystemMedia.h"
+#include "Utils.h"
 
 #include <QObject>
 #include <QMessageBox>
@@ -109,7 +110,6 @@ private:
     WinToastTemplate::Duration toWinToastDuration(const QString& duration);
     WinToastTemplate::AudioOption mapAudioOption(bool soundEnabled) const;
     void updateSticky();
-    void throwError(std::string errorStr);
 };
 
 #endif // NOTIFIER_H

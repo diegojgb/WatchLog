@@ -25,10 +25,8 @@ void Monitor::startFile()
 
     m_file = std::ifstream(m_filePath.toStdString());
 
-    if (!m_file.is_open()) {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Error opening file: " + m_filePath.toStdString()).c_str()));
-        throw std::runtime_error("Error opening file: " + m_filePath.toStdString());
-    }
+    if (!m_file.is_open())
+        Utils::throwError("Error opening file: " + m_filePath.toStdString());
 
     m_file.seekg(0, std::ios::end);
 }
@@ -55,8 +53,7 @@ json Monitor::jsonFindByKey(const json &data, const std::string &key) {
         return data[key];
     }
     else {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: Need a \"%1\" for every Notifier in data.json").arg(QString::fromStdString(key)));
-        throw std::runtime_error("Error: Missing a \"" + key + "\" in JSON object");
+        Utils::throwError("Need a \""+key+"\" for every Notifier in data.json");
     }
 }
 
@@ -66,8 +63,7 @@ void Monitor::showTypeError(json::type_error e, const std::string& key)
     std::regex toRemove("\\[.*\\] *");
     std::string newErrorStr = std::regex_replace(errorStr, toRemove, " ");
 
-    QMessageBox::critical(nullptr, tr("WatchLog"), tr(("JSON: \""+key+"\"" + newErrorStr).c_str()));
-    throw std::runtime_error("Error: " + errorStr);
+    Utils::throwError("JSON: \""+key+"\"" + newErrorStr);
 }
 
 template <typename T>
@@ -108,10 +104,8 @@ T Monitor::jsonGetValue(const json& data, const std::string& key, const T defaul
 
 void Monitor::readNotifiers(const json &data)
 {
-    if (!data.is_array() || data.size() == 0) {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: Invalid notifiers array in JSON"));
-        throw std::runtime_error("Error: Invalid notifiers array in JSON");
-    }
+    if (!data.is_array() || data.size() == 0)
+       Utils::throwError("Invalid notifiers array in JSON");
 
     for (const json& item: data) {
         QString name = QString::fromStdString(jsonGetValue<std::string>(item, "name"));

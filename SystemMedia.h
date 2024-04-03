@@ -1,11 +1,14 @@
 #ifndef SYSTEMMEDIA_H
 #define SYSTEMMEDIA_H
 
+#include "Utils.h"
+
 #include <windows.h>
 #include <shlwapi.h>
 #include <stdexcept>
 #include <locale>
 #include <codecvt>
+
 
 class SystemMedia
 {

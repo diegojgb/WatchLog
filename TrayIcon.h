@@ -1,13 +1,15 @@
 #ifndef TRAYICON_H
 #define TRAYICON_H
 
+#include "Utils.h"
+#include "ToastHandler.h"
+#include "wintoastlib.h"
+
 #include <QObject>
 #include <QAction>
 #include <QMenu>
 #include <QApplication>
 #include <QSystemTrayIcon>
-#include "ToastHandler.h"
-#include "wintoastlib.h"
 #include <Windows.h>
 
 class TrayIcon : public QObject

@@ -4,17 +4,13 @@
 Manager::Manager(QObject *parent, const json &data)
     : QObject{parent}, m_fileWatcher{this, m_monitorsHash}, m_error{false}
 {
-    if (data.empty()) {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: The JSON file is empty"));
-        throw std::runtime_error("Error: The JSON file is empty");
-    }
+    if (data.empty())
+        Utils::throwError("The JSON file is empty");
 
     json monitorsData = Monitor::jsonFindByKey(data, "monitors");
 
-    if (!monitorsData.is_array() || monitorsData.size() == 0) {
-        QMessageBox::critical(nullptr, tr("WatchLog"), tr("Error: Invalid monitors array in JSON"));
-        throw std::runtime_error("Error: Invalid monitors array in JSON");
-    }
+    if (!monitorsData.is_array() || monitorsData.size() == 0)
+        Utils::throwError("Invalid monitors array in JSON");
 
     try {
         for (const json& item: monitorsData) {
@@ -85,8 +81,7 @@ void Manager::updateJSON() const
         outFile.close();
         qDebug() << "JSON data saved to data.json";
     } else {
-        std::cerr << "Failed to open output.json for writing\n";
-        throw std::runtime_error("Manager: Failed to open data.json for writing");
+        Utils::throwError("Manager: Failed to open data.json for writing");
     }
 }
 

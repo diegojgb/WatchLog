@@ -32,9 +32,9 @@ bool SystemMedia::initializeDefaultSoundPath()
 const std::string SystemMedia::getDefaultSound()
 {
     if (!m_initialized) {
-        if (!initializeDefaultSoundPath()) {
-            throw std::runtime_error("SystemMedia: Error initializing default sound path.");
-        }
+        if (!initializeDefaultSoundPath())
+            Utils::throwError("SystemMedia: Error initializing default sound path.");
+            
         m_initialized = true;
     }
 

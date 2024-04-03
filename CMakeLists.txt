@@ -40,6 +40,7 @@ qt_add_qml_module(appWatchLog
     TrayIcon.h TrayIcon.cpp
     ToastHandler.h
     SystemMedia.h SystemMedia.cpp
+    Utils.h Utils.cpp
 
     RESOURCES
     assets/notification.png

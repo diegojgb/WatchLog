@@ -2,6 +2,7 @@
 #define MONITOR_H
 
 #include "Notifier.h"
+#include "Utils.h"
 
 #include <QObject>
 #include <QVarLengthArray>
