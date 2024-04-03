@@ -46,6 +46,15 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
         QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Specified soundFile doesn't exist: " + soundPath.toStdString()).c_str()));
         throw std::runtime_error("Error: specified soundFile doesn't exist: " + soundPath.toStdString());
     }
+    auto imageExtension = std::filesystem::path(imagePath.toStdString()).extension();
+    if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png") {
+        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString()).c_str()));
+        throw std::runtime_error("Error: invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString());
+    }
+    if (!std::filesystem::exists(imagePath.toStdString())) {
+        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Specified image file doesn't exist: " + imagePath.toStdString()).c_str()));
+        throw std::runtime_error("Error: specified image file doesn't exist: " + imagePath.toStdString());
+    }
 
     regex = std::regex(regexStr.toStdString());
 
