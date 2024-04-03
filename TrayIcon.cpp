@@ -42,8 +42,9 @@ QMenu* TrayIcon::createMenu()
     QMenu *trayIconMenu = new QMenu();
     trayIconMenu->addAction(restoreAction);
     trayIconMenu->addAction(quitAction);
-    trayIconMenu->setStyleSheet("QMenu::item:selected { color: white; background-color: #0078d4; }\
-                                QMenu::item { color: black; background-color: transparent; }");
+    trayIconMenu->setStyleSheet("QMenu { background-color: white; padding: 3px; }\
+                                QMenu::item { color: black; background-color: transparent; padding: 4px 40px 4px 12px; }\
+                                QMenu::item:selected { color: white; background-color: #0078d4; border: 0px; }");
 
     return trayIconMenu;
 }
