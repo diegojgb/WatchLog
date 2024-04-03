@@ -9,6 +9,7 @@
 #include <QApplication>
 #include <regex>
 #include <nlohmann/json.hpp>
+#include <filesystem>
 
 using namespace WinToastLib;
 using json = nlohmann::json;

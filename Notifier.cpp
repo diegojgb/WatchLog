@@ -38,6 +38,14 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
         QMessageBox::critical(nullptr, tr("WatchLog"), tr("Invalid duration value: must be either \"System\", \"Short\" or \"Long\""));
         throw std::runtime_error("Error: invalid Notifier duration value");
     }
+    if (std::filesystem::path(soundPath.toStdString()).extension() != ".wav") {
+        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Invalid soundFile type (must be .wav): " + soundPath.toStdString()).c_str()));
+        throw std::runtime_error("Error: invalid soundFile type (must be .wav): " + soundPath.toStdString());
+    }
+    if (!std::filesystem::exists(soundPath.toStdString())) {
+        QMessageBox::critical(nullptr, tr("WatchLog"), tr(("Specified soundFile doesn't exist: " + soundPath.toStdString()).c_str()));
+        throw std::runtime_error("Error: specified soundFile doesn't exist: " + soundPath.toStdString());
+    }
 
     regex = std::regex(regexStr.toStdString());
 
