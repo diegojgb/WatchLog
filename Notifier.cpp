@@ -34,6 +34,11 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
       m_desc{desc}, m_imagePath{imagePath}, m_soundPath{soundPath}, m_duration{duration}, m_toastEnabled{toastEnabled},
       m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
 {
+    if (duration != "System" && duration != "Short" && duration != "Long") {
+        QMessageBox::critical(nullptr, tr("WatchLog"), tr("Invalid duration value: must be either \"System\", \"Short\" or \"Long\""));
+        throw std::runtime_error("Error: invalid Notifier duration value");
+    }
+
     regex = std::regex(regexStr.toStdString());
 
     templ.setImagePath(imagePath.toStdWString());
