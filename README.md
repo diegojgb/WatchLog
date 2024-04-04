@@ -157,3 +157,20 @@ A Notifier using all of its default values on non-required properties would look
     "pattern": "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$",
 }
 ```
+
+## Source dependencies
+
+If you want to work on the application and build it by yourself using Qt Creator, Visual Studio, or your preferred method, you need to include these 2 dependencies on your project:
+
+- [JSON for Modern C++](https://github.com/diegojgb/xPaste/releases/latest "https://github.com/diegojgb/xPaste/releases/latest")
+- [WinToast](https://github.com/diegojgb/xPaste/releases/latest "https://github.com/diegojgb/xPaste/releases/latest")
+
+### JSON for Modern C++
+
+Easiest way to add it is to simply download the single-file release (json.hpp), and include it on the project within a folder named "nlohmann".
+
+### WinToast
+
+The CMakeLists.txt already includes WinToast as a subdirectory, so you just have to clone WinToast's repository and place it inside the root folder, along with WatchLog's CMakeLists.txt.
+
+This app uses a modified version of WinToast, that allows the removal of previously defined "Actions" from notification templates. With the original source code, you can only add actions to a template, not remove them.
