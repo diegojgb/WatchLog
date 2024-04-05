@@ -110,8 +110,10 @@ WinToastTemplate::Duration Notifier::toWinToastDuration(const QString& duration)
         return WinToastTemplate::Duration::Long;
     else if (duration == "System")
         return WinToastTemplate::Duration::System;
-    else
+    else {
         Utils::throwError("Invalid toast duration value.");
+        return WinToastTemplate::Duration::System; // Default return.
+    }
 }
 
 WinToastTemplate::AudioOption Notifier::mapAudioOption(bool soundEnabled) const

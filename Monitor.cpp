@@ -54,6 +54,7 @@ json Monitor::jsonFindByKey(const json &data, const std::string &key) {
     }
     else {
         Utils::throwError("Need a \""+key+"\" for every Notifier in data.json");
+        return json();
     }
 }
 
