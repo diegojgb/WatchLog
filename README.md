@@ -173,4 +173,33 @@ Easiest way to add it is to simply download the single-file release (json.hpp), 
 
 The CMakeLists.txt already includes WinToast as a subdirectory, so you just have to clone WinToast's repository and place it inside the root folder, along with WatchLog's CMakeLists.txt.
 
-This app uses a modified version of WinToast, that allows the removal of previously defined "Actions" from notification templates. With the original source code, you can only add actions to a template, not remove them.
+This app uses a modified version of WinToast, that allows the removal of previously defined "Actions" from notification templates. You have to implement a "removeAction" method inside wintoastlib.
+
+##### `wintoastlib.h`
+
+```cpp
+void addAction(_In_ std::wstring const& label);
+void removeAction(_In_ std::wstring const& label); // <------------------ line 139
+
+std::size_t textFieldsCount() const;
+```
+
+##### `wintoastlib.cpp`
+
+```cpp
+void WinToastTemplate::addAction(_In_ std::wstring const& label) {
+    _actions.push_back(label);
+}
+// -------------- line 1284
+void WinToastTemplate::removeAction(_In_ std::wstring const& label) {
+    _actions.erase(std::remove(_actions.begin(), _actions.end(), label), _actions.end());
+}
+// --------------
+std::size_t WinToastTemplate::textFieldsCount() const {
+    return _textFields.size();
+```
+
+## Limitations
+
+- Spamming many Windows toasts in a short period of time can lead to unexpected behavior, that may continue until the application is restarted. Just triggering two toast notifications within milliseconds of each other is enough to break it, that's the reason behind the ["manyPerUpdate"](#Monitor) property, which, if set to false, prevents the triggering of multiple notifications on a single file update.
+- There seems to be a rare case where the QFileSystemWatcher stops working until a system restart? If that's the case, working directly with the Win32 API (FindFirstChangeNotification) may fix it. 
