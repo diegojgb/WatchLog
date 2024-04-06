@@ -49,13 +49,10 @@ json Monitor::toJSON() const
 }
 
 json Monitor::jsonFindByKey(const json &data, const std::string &key) {
-    if (data.contains(key)) {
-        return data[key];
-    }
-    else {
+    if (!data.contains(key))
         Utils::throwError("Need a \""+key+"\" for every Notifier in data.json");
-        return json();
-    }
+
+    return data[key];
 }
 
 void Monitor::showTypeError(json::type_error e, const std::string& key)

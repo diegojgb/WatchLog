@@ -106,14 +106,13 @@ void Notifier::updateSticky() {
 WinToastTemplate::Duration Notifier::toWinToastDuration(const QString& duration) {
     if (duration == "Short")
         return WinToastTemplate::Duration::Short;
-    else if (duration == "Long")
+    if (duration == "Long")
         return WinToastTemplate::Duration::Long;
-    else if (duration == "System")
+    if (duration == "System")
         return WinToastTemplate::Duration::System;
-    else {
-        Utils::throwError("Invalid toast duration value.");
-        return WinToastTemplate::Duration::System; // Default return.
-    }
+
+    Utils::throwError("Invalid toast duration value.");
+    return WinToastTemplate::Duration::System; // To prevent warnings.
 }
 
 WinToastTemplate::AudioOption Notifier::mapAudioOption(bool soundEnabled) const
