@@ -1,17 +1,9 @@
 WinToast/
-TaoQuick/
 
-taoQuick.cmake
-nlohmann/json.hpp
+src/nlohmann/
 
 CMakeLists.txt.user
 
 *.autosave
-
-assets/right-arrow - Copy.png
-
-assets/information - Copy.png
-
-assets/save original.png
 
 assets/Misc (not tracked)/
