@@ -1,13 +1,14 @@
 #ifndef MONITOR_H
 #define MONITOR_H
 
+#include "nlohmann/json.hpp"
 #include "Notifier.h"
 #include "Utils.h"
 
 #include <QObject>
 #include <QVarLengthArray>
 #include <fstream>
-#include <nlohmann/json.hpp>
+
 
 using json = nlohmann::json;
 

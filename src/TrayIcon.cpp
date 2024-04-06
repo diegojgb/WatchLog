@@ -10,7 +10,7 @@ TrayIcon::TrayIcon(QObject* parent, QObject* root, HWND hwnd)
 
     m_trayIcon = new QSystemTrayIcon(m_root);
     m_trayIcon->setContextMenu(trayIconMenu);
-    m_trayIcon->setIcon(QIcon(":/WatchLog/assets/watchlog-logo.ico"));
+    m_trayIcon->setIcon(QIcon(":/assets/watchlog-logo.ico"));
     m_trayIcon->show();
 
     initWinToast();

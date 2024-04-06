@@ -1,6 +1,5 @@
-#include "FileWatcher.h"
 #include "nlohmann/json.hpp"
-
+#include "FileWatcher.h"
 #include "Manager.h"
 #include "TrayIcon.h"
 
@@ -69,7 +68,7 @@ int main(int argc, char *argv[])
     // Expose objects to QML
     engine.rootContext()->setContextProperty("Manager", &manager);
 
-    const QUrl url(u"qrc:/WatchLog/Main.qml"_qs);
+    const QUrl url(u"qrc:/qml/Main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,

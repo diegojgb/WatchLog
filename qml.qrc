@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/Main.qml</file>
+        <file>qml/Tab.qml</file>
+        <file>qml/MonitorPage.qml</file>
+        <file>qml/Expandable.qml</file>
+        <file>qml/NotifierPreview.qml</file>
+        <file>qml/FileBrowser.qml</file>
+        <file>qml/NotifierOptions.qml</file>
+        <file>qml/MaterialCheckBox.qml</file>
+        <file>qml/CustomButton.qml</file>
+        <file>qml/SaveButton.qml</file>
+        <file>qml/CustomComboBox.qml</file>
+        <file>qml/CusSwitch.qml</file>
+    </qresource>
+</RCC>

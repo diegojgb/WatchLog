@@ -34,7 +34,7 @@ MouseArea {
 
         Image {
             id: arrow
-            source: "assets/right-arrow.png"
+            source: "qrc:/assets/right-arrow.png"
             Layout.leftMargin: 5
             Layout.preferredHeight: 12
             Layout.preferredWidth: 12

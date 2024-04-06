@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 project(WatchLog VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Widgets)
 
@@ -12,45 +13,29 @@ add_subdirectory(WinToast)
 
 set(app_icon_resource "${CMAKE_CURRENT_SOURCE_DIR}/assets/watchlog.rc")
 
-qt_add_executable(appWatchLog main.cpp ${app_icon_resource})
+set(SOURCE_FILES
+    src/FileWatcher.h
+    src/FileWatcher.cpp
+    src/Monitor.h
+    src/Monitor.cpp
+    src/Manager.h
+    src/Manager.cpp
+    src/Notifier.h
+    src/Notifier.cpp
+    src/TrayIcon.h
+    src/TrayIcon.cpp
+    src/ToastHandler.h
+    src/SystemMedia.h
+    src/SystemMedia.cpp
+    src/Utils.h
+    src/Utils.cpp
+)
 
-qt_add_qml_module(appWatchLog
-    URI WatchLog
-    VERSION 1.0
-
-    QML_FILES
-    Main.qml
-    Tab.qml
-    MonitorPage.qml
-    Expandable.qml
-    NotifierPreview.qml
-    FileBrowser.qml
-    NotifierOptions.qml
-    MaterialCheckBox.qml
-    CustomButton.qml
-    SaveButton.qml
-    CustomComboBox.qml
-    CusSwitch.qml
-
-    SOURCES
-    FileWatcher.h FileWatcher.cpp
-    Monitor.h Monitor.cpp
-    Manager.h Manager.cpp
-    Notifier.h Notifier.cpp
-    TrayIcon.h TrayIcon.cpp
-    ToastHandler.h
-    SystemMedia.h SystemMedia.cpp
-    Utils.h Utils.cpp
-
-    RESOURCES
-    assets/notification.png
-    assets/crown-logo.ico
-    assets/watchlog-logo.png
-    assets/watchlog-logo.ico
-    assets/right-arrow.png
-    assets/information.png
-    assets/save.png
-    assets/save-disabled.png
+qt_add_executable(appWatchLog 
+    src/main.cpp
+    qml.qrc
+    assets.qrc
+    ${app_icon_resource}
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -63,6 +48,10 @@ set_target_properties(appWatchLog PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
     OUTPUT_NAME "WatchLog"
+)
+
+target_sources(appWatchLog PRIVATE
+    ${SOURCE_FILES}
 )
 
 target_link_libraries(appWatchLog

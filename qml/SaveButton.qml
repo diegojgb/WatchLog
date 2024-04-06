@@ -49,7 +49,7 @@ Rectangle {
 
         Image {
             anchors.verticalCenter: parent.verticalCenter
-            source: root.saveEnabled ? "assets/save.png" : "assets/save-disabled.png"
+            source: root.saveEnabled ? "qrc:/assets/save.png" : "qrc:/assets/save-disabled.png"
         }
 
         Text {

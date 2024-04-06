@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/fg-faceplate.png</file>
+        <file>assets/information.png</file>
+        <file>assets/right-arrow.png</file>
+        <file>assets/save.png</file>
+        <file>assets/save-disabled.png</file>
+        <file>assets/watchlog.rc</file>
+        <file>assets/watchlog-logo.ico</file>
+        <file>assets/watchlog-logo.png</file>
+    </qresource>
+</RCC>

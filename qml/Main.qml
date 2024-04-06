@@ -50,7 +50,7 @@ Window {
 
                     Image {
                         id: logo
-                        source: "assets/watchlog-logo.png"
+                        source: "qrc:/assets/watchlog-logo.png"
                     }
                     Label {
                         height: parent.height
