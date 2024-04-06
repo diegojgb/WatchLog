@@ -1,6 +1,6 @@
 # WatchLog
 
-<img src="https://github.com/diegojgb/xPaste/blob/main/screenshot.png" width="828" height="597">
+<img src="https://github.com/diegojgb/WatchLog/blob/main/screenshot.png">
 
 ## What is it?
 
@@ -10,12 +10,12 @@ Any time there is a new line added to the log, it is tested agaisn't all regex p
 
 ## Installation
 
-- You can download the latest release from [here](https://github.com/diegojgb/xPaste/releases/latest "https://github.com/diegojgb/xPaste/releases/latest")
-- It is a standalone executable. It reads its configuration from a single "data.json" file. Refer to the section below for configuring your data.json
+- You can download the latest release from [here](https://github.com/diegojgb/WatchLog/releases/latest "https://github.com/diegojgb/WatchLog/releases/latest")
+- It is a standalone executable. It reads its configuration from a single "data.json" file. Refer to the sections below for configuring your data.json
 
 ## Usage
 
-You need to create a data.json file that holds all the information needed for the application to run. This file must reside in the same folder as the executable. For more information refer to the [configuring data.json](#configuring-data.json) section.
+You need to create a data.json file that holds all the information needed for the application to run. This file must reside in the same folder as the executable. For more information refer to the [configuring data.json](#configuring-datajson) section.
 
 ### data.json example
 
@@ -44,7 +44,7 @@ You need to create a data.json file that holds all the information needed for th
                     "name": "When a phone number is added to the log.",
                     "pattern": "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$",
                 },
-                // ...
+                "..."
             ]
         },
         {
@@ -55,7 +55,7 @@ You need to create a data.json file that holds all the information needed for th
                         "name": "When a wild Hello World appears.",
                         "pattern": "Hello World",
                 },
-                // ...
+                "..."
             ]
         }
     ]
@@ -92,7 +92,7 @@ A Monitor with all of its properties explicity set would look like this:
     "name": "Monitor example",
     "manyPerUpdate": false,
     "notifiers": [
-        // ...
+        "..."
     ]
 }
 ```
@@ -106,7 +106,7 @@ A Monitor using all of its default values on non-required properties would look 
     "filePath": "C:/example.log",
     "name": "Monitor example",
     "notifiers": [
-        // ...
+        "..."
     ]
 }
 ```
@@ -162,12 +162,12 @@ A Notifier using all of its default values on non-required properties would look
 
 If you want to work on the application and build it by yourself using Qt Creator, Visual Studio, or your preferred method, you need to include these 2 dependencies on your project:
 
-- [JSON for Modern C++](https://github.com/diegojgb/xPaste/releases/latest "https://github.com/diegojgb/xPaste/releases/latest")
-- [WinToast](https://github.com/diegojgb/xPaste/releases/latest "https://github.com/diegojgb/xPaste/releases/latest")
+- [JSON for Modern C++](https://github.com/nlohmann/json "https://github.com/nlohmann/json")
+- [WinToast](https://github.com/mohabouje/WinToast "https://github.com/mohabouje/WinToast")
 
 ### JSON for Modern C++
 
-Easiest way to add it is to simply download the single-file release (json.hpp), and include it on the project within a folder named "nlohmann".
+Easiest way to add it is to simply download the single-file release (json.hpp), and include it on the project as src/nlohmann/json.hpp.
 
 ### WinToast
 
@@ -201,5 +201,5 @@ std::size_t WinToastTemplate::textFieldsCount() const {
 
 ## Limitations
 
-- Spamming many Windows toasts in a short period of time can lead to unexpected behavior, that may continue until the application is restarted. Just triggering two toast notifications within milliseconds of each other is enough to break it, that's the reason behind the ["manyPerUpdate"](#Monitor) property, which, if set to false, prevents the triggering of multiple notifications on a single file update.
-- There seems to be a rare case where the QFileSystemWatcher stops working until a system restart? If that's the case, working directly with the Win32 API (FindFirstChangeNotification) may fix it. 
+- Spamming many Windows toasts in a short period of time can lead to unexpected behavior, that may continue until the application is restarted. Just triggering two toast notifications within milliseconds of each other is enough to break it, that's the reason behind the ["manyPerUpdate"](#monitor) property, which, if set to false, prevents the triggering of multiple notifications on a single file update.
+- There seems to be a rare case where the QFileSystemWatcher stops working until a system restart? If that's the case, working directly with the Win32 API (FindFirstChangeNotification) may fix it.
