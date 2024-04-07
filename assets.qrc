@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>assets/fg-faceplate.png</file>
         <file>assets/information.png</file>
         <file>assets/right-arrow.png</file>
         <file>assets/save.png</file>
