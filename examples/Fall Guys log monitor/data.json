@@ -1,0 +1,66 @@
+{
+    "monitors": [
+        {
+            "enabled": true,
+            "filePath": "C:/Users/%USERNAME%/AppData/LocalLow/Mediatonic/FallGuys_client/Player.log",
+            "name": "Fall Guys",
+            "manyPerUpdate": false,
+            "notifiers": [
+                {
+                    "desc": "You can get back in game.",
+                    "name": "When a show finishes and I enter the Rewards screen",
+                    "pattern": "\\[StateWaitingForRewards\\]",
+                    "sound": true,
+                    "sticky": false,
+                    "title": "Show finished!",
+                    "toast": true
+                },
+                {
+                    "desc": "Someone has invited you to join their party!",
+                    "name": "When I receive an invitation to join a party",
+                    "pattern": "EOSPartyPlatformService.*Invite Received",
+                    "sound": true,
+                    "sticky": true,
+                    "title": "Invitation",
+                    "toast": true
+                },
+                {
+                    "desc": "Come back before it starts!",
+                    "name": "When a round is about to start (right before the countdown)",
+                    "pattern": "\\[StateGameLoading\\] Starting the game",
+                    "sound": true,
+                    "sticky": false,
+                    "title": "Game is starting",
+                    "toast": true
+                },
+                {
+                    "desc": "Went back to main menu",
+                    "name": "When matchmaking is canceled and we go back to menu",
+                    "pattern": "Replacing (FGClient\\.StateMatchmaking|FGClient\\.StateConnectToGame) with FGClient\\.StateDisconnectingFromServer",
+                    "sound": true,
+                    "sticky": false,
+                    "title": "Matchmaking canceled",
+                    "toast": true
+                },
+                {
+                    "desc": "An error ocurred during matchmaking",
+                    "name": "When an error occurs during matchmaking",
+                    "pattern": "Error messagereceived from FN-MMS",
+                    "sound": true,
+                    "sticky": false,
+                    "title": "Error in matchmaking",
+                    "toast": true
+                },
+                {
+                    "desc": "Next round is coming soon",
+                    "name": "When we enter the loading screen",
+                    "pattern": "\\[StateGameLoading\\] LoadCurrentlySelectedGameLevel",
+                    "sound": false,
+                    "sticky": false,
+                    "title": "In loading screen",
+                    "toast": false
+                }
+            ]
+        }
+    ]
+}
