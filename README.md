@@ -122,7 +122,7 @@ Each monitor includes one or more notifiers, each containing a specific regex pa
 | `title` | string | `"Match found in ${name}"` | Title displayed in the toast notification. ${name} is a placeholder for the containing Monitor's name |
 | `desc` | string | `"For regex: ${regex}"` | Description displayed in the toast notification. ${regex} is a placeholder for the regex pattern. |
 | `soundFile` | string | `"%SystemDrive%/Windows/Media/Windows Notify System Generic.wav"` | Sound to be played either with or without a toast notification |
-| `image` | string | `"./assets/information.png"` | Path to the image to be displayed inside the toast notification |
+| `image` | string | `"./assets/information.png"` | Path to the image to be displayed inside the toast notification. 60x60 is the recommended image size |
 | `duration` | string | `"System"` | Toast notification display time. Can be either "System", "Short" or "Long". Durations for each setting are defined within the Windows configuration |
 | `toast` | boolean | `true` | Sets wether a toast notification will show or not when a match is found. |
 | `sound` | boolean | `true` | Sets wether a sound alert will be played when a match is found. |
