@@ -32,7 +32,8 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
                    QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent}, m_name{name}, m_regexStr{regexStr}, m_title{title},
       m_desc{desc}, m_imagePath{imagePath}, m_soundPath{soundPath}, m_duration{duration}, m_toastEnabled{toastEnabled},
-      m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
+      m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)},
+      regex{regexStr.toStdString()}
 {
     if (duration != "System" && duration != "Short" && duration != "Long") {
         Utils::throwError("Invalid duration value: must be either \"System\", \"Short\" or \"Long\"");
@@ -51,8 +52,6 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
         Utils::throwError("Specified image file doesn't exist: " + imagePath.toStdString());
     }
 
-    regex = std::regex(regexStr.toStdString());
-
     templ.setImagePath(imagePath.toStdWString());
     templ.setTextField(title
                        .replace("${regex}", regexStr)
@@ -64,6 +63,7 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
                        .toStdWString(), WinToastTemplate::SecondLine);
     templ.setDuration(toWinToastDuration(m_duration));
     templ.setAudioOption(mapAudioOption(soundEnabled));
+
     updateSticky();
 }
 

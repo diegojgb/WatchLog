@@ -6,16 +6,14 @@
 
 
 Monitor::Monitor(QObject *parent, const json &monitorData)
-    : QObject{parent}
+    : QObject{parent},
+      m_name{QString::fromStdString(jsonGetValue<std::string>(monitorData, "name"))},
+      m_filePath{QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath"))},
+      m_enabled{jsonGetValue<bool>(monitorData, "enabled", true)},
+      m_defaultImage{jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString())},
+      manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)}
 {
-    m_name = QString::fromStdString(jsonGetValue<std::string>(monitorData, "name"));
-    m_filePath = QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath"));
-    m_enabled = jsonGetValue<bool>(monitorData, "enabled", true);
-    m_defaultImage = jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString());
-    manyPerUpdate = jsonGetValue<bool>(monitorData, "manyPerUpdate", false);
-
     startFile();
-
     readNotifiers(jsonFindByKey(monitorData, "notifiers"));
 }
 
