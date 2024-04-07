@@ -90,7 +90,7 @@ Monitors consist of the following properties:
 | `filePath` (required) | string | None | Absolute path of the file to be monitored. You can use either "/" or "\\\\" in the address |
 | `enabled` | boolean | `true` | Initial state of the monitor (on/off) |
 | `manyPerUpdate` | boolean | `true` | When disabled, if two potential matches come in a single file update, only the first one will be found |
-| `defaultImage` | string | `"./assets/information.png"` | Default image used for Notifiers that do not specify an image |
+| `defaultImage` | string | `"./assets/information.png"` | Default image used for Notifiers that do not specify an image. 60x60 is the recommended image size |
 | `notifiers` (required) | boolean | None | List of notifiers. Refer to the Notifiers section for more information |
 
 #### Full monitor example:
@@ -134,7 +134,7 @@ Each monitor includes one or more notifiers, each containing a specific regex pa
 | `title` | string | `"Match found in ${name}"` | Title displayed in the toast notification. ${name} is a placeholder for the containing Monitor's name |
 | `desc` | string | `"For regex: ${regex}"` | Description displayed in the toast notification. ${regex} is a placeholder for the regex pattern. |
 | `soundFile` | string | `"%SystemDrive%/Windows/Media/Windows Notify System Generic.wav"` | Sound to be played either with or without a toast notification |
-| `image` | string | `"./assets/information.png"` | Path to the image to be displayed inside the toast notification. 60x60 is the recommended image size |
+| `image` | string | Monitor's `defaultImage` value | Path to the image to be displayed inside the toast notification. 60x60 is the recommended image size |
 | `duration` | string | `"System"` | Toast notification display time. Can be either "System", "Short" or "Long". Durations for each setting are defined within the Windows configuration |
 | `toast` | boolean | `true` | Sets wether a toast notification will show or not when a match is found. |
 | `sound` | boolean | `true` | Sets wether a sound alert will be played when a match is found. |
