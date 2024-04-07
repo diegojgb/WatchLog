@@ -9,7 +9,6 @@
 #include <QVarLengthArray>
 #include <fstream>
 
-
 using json = nlohmann::json;
 
 
@@ -70,6 +69,7 @@ private:
     QList<Notifier*> m_notifiers;
     QString m_filePath;
     bool m_enabled;
+    std::string m_defaultImage;
 
     void readNotifiers(const json &data);
 };

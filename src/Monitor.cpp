@@ -11,6 +11,7 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
     m_name = QString::fromStdString(jsonGetValue<std::string>(monitorData, "name"));
     m_filePath = QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath"));
     m_enabled = jsonGetValue<bool>(monitorData, "enabled", true);
+    m_defaultImage = jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString());
     manyPerUpdate = jsonGetValue<bool>(monitorData, "manyPerUpdate", false);
 
     startFile();
@@ -111,7 +112,7 @@ void Monitor::readNotifiers(const json &data)
         QString title = QString::fromStdString(jsonGetValue<std::string>(item, "title", Notifier::getDefaultTitle().toStdString()));
         QString desc = QString::fromStdString(jsonGetValue<std::string>(item, "desc", Notifier::getDefaultDesc().toStdString()));
         QString soundPath = QString::fromStdString(jsonGetValue<std::string>(item, "soundFile", SystemMedia::getDefaultSound()));
-        QString imagePath = QString::fromStdString(jsonGetValue<std::string>(item, "image", Notifier::getDefaultImg().toStdString()));
+        QString imagePath = QString::fromStdString(jsonGetValue<std::string>(item, "image", m_defaultImage));
         QString duration = QString::fromStdString(jsonGetValue<std::string>(item, "duration", "System"));
         bool toastEnabled = jsonGetValue<bool>(item, "toast", true);
         bool soundEnabled = jsonGetValue<bool>(item, "sound", true);
