@@ -8,6 +8,17 @@ WatchLog is a simple tool that lets you monitor any log file, and trigger notifi
 
 Any time there is a new line added to the log, it is tested agaisn't all regex patterns specified for that file. Each one has its own configuration on how it notifies the user when there's a match. You can monitor multiple log files and have as many regex patterns as you want.
 
+- [Installation](#installation)
+- [Usage](#usage)
+    - [data.json example](#datajson-example)
+- [Configuring data.json](#configuring-datajson)
+    - [Monitor](#monitor)
+    - [Notifier](#notifier)
+- [Source dependencies](#source-dependencies)
+    - [JSON for Modern C++](#json-for-modern-c)
+    - [WinToast](#wintoast)
+- [Limitations](#limitations)
+
 ## Installation
 
 - You can download the latest release from [here](https://github.com/diegojgb/WatchLog/releases/latest "https://github.com/diegojgb/WatchLog/releases/latest")
@@ -79,6 +90,7 @@ Monitors consist of the following properties:
 | `filePath` (required) | string | None | Absolute path of the file to be monitored. You can use either "/" or "\\\\" in the address |
 | `enabled` | boolean | `true` | Initial state of the monitor (on/off) |
 | `manyPerUpdate` | boolean | `true` | When disabled, if two potential matches come in a single file update, only the first one will be found |
+| `defaultImage` | string | `"./assets/information.png"` | Default image used for Notifiers that do not specify an image |
 | `notifiers` (required) | boolean | None | List of notifiers. Refer to the Notifiers section for more information |
 
 #### Full monitor example:
