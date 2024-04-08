@@ -29,6 +29,8 @@ set(SOURCE_FILES
     src/SystemMedia.cpp
     src/Utils.h
     src/Utils.cpp
+    src/Registry.h
+    src/Registry.cpp
 )
 
 qt_add_executable(appWatchLog 

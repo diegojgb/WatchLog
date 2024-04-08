@@ -3,6 +3,7 @@
 
 #include "Utils.h"
 #include "ToastHandler.h"
+#include "Registry.h"
 #include "wintoastlib.h"
 
 #include <QObject>
@@ -11,6 +12,7 @@
 #include <QApplication>
 #include <QSystemTrayIcon>
 #include <Windows.h>
+
 
 class TrayIcon : public QObject
 {
