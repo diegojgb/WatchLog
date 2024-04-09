@@ -85,6 +85,19 @@ int main(int argc, char *argv[])
     if (!SUCCEEDED(DwmSetWindowAttribute(windowHandle, 20, &enableDark, sizeof(enableDark)))) // Windows 10 20H1+
         DwmSetWindowAttribute(windowHandle, 19, &enableDark, sizeof(enableDark)); // Windows 10 before 20H1
 
+    // Redraw the Window. For Windows 10, which doesn't automatically change the title bar color to dark upon change.
+    // It's a hacky solution, forces a redraw by resizing the window.
+    RECT rect;
+    int width;
+    int height;
+
+    if(GetWindowRect(windowHandle, &rect)) {
+        width = rect.right - rect.left;
+        height = rect.bottom - rect.top;
+    }
+
+    SetWindowPos(windowHandle, 0, 0, 0, width-1, height, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
     // Tray icon (using Qt Widgets).
     QObject *root = engine.rootObjects().at(0);
     TrayIcon trayIcon(&app, root, windowHandle);

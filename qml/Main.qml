@@ -8,7 +8,7 @@ Window {
     visible: true
     title: qsTr("WatchLog")
 
-    width: 840
+    width: 841
     height: 560
 
     property color accentColor: "#0078d4"
