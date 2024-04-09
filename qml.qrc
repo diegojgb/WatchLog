@@ -12,5 +12,6 @@
         <file>qml/SaveButton.qml</file>
         <file>qml/CustomComboBox.qml</file>
         <file>qml/CusSwitch.qml</file>
+        <file>qml/Sidebar.qml</file>
     </qresource>
 </RCC>
