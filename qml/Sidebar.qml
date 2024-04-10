@@ -105,8 +105,6 @@ Rectangle {
 
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
-                        height: 18
-                        width: 18
                         source: "qrc:/assets/add-new.png"
                     }
 
