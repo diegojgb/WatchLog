@@ -12,7 +12,7 @@ Rectangle {
         anchors.right: parent.right
 
         Row {
-            Layout.topMargin: 15
+            Layout.topMargin: 18
             Layout.leftMargin: 14
             spacing: 8
 
@@ -30,25 +30,17 @@ Rectangle {
             }
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.topMargin: 8
-            Layout.rightMargin: 12
-            Layout.leftMargin: 12
-            height: 1
-            color: '#444'
-        }
-
         Label {
+            Layout.topMargin: 12
             Layout.leftMargin: 12
             text: "Monitors"
-            color: '#888'
+            color: '#999'
         }
 
         ColumnLayout {
             id: tabBarItem
             Layout.fillWidth: true
-            Layout.topMargin: 10
+            Layout.topMargin: 8
 
             property int tabIndex: 0
 

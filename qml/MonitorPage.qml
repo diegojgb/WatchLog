@@ -144,8 +144,52 @@ ScrollView {
                 }
             }
 
+            // // Add notification button
+            // Rectangle {
+            //     Layout.topMargin: 15
+            //     width: 140
+            //     height: 30
+            //     radius: 2
+            //     border.width: 1
+            //     border.color: ma.containsMouse ? "#0078d4" : "#ababab"
+            //     color: ma.pressed ? "#d0ffff" : "#fff"
+
+            //     Behavior on border.color {
+            //         ColorAnimation {
+            //             duration: 200
+            //         }
+            //     }
+
+            //     Row {
+            //         anchors.fill: parent
+            //         anchors.leftMargin: 8
+            //         spacing: 7
+
+            //         Text {
+            //             anchors.bottom: parent.bottom
+            //             anchors.bottomMargin: 1
+            //             renderType: Text.NativeRendering
+            //             font.pixelSize: 26
+            //             text: '+'
+            //         }
+
+            //         Text {
+            //             anchors.verticalCenter: parent.verticalCenter
+            //             renderType: Text.NativeRendering
+            //             text: "Add notification"
+            //         }
+            //     }
+
+            //     MouseArea {
+            //         id: ma
+            //         anchors.fill: parent
+            //         hoverEnabled: true
+
+            //         onClicked: customDialog.open()
+            //     }
+            // }
             Item {
-                height: 30
+                height: 40
                 width: 1
             }
         }
