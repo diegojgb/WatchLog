@@ -89,22 +89,20 @@ Rectangle {
                 Layout.preferredHeight: 30
                 Layout.leftMargin: 10
                 Layout.rightMargin: 10
-                color: mouseArea.containsMouse ? "#4d4d4d" : "transparent"
+                color: mouseArea.containsMouse ? "#4d4d4d" : "#2d2e30"
                 radius: 7
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 250
+                    }
+                }
 
                 Row {
                     anchors.fill: parent
                     anchors.leftMargin: 10
                     spacing: 5
 
-                    // Text {
-                    //     anchors.bottom: parent.bottom
-                    //     anchors.bottomMargin: 1
-                    //     renderType: Text.NativeRendering
-                    //     font.pixelSize: 26
-                    //     color: "white"
-                    //     text: '+'
-                    // }
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
                         height: 18

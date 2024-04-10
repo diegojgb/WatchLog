@@ -24,7 +24,13 @@ TabButton {
             } else if (control.checked) {
                 return "#404040"
             } else {
-                return "transparent"
+                return "#2d2e30"
+            }
+        }
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 250
             }
         }
 
