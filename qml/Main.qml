@@ -39,6 +39,7 @@ Window {
             color: '#2d2e30'
         }
 
+        // Separator
         Rectangle {
             Layout.fillHeight: true
             Layout.preferredWidth: 2

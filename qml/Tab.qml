@@ -16,8 +16,6 @@ TabButton {
     background: Rectangle {
         id: background
         anchors.fill: parent
-        anchors.leftMargin: 10
-        anchors.rightMargin: 10
         radius: 7
 
         color: {
@@ -66,7 +64,7 @@ TabButton {
         }
 
         Rectangle {
-            Layout.rightMargin: 22
+            Layout.rightMargin: 5
             Layout.topMargin: 3
             width: 9
             height: 9

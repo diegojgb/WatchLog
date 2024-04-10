@@ -7,5 +7,6 @@
         <file>assets/watchlog.rc</file>
         <file>assets/watchlog-logo.ico</file>
         <file>assets/watchlog-logo.png</file>
+        <file>assets/add-new.png</file>
     </qresource>
 </RCC>

@@ -60,6 +60,8 @@ Rectangle {
                 Tab {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 30
+                    Layout.leftMargin: 10
+                    Layout.rightMargin: 10
                     text: Manager.hashGet(modelData).name
                     enabled: Manager.hashGet(modelData).enabled
                     selected: tabBarItem.tabIndex == index
@@ -70,6 +72,60 @@ Rectangle {
                         tabBarItem.tabIndex = tabRepeater.model.indexOf(
                                     modelData)
                     }
+                }
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.topMargin: 8
+                Layout.rightMargin: 12
+                Layout.leftMargin: 12
+                height: 1
+                color: '#444'
+            }
+
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 30
+                Layout.leftMargin: 10
+                Layout.rightMargin: 10
+                color: mouseArea.containsMouse ? "#4d4d4d" : "transparent"
+                radius: 7
+
+                Row {
+                    anchors.fill: parent
+                    anchors.leftMargin: 10
+                    spacing: 5
+
+                    // Text {
+                    //     anchors.bottom: parent.bottom
+                    //     anchors.bottomMargin: 1
+                    //     renderType: Text.NativeRendering
+                    //     font.pixelSize: 26
+                    //     color: "white"
+                    //     text: '+'
+                    // }
+                    Image {
+                        anchors.verticalCenter: parent.verticalCenter
+                        height: 18
+                        width: 18
+                        source: "qrc:/assets/add-new.png"
+                    }
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        renderType: Text.NativeRendering
+                        font.pointSize: 10
+                        color: "white"
+                        text: 'Add monitor'
+                    }
+                }
+
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
                 }
             }
         }
