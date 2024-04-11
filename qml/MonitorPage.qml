@@ -107,40 +107,13 @@ ScrollView {
             Repeater {
                 model: monitor.nListLength()
 
-                Column {
+                Notifier {
                     Layout.fillWidth: true
+                    newNotifier: modelData === monitor.nListLength() - 1
+                    notifier: monitor.nListAt(modelData)
 
-                    NotifierPreview {
-                        notifier: monitor.nListAt(modelData)
-                        onCustomClicked: exp.show = !exp.show
-                    }
-
-                    Item {
-                        height: 3
-                        width: 1
-                    }
-
-                    Rectangle {
-                        visible: modelData < monitor.nListLength() - 1
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        height: 1
-                        color: '#bbb'
-                    }
-
-                    Expandable {
-                        id: exp
-
-                        NotifierOptions {
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.leftMargin: 10
-                            anchors.rightMargin: 22
-                            cusTopMargin: 20
-                            custBottomMargin: 12
-                            notifier: monitor.nListAt(modelData)
-                        }
-                    }
+                    // Needed for delegates with required properties.
+                    required property var modelData
                 }
             }
 

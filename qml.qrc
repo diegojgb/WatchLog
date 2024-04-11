@@ -13,5 +13,6 @@
         <file>qml/CustomComboBox.qml</file>
         <file>qml/CusSwitch.qml</file>
         <file>qml/Sidebar.qml</file>
+        <file>qml/Notifier.qml</file>
     </qresource>
 </RCC>

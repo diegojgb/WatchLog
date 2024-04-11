@@ -69,13 +69,14 @@ Rectangle {
 
             Rectangle {
                 Layout.fillWidth: true
-                Layout.topMargin: 8
+                Layout.topMargin: 4
                 Layout.rightMargin: 12
                 Layout.leftMargin: 12
                 height: 1
                 color: '#444'
             }
 
+            // Add monitor button
             Rectangle {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 30
