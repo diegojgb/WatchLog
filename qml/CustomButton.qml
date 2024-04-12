@@ -5,9 +5,11 @@ Button {
     id: control
     font.pointSize: 8
 
-    property color bgColor: control.pressed ? "#d0ffff" : "#fff"
+    property Text textItem: text
+    property Rectangle bgItem: bg
 
     contentItem: Text {
+        id: text
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         bottomPadding: 2
@@ -22,8 +24,8 @@ Button {
         id: bg
         anchors.fill: parent
         opacity: enabled ? 1 : 0.3
-        color: control.bgColor
-        border.color: control.hovered ? "#0078d4" : "#ababab"
+        color: control.pressed ? "#ddd" : "#fff"
+        border.color: control.hovered ? "#666" : "#ababab"
         border.width: 1
         radius: 2
 

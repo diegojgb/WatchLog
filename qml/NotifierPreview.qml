@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls
+import QtQuick.Controls.Fusion
 
 MouseArea {
     id: control
@@ -54,8 +54,8 @@ MouseArea {
 
             Rectangle {
                 anchors.bottom: parent.bottom
-                anchors.bottomMargin: -3
                 anchors.horizontalCenter: parent.horizontalCenter
+                anchors.bottomMargin: -3
                 color: control.containsMouse ? root.accentColor : "#fff"
                 width: 20
                 height: 20

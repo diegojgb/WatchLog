@@ -9,6 +9,9 @@ Item {
     required property var notifier
     property int cusTopMargin
     property int custBottomMargin
+    property bool newNotifier: false
+
+    signal canceled
 
     ColumnLayout {
         anchors.left: parent.left
@@ -166,7 +169,6 @@ Item {
 
         Row {
             id: lastItem
-            Layout.bottomMargin: control.custBottomMargin
             spacing: 5
 
             Label {
@@ -214,6 +216,36 @@ Item {
                         root.saveEnabled = true
                 }
             }
+        }
+
+        Row {
+            Layout.alignment: Qt.AlignRight | Qt.AlignTop
+            Layout.topMargin: -10
+            Layout.preferredHeight: 30
+            visible: control.newNotifier
+            spacing: 5
+
+            CustomButton {
+                width: 80
+                height: 24
+                text: "Cancel"
+                onClicked: {
+                    control.canceled()
+                }
+            }
+            CustomButton {
+                width: 80
+                height: 24
+                bgItem.color: pressed ? "#d0ffff" : "#fff"
+                bgItem.border.color: hovered ? "#44a9ff" : "#0078d4"
+                textItem.color: "#0078d4"
+                text: "Save"
+            }
+        }
+
+        Item {
+            width: 1
+            height: control.custBottomMargin - 5 // 5 is the default spacing of the ColumnLayout.
         }
     }
 }

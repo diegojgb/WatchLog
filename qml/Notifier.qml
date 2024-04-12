@@ -35,9 +35,12 @@ Column {
             anchors.right: parent.right
             anchors.leftMargin: 10
             anchors.rightMargin: 22
+            newNotifier: control.newNotifier
             cusTopMargin: 20
             custBottomMargin: 12
             notifier: control.notifier
+
+            onCanceled: exp.show = false
         }
     }
 }
