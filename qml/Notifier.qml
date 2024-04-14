@@ -12,6 +12,7 @@ Column {
         notifier: control.notifier
         newNotifier: control.newNotifier
         onCustomClicked: exp.show = !exp.show
+        optionsItem.opacity: exp.show ? 1 : 0
     }
 
     Item {

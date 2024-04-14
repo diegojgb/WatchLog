@@ -8,5 +8,6 @@
         <file>assets/watchlog-logo.ico</file>
         <file>assets/watchlog-logo.png</file>
         <file>assets/add-new.png</file>
+        <file>assets/edit.png</file>
     </qresource>
 </RCC>

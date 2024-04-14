@@ -2,18 +2,17 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Fusion
 
-MouseArea {
+Item {
     id: control
     anchors.left: parent.left
     anchors.right: parent.right
     height: childrenRect.height
-    cursorShape: control.newNotifier ? Qt.PointingHandCursor : Qt.ArrowCursor
-    hoverEnabled: true
 
     signal customClicked
     property bool rotated: false
     property var notifier
     property bool newNotifier: false
+    property Row optionsItem: options
 
     function handleClick() {
         if (control.rotated) {
@@ -28,7 +27,12 @@ MouseArea {
         control.rotated = !control.rotated
     }
 
-    onClicked: control.handleClick()
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: control.newNotifier ? Qt.PointingHandCursor : Qt.ArrowCursor
+        hoverEnabled: true
+        onClicked: control.handleClick()
+    }
 
     RowLayout {
         anchors.left: parent.left
@@ -74,27 +78,97 @@ MouseArea {
             }
         }
 
-        Text {
+        TextField {
+            id: textField
+
+            property bool focused: false
+            property bool custEnabled: false
+
+            text: textField.focused ? notifier.name : metrics.elidedText
+
             Layout.leftMargin: control.newNotifier ? 5 : 3
             Layout.fillWidth: true
-            Layout.bottomMargin: 3
-            font.pointSize: 10
-            text: notifier.name
-            elide: Text.ElideRight
-            maximumLineCount: 1
-            renderType: Text.NativeRendering
             color: control.newNotifier ? control.containsMouse ? "#004c87" : "#555" : "#000"
+            renderType: Text.NativeRendering
+            font.pointSize: 10
+            background.visible: textField.custEnabled
+            bottomPadding: 2
+
+            enabled: textField.custEnabled
+            padding: 0
+
+            TextMetrics {
+                id: metrics
+                text: notifier.name
+                font: textField.font
+                elide: Qt.ElideRight
+                elideWidth: textField.width - 5
+            }
 
             ToolTip.text: notifier.name
-            ToolTip.visible: truncated && nameMa.containsMouse
+            ToolTip.visible: hovered && notifier.name !== metrics.elidedText
             ToolTip.delay: 1000
 
-            MouseArea {
-                id: nameMa
-                cursorShape: control.newNotifier ? Qt.PointingHandCursor : Qt.ArrowCursor
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked: control.handleClick()
+            onActiveFocusChanged: {
+                if (activeFocus)
+                    textField.focused = true
+            }
+
+            onEditingFinished: {
+                notifier.name = textField.text
+                parent.forceActiveFocus()
+                textField.focused = false
+                textField.custEnabled = false
+            }
+        }
+
+        // Edit button
+        Row {
+            id: options
+            Layout.fillHeight: true
+            Layout.rightMargin: 10
+            spacing: 10
+            visible: !textField.focused
+
+            Rectangle {
+                anchors.top: parent.top
+                anchors.topMargin: 3
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 3
+                width: 25
+                color: editButtonMa.containsMouse ? "#ccc" : "#fff"
+                radius: 4
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: root.transitionDuration
+                    }
+                }
+
+                Image {
+                    id: editButton
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    source: "qrc:/assets/edit.png"
+                }
+
+                MouseArea {
+                    id: editButtonMa
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: {
+                        textField.custEnabled = true
+                        textField.forceActiveFocus()
+                    }
+                }
+            }
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: root.transitionDuration
+                }
             }
         }
 

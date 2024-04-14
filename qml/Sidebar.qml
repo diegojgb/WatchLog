@@ -87,7 +87,7 @@ Rectangle {
 
                 Behavior on color {
                     ColorAnimation {
-                        duration: 250
+                        duration: root.transitionDuration
                     }
                 }
 

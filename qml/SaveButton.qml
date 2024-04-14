@@ -35,7 +35,7 @@ Rectangle {
 
     transitions: Transition {
         ColorAnimation {
-            duration: 200
+            duration: root.transitionDuration
         }
     }
 
