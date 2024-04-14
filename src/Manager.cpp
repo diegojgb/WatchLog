@@ -41,13 +41,16 @@ Monitor* Manager::hashGet(const QString& key)
 
 json Manager::toJSON() const
 {
-    json rootArray = json::array();
+    json obj;
+    json monitorsArray = json::array();
 
     for (const QString& monitorPath: m_monitorsOrder) {
-        rootArray.push_back(m_monitorsHash[monitorPath]->toJSON());
+        monitorsArray.push_back(m_monitorsHash[monitorPath]->toJSON());
     }
 
-    return rootArray;
+    obj["monitors"] = monitorsArray;
+
+    return obj;
 }
 
 void Manager::changeFilePath(const QString& oldKey, const QString& newKey)
