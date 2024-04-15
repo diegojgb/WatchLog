@@ -13,6 +13,7 @@ Item {
     property var notifier
     property bool newNotifier: false
     property Row optionsItem: options
+    property bool hovered: controlMa.containsMouse || textField.hovered
 
     function handleClick() {
         if (control.rotated) {
@@ -28,6 +29,7 @@ Item {
     }
 
     MouseArea {
+        id: controlMa
         anchors.fill: parent
         cursorShape: control.newNotifier ? Qt.PointingHandCursor : Qt.ArrowCursor
         hoverEnabled: true
@@ -41,6 +43,7 @@ Item {
 
         Item {
             Layout.leftMargin: 5
+            Layout.bottomMargin: 2
             Layout.preferredHeight: 12
             Layout.preferredWidth: 12
 
@@ -60,7 +63,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottomMargin: -3
-                color: control.containsMouse ? root.accentColor : "#fff"
+                color: control.hovered ? root.accentColor : "#fff"
                 width: 20
                 height: 20
                 radius: width / 2
@@ -69,7 +72,7 @@ Item {
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: control.containsMouse ? "#fff" : "#005ba1"
+                    color: control.hovered ? "#fff" : "#005ba1"
                     bottomPadding: 6
                     renderType: Text.NativeRendering
                     font.pixelSize: 26
@@ -86,16 +89,17 @@ Item {
 
             text: textField.focused ? notifier.name : metrics.elidedText
 
-            Layout.leftMargin: control.newNotifier ? 5 : 3
+            Layout.leftMargin: control.newNotifier ? 1 : -1
+            Layout.bottomMargin: control.newNotifier ? 4 : 2
             Layout.fillWidth: true
-            color: control.newNotifier ? control.containsMouse ? "#004c87" : "#555" : "#000"
+            color: control.newNotifier ? control.hovered ? "#004c87" : "#555" : "#000"
             renderType: Text.NativeRendering
             font.pointSize: 10
             background.visible: textField.custEnabled
-            bottomPadding: 2
-
+            topPadding: 1
+            bottomPadding: 3
+            leftPadding: 4
             enabled: textField.custEnabled
-            padding: 0
 
             TextMetrics {
                 id: metrics
@@ -128,7 +132,7 @@ Item {
             Layout.fillHeight: true
             Layout.rightMargin: 10
             spacing: 10
-            visible: !textField.focused
+            visible: !textField.focused && options.opacity !== 0
 
             Rectangle {
                 anchors.top: parent.top
