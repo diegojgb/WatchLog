@@ -39,13 +39,14 @@ RowLayout {
 
         background: Rectangle {
             color: control.backgroundColor
-            border.color: "#bbb"
+            border.color: "#ababab"
+            radius: 2
         }
     }
 
     CustomButton {
         Layout.preferredWidth: 80
-        Layout.preferredHeight: control.fieldHeight + 1
+        Layout.preferredHeight: control.fieldHeight
         text: "Browse..."
         onClicked: fileDialog.open()
     }

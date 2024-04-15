@@ -78,7 +78,7 @@ ComboBox {
         implicitWidth: 128
         implicitHeight: 27
         color: "#fff"
-        border.color: "#aaa"
+        border.color: "#ababab"
         border.width: 1
         radius: 2
     }

@@ -13,7 +13,6 @@ Item {
     property var notifier
     property bool newNotifier: false
     property Row optionsItem: options
-    property bool hovered: controlMa.containsMouse || textField.hovered
 
     function handleClick() {
         if (control.rotated) {
@@ -34,6 +33,7 @@ Item {
         cursorShape: control.newNotifier ? Qt.PointingHandCursor : Qt.ArrowCursor
         hoverEnabled: true
         onClicked: control.handleClick()
+        z: newNotifier ? 1 : 0
     }
 
     RowLayout {
@@ -63,7 +63,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottomMargin: -3
-                color: control.hovered ? root.accentColor : "#fff"
+                color: controlMa.containsMouse ? root.accentColor : "#fff"
                 width: 20
                 height: 20
                 radius: width / 2
@@ -72,7 +72,7 @@ Item {
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: control.hovered ? "#fff" : "#005ba1"
+                    color: controlMa.containsMouse ? "#fff" : "#005ba1"
                     bottomPadding: 6
                     renderType: Text.NativeRendering
                     font.pixelSize: 26
@@ -92,7 +92,7 @@ Item {
             Layout.leftMargin: control.newNotifier ? 1 : -1
             Layout.bottomMargin: control.newNotifier ? 4 : 2
             Layout.fillWidth: true
-            color: control.newNotifier ? control.hovered ? "#004c87" : "#555" : "#000"
+            color: control.newNotifier ? controlMa.containsMouse ? "#004c87" : "#555" : "#000"
             renderType: Text.NativeRendering
             font.pointSize: 10
             background.visible: textField.custEnabled
@@ -132,7 +132,8 @@ Item {
             Layout.fillHeight: true
             Layout.rightMargin: 10
             spacing: 10
-            visible: !textField.focused && options.opacity !== 0
+            visible: !control.newNotifier && !textField.focused
+                     && options.opacity !== 0
 
             Rectangle {
                 anchors.top: parent.top

@@ -38,7 +38,7 @@ Column {
             anchors.rightMargin: 22
             newNotifier: control.newNotifier
             cusTopMargin: 20
-            custBottomMargin: 12
+            custBottomMargin: 13
             notifier: control.notifier
 
             onCanceled: exp.show = false

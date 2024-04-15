@@ -14,5 +14,6 @@
         <file>qml/CusSwitch.qml</file>
         <file>qml/Sidebar.qml</file>
         <file>qml/Notifier.qml</file>
+        <file>qml/CustomTextField.qml</file>
     </qresource>
 </RCC>
