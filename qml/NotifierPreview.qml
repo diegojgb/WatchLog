@@ -143,7 +143,7 @@ Item {
                 anchors.topMargin: 3
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 3
-                width: 25
+                width: 26
                 color: editButtonMa.containsMouse ? "#ccc" : root.whiteColor
                 radius: 4
 
@@ -178,7 +178,7 @@ Item {
                 anchors.topMargin: 1
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 2.5
-                width: 25
+                width: 26
                 color: trashButtonMa.containsMouse ? "#ccc" : root.whiteColor
                 radius: 4
 
