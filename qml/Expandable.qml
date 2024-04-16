@@ -8,6 +8,8 @@ Rectangle {
     border.color: "#bbb"
     border.width: 1
     clip: true
+    bottomLeftRadius: 8
+    bottomRightRadius: 8
 
     default property alias item: expanded.sourceComponent
     property bool show: false
