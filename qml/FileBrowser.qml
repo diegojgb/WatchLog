@@ -6,7 +6,7 @@ import QtQuick.Controls.Fusion
 RowLayout {
     id: control
 
-    required property var filePath
+    property string filePath: ""
     property color backgroundColor: "#e6e6e6"
     property int fieldHeight: 25
     property FileDialog fileDialog: fileDialogItem

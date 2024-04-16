@@ -115,10 +115,100 @@ Rectangle {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
                     hoverEnabled: true
+
+                    onClicked: addMonitorDialog.open()
                 }
             }
         }
     }
-    // Save button
+
     SaveButton {}
+
+    Dialog {
+        id: addMonitorDialog
+        anchors.centerIn: Overlay.overlay
+        modal: true
+        width: 300
+        height: 250
+
+        // Makes widgets lose focus when clicked outside.
+        Pane {
+            anchors.fill: parent
+            focusPolicy: Qt.ClickFocus
+        }
+
+        Overlay.modal: Rectangle {
+            color: Qt.rgba(0, 0, 0, 0.4) // Use whatever color/opacity you like
+        }
+
+        background: Rectangle {
+            height: addMonitorDialog.height
+            width: addMonitorDialog.width
+            radius: 7
+        }
+
+        ColumnLayout {
+            id: dialogColumn
+            anchors.top: parent.top
+            anchors.topMargin: 14
+            anchors.left: parent.left
+            anchors.leftMargin: 12
+            anchors.right: parent.right
+            anchors.rightMargin: 12
+
+            Label {
+                text: "Add monitor"
+                renderType: Text.NativeRendering
+                font.pointSize: 14
+                font.bold: true
+            }
+
+            Label {
+                Layout.topMargin: 14
+                Layout.preferredWidth: parent.width
+                text: "Name"
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                font.weight: Font.DemiBold
+            }
+
+            CustomTextField {
+                Layout.fillWidth: true
+                placeholderText: "Enter monitor name..."
+            }
+
+            Label {
+                Layout.topMargin: 10
+                Layout.preferredWidth: parent.width
+                text: "File path"
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                font.weight: Font.DemiBold
+            }
+
+            FileBrowser {// fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"
+            }
+
+            Row {
+                Layout.topMargin: 30
+                Layout.alignment: Qt.AlignRight
+                spacing: 5
+
+                CustomButton {
+                    width: 80
+                    text: "Cancel"
+
+                    onClicked: addMonitorDialog.close()
+                }
+
+                CustomButton {
+                    width: 80
+                    bgItem.color: pressed ? "#d0ffff" : "#fff"
+                    bgItem.border.color: hovered ? "#44a9ff" : "#0078d4"
+                    textItem.color: "#0078d4"
+                    text: "Add"
+                }
+            }
+        }
+    }
 }
