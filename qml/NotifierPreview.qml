@@ -8,11 +8,13 @@ Item {
     anchors.right: parent.right
     height: childrenRect.height
 
-    signal customClicked
     property bool rotated: false
     property var notifier
     property bool newNotifier: false
     property Row optionsItem: options
+
+    signal customClicked
+    signal deleteSignal
 
     function handleClick() {
         if (control.rotated) {
@@ -126,15 +128,16 @@ Item {
             }
         }
 
-        // Edit button
+        // Edit and trash buttons
         Row {
             id: options
             Layout.fillHeight: true
             Layout.rightMargin: 10
-            spacing: 10
+            spacing: 5
             visible: !control.newNotifier && !textField.focused
                      && options.opacity !== 0
 
+            // Edit Button
             Rectangle {
                 anchors.top: parent.top
                 anchors.topMargin: 3
@@ -151,7 +154,6 @@ Item {
                 }
 
                 Image {
-                    id: editButton
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     source: "qrc:/assets/edit.png"
@@ -167,6 +169,38 @@ Item {
                         textField.custEnabled = true
                         textField.forceActiveFocus()
                     }
+                }
+            }
+
+            // Trash Button
+            Rectangle {
+                anchors.top: parent.top
+                anchors.topMargin: 1
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 2.5
+                width: 25
+                color: trashButtonMa.containsMouse ? "#ccc" : "#fff"
+                radius: 4
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: root.transitionDuration
+                    }
+                }
+
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    source: "qrc:/assets/trash.png"
+                }
+
+                MouseArea {
+                    id: trashButtonMa
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: control.deleteSignal()
                 }
             }
 

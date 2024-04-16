@@ -9,5 +9,6 @@
         <file>assets/watchlog-logo.png</file>
         <file>assets/add-new.png</file>
         <file>assets/edit.png</file>
+        <file>assets/trash.png</file>
     </qresource>
 </RCC>
