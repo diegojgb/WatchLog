@@ -106,7 +106,7 @@ Column {
                 CustomButton {
                     width: 80
                     height: 24
-                    bgItem.color: pressed ? Qt.rgba(1, 0, 0, 0.15) : "#fff"
+                    bgItem.color: pressed ? Qt.rgba(1, 0, 0, 0.15) : root.whiteColor
                     bgItem.border.color: hovered ? "#ff6b40" : "#ff0000"
                     textItem.color: "#ff0000"
                     text: "Delete"

@@ -24,7 +24,7 @@ Button {
         id: bg
         anchors.fill: parent
         opacity: enabled ? 1 : 0.3
-        color: control.pressed ? "#ddd" : "#fff"
+        color: control.pressed ? "#ddd" : root.whiteColor
         border.color: control.hovered ? "#666" : "#ababab"
         border.width: 1
         radius: 2

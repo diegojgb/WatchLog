@@ -124,7 +124,7 @@ Item {
                 renderType: Text.NativeRendering
             }
             FileBrowser {
-                backgroundColor: "#fff"
+                backgroundColor: root.whiteColor
                 fieldHeight: 23
                 filePath: notifier.imagePath
                 fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"]
@@ -151,7 +151,7 @@ Item {
                 renderType: Text.NativeRendering
             }
             FileBrowser {
-                backgroundColor: "#fff"
+                backgroundColor: root.whiteColor
                 fieldHeight: 23
                 filePath: notifier.soundPath
                 fileDialog.nameFilters: ["WAV files (*.wav)"]
@@ -236,7 +236,7 @@ Item {
             CustomButton {
                 width: 80
                 height: 24
-                bgItem.color: pressed ? "#d0ffff" : "#fff"
+                bgItem.color: pressed ? "#d0ffff" : root.whiteColor
                 bgItem.border.color: hovered ? "#44a9ff" : "#0078d4"
                 textItem.color: "#0078d4"
                 text: "Add"
@@ -251,7 +251,7 @@ Item {
         //     Layout.preferredHeight: 24
         //     visible: !control.newNotifier
 
-        //     bgItem.color: pressed ? Qt.rgba(1, 0, 0, 0.15) : "#fff"
+        //     bgItem.color: pressed ? Qt.rgba(1, 0, 0, 0.15) : root.whiteColor
         //     bgItem.border.color: hovered ? "#ff6b40" : "#ff0000"
         //     textItem.color: "#ff0000"
         //     text: "Delete"

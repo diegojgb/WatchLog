@@ -203,7 +203,7 @@ Rectangle {
 
                 CustomButton {
                     width: 80
-                    bgItem.color: pressed ? "#d0ffff" : "#fff"
+                    bgItem.color: pressed ? "#d0ffff" : root.whiteColor
                     bgItem.border.color: hovered ? "#44a9ff" : "#0078d4"
                     textItem.color: "#0078d4"
                     text: "Add"

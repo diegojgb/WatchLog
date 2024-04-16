@@ -65,7 +65,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottomMargin: -3
-                color: controlMa.containsMouse ? root.accentColor : "#fff"
+                color: controlMa.containsMouse ? root.accentColor : root.whiteColor
                 width: 20
                 height: 20
                 radius: width / 2
@@ -144,7 +144,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 3
                 width: 25
-                color: editButtonMa.containsMouse ? "#ccc" : "#fff"
+                color: editButtonMa.containsMouse ? "#ccc" : root.whiteColor
                 radius: 4
 
                 Behavior on color {
@@ -179,7 +179,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 2.5
                 width: 25
-                color: trashButtonMa.containsMouse ? "#ccc" : "#fff"
+                color: trashButtonMa.containsMouse ? "#ccc" : root.whiteColor
                 radius: 4
 
                 Behavior on color {

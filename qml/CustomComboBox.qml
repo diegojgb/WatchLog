@@ -77,13 +77,13 @@ ComboBox {
 
         implicitWidth: 128
         implicitHeight: 27
-        color: "#fff"
+        color: root.whiteColor
         border.color: "#ababab"
         border.width: 1
         radius: 2
     }
 
-    onPressedChanged: background.color = pressed ? "#c3c3c3" : "#fff"
+    onPressedChanged: background.color = pressed ? "#c3c3c3" : root.whiteColor
 
     popup: Popup {
         id: popup
@@ -107,6 +107,6 @@ ComboBox {
             radius: 2
         }
 
-        onVisibleChanged: background.color = visible ? "#c3c3c3" : "#fff"
+        onVisibleChanged: background.color = visible ? "#c3c3c3" : root.whiteColor
     }
 }
