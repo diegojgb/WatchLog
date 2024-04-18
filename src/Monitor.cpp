@@ -15,6 +15,7 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
 {
     startFile();
     readNotifiers(jsonFindByKey(monitorData, "notifiers"));
+    addEmptyNotifier();
 }
 
 void Monitor::startFile()
@@ -162,6 +163,15 @@ void Monitor::notifierDisabled(Notifier* notifier)
 void Monitor::notifierEnabled(Notifier* notifier)
 {
     m_enabledNotifiers.append(notifier);
+}
+
+// Add a notifier that represents a "new notifier" object.
+void Monitor::addEmptyNotifier()
+{
+    Notifier* newNotifier = new Notifier(this);
+    m_notifiers.append(newNotifier);
+    QObject::connect(newNotifier, &Notifier::enabled, this, &Monitor::notifierEnabled);
+    QObject::connect(newNotifier, &Notifier::disabled, this, &Monitor::notifierDisabled);
 }
 
 QString Monitor::filePath() const

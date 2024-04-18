@@ -55,6 +55,7 @@ public slots:
 
     void notifierDisabled(Notifier* notifier);
     void notifierEnabled(Notifier* notifier);
+    void addEmptyNotifier();
 
 signals:
     void nameChanged();
