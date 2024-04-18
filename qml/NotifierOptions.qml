@@ -14,6 +14,7 @@ Item {
     signal canceled
 
     ColumnLayout {
+        id: mainColumn
         anchors.left: parent.left
         anchors.right: parent.right
 
@@ -31,13 +32,14 @@ Item {
             }
 
             CustomTextField {
-                id: field
+                id: regexField
 
                 property string initValue
 
                 Layout.fillWidth: true
                 leftPadding: 5
                 text: notifier.regexStr
+                placeholderText: "Enter a regex expression"
 
                 onActiveFocusChanged: {
                     if (activeFocus)
@@ -50,6 +52,16 @@ Item {
                         root.saveEnabled = true
                 }
             }
+        }
+
+        Text {
+            Layout.leftMargin: descLabel.width + firstItem.spacing
+            Layout.topMargin: -2
+            renderType: Text.NativeRendering
+            text: "Invalid regex expression."
+            color: "#ff0000"
+            font.pointSize: 8
+            visible: regexField.error
         }
 
         RowLayout {
@@ -240,12 +252,22 @@ Item {
                 bgItem.border.color: hovered ? "#44a9ff" : "#0078d4"
                 textItem.color: "#0078d4"
                 text: "Add"
+
+                onClicked: {
+                    try {
+                        let regexp = new RegExp(notifier.regexStr)
+                        regexField.error = false
+                    } catch (error) {
+                        regexField.error = true
+                        console.error("Invalid regular expression")
+                    }
+                }
             }
         }
 
         Item {
             width: 1
-            height: control.custBottomMargin - 5 // 5 is the default spacing of the ColumnLayout.
+            height: control.custBottomMargin - mainColumn.spacing
         }
     }
 }
