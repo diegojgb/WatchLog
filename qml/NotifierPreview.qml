@@ -35,6 +35,7 @@ Item {
         cursorShape: control.newNotifier ? Qt.PointingHandCursor : Qt.ArrowCursor
         hoverEnabled: true
         onClicked: control.handleClick()
+        focusPolicy: Qt.ClickFocus
         z: newNotifier ? 1 : 0
     }
 
