@@ -243,21 +243,6 @@ Item {
             }
         }
 
-        // CustomButton {
-        //     Layout.alignment: Qt.AlignRight | Qt.AlignTop
-        //     Layout.topMargin: -12
-        //     Layout.bottomMargin: 6
-        //     Layout.preferredWidth: 80
-        //     Layout.preferredHeight: 24
-        //     visible: !control.newNotifier
-
-        //     bgItem.color: pressed ? Qt.rgba(1, 0, 0, 0.15) : root.whiteColor
-        //     bgItem.border.color: hovered ? "#ff6b40" : "#ff0000"
-        //     textItem.color: "#ff0000"
-        //     text: "Delete"
-
-        //     onClicked: deleteDialog.open()
-        // }
         Item {
             width: 1
             height: control.custBottomMargin - 5 // 5 is the default spacing of the ColumnLayout.

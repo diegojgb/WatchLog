@@ -132,7 +132,7 @@ Item {
         Row {
             id: options
             Layout.fillHeight: true
-            Layout.rightMargin: 10
+            Layout.rightMargin: 3
             spacing: 5
             visible: !control.newNotifier && !textField.focused
                      && options.opacity !== 0
