@@ -35,22 +35,25 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
       m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)},
       regex{regexStr.toStdString()}
 {
-    if (duration != "System" && duration != "Short" && duration != "Long") {
+    if (regexStr == "" && (soundEnabled || toastEnabled))
+        Utils::throwError("Can't enable a Notification with an empty regex pattern");
+
+    if (duration != "System" && duration != "Short" && duration != "Long")
         Utils::throwError("Invalid duration value: must be either \"System\", \"Short\" or \"Long\"");
-    }
-    if (std::filesystem::path(soundPath.toStdString()).extension() != ".wav") {
+
+    if (std::filesystem::path(soundPath.toStdString()).extension() != ".wav")
         Utils::throwError("Invalid soundFile type (must be .wav): " + soundPath.toStdString());
-    }
-    if (!std::filesystem::exists(soundPath.toStdString())) {
+
+    if (!std::filesystem::exists(soundPath.toStdString()))
         Utils::throwError("Specified soundFile doesn't exist: " + soundPath.toStdString());
-    }
+
     auto imageExtension = std::filesystem::path(imagePath.toStdString()).extension();
-    if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png") {
+    if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png")
         Utils::throwError("Invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString());
-    }
-    if (!std::filesystem::exists(imagePath.toStdString())) {
+
+    if (!std::filesystem::exists(imagePath.toStdString()))
         Utils::throwError("Specified image file doesn't exist: " + imagePath.toStdString());
-    }
+
 
     templ.setImagePath(imagePath.toStdWString());
     templ.setTextField(title
@@ -246,6 +249,11 @@ void Notifier::setToastEnabled(bool newToastEnabled)
     if (m_toastEnabled == newToastEnabled)
         return;
 
+    if (m_regexStr == "" && newToastEnabled) {
+        Utils::showInfo("Can't enable a Notification with an empty regex pattern");
+        return;
+    }
+
     if (!m_soundEnabled && !m_toastEnabled)
     {
         emit enabled(this);
@@ -269,6 +277,11 @@ void Notifier::setSoundEnabled(bool newSoundEnabled)
 {
     if (m_soundEnabled == newSoundEnabled)
         return;
+
+    if (m_regexStr == "" && newSoundEnabled) {
+        Utils::showInfo("Can't enable a Notification with an empty regex pattern");
+        return;
+    }
 
     if (!m_soundEnabled && !m_toastEnabled)
     {

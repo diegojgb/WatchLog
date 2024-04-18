@@ -8,6 +8,7 @@ class Utils
 {
 public:
     static void throwError(std::string errorStr);
+    static void showInfo(std::string infoStr);
 };
 
 #endif // UTILS_H

@@ -39,9 +39,17 @@ public:
     std::regex regex;
     WinToastTemplate templ;
 
-    explicit Notifier(QObject *parent, QString name, QString regexStr, QString title,
-                      QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled,
-                      bool soundEnabled, bool sticky);
+    explicit Notifier(QObject *parent,
+                      QString name = "Add notification",
+                      QString regexStr = "",
+                      QString title = Notifier::getDefaultTitle(),
+                      QString desc = Notifier::getDefaultDesc(),
+                      QString imagePath = Notifier::getDefaultImg(),
+                      QString soundPath = QString::fromStdString(SystemMedia::getDefaultSound()),
+                      QString duration = "System",
+                      bool toastEnabled = false,
+                      bool soundEnabled = false,
+                      bool sticky = false);
 
     QString title() const;
     void setTitle(const QString &newTitle);
