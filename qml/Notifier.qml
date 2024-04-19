@@ -8,13 +8,17 @@ Column {
     required property var notifier
     property bool newNotifier: false
 
+    signal addedNew
+    signal deleted
+
     NotifierPreview {
+        id: preview
         notifier: control.notifier
         newNotifier: control.newNotifier
         onCustomClicked: exp.show = !exp.show
         optionsItem.opacity: exp.show ? 1 : 0
 
-        onDeleteSignal: deleteDialog.open()
+        onDeleted: deleteDialog.open()
     }
 
     Item {
@@ -34,6 +38,7 @@ Column {
         id: exp
 
         NotifierOptions {
+            id: options
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.leftMargin: 10
@@ -43,7 +48,16 @@ Column {
             custBottomMargin: 13
             notifier: control.notifier
 
-            onCanceled: exp.show = false
+            onCanceled: {
+                exp.show = false
+                preview.cancelNew()
+            }
+            onAddedNew: {
+                control.addedNew()
+                preview.finishNew()
+                exp.show = !exp.show
+            }
+            onNewNotifierChanged: control.newNotifier = options.newNotifier
         }
     }
 
@@ -106,10 +120,13 @@ Column {
                 CustomButton {
                     width: 80
                     height: 24
-                    bgItem.color: pressed ? Qt.rgba(1, 0, 0, 0.15) : root.whiteColor
+                    bgItem.color: pressed ? Qt.rgba(1, 0, 0,
+                                                    0.15) : root.whiteColor
                     bgItem.border.color: hovered ? "#ff6b40" : "#ff0000"
                     textItem.color: "#ff0000"
                     text: "Delete"
+
+                    onClicked: control.deleted()
                 }
             }
         }

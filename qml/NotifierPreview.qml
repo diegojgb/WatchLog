@@ -8,25 +8,42 @@ Item {
     anchors.right: parent.right
     height: childrenRect.height
 
-    property bool rotated: false
     property var notifier
     property bool newNotifier: false
+    property bool newNotifierOngoing: false
     property Row optionsItem: options
 
     signal customClicked
-    signal deleteSignal
+    signal deleted
 
     function handleClick() {
-        if (control.rotated) {
-            arrowRotation.from = 90
-            arrowRotation.to = 0
-        } else {
-            arrowRotation.from = 0
-            arrowRotation.to = 90
+        if (!newNotifierOngoing)
+            control.customClicked()
+
+        if (arrow.visible)
+            arrow.rotate()
+
+        if (control.newNotifier) {
+            control.newNotifier = false
+            control.newNotifierOngoing = true
+            textField.text = ""
+            textField.custFocus()
         }
-        arrowRotation.running = true
-        control.customClicked()
-        control.rotated = !control.rotated
+    }
+
+    function cancelNew() {
+        control.newNotifier = true
+        control.newNotifierOngoing = false
+        textField.text = "Add notification"
+        textField.custUnfocus()
+    }
+
+    function finishNew() {
+        control.newNotifier = false
+        control.newNotifierOngoing = false
+        textField.custUnfocus()
+        arrow.rotated = true
+        arrow.rotate()
     }
 
     MouseArea {
@@ -34,9 +51,10 @@ Item {
         anchors.fill: parent
         cursorShape: control.newNotifier ? Qt.PointingHandCursor : Qt.ArrowCursor
         hoverEnabled: true
-        onClicked: control.handleClick()
         focusPolicy: Qt.ClickFocus
         z: newNotifier ? 1 : 0
+
+        onClicked: control.handleClick()
     }
 
     RowLayout {
@@ -49,11 +67,27 @@ Item {
             Layout.bottomMargin: 2
             Layout.preferredHeight: 12
             Layout.preferredWidth: 12
+            visible: !newNotifierOngoing
 
             Image {
                 id: arrow
-                visible: !control.newNotifier
+                visible: !control.newNotifier && !control.newNotifierOngoing
                 source: "qrc:/assets/right-arrow.png"
+
+                property bool rotated: false
+
+                function rotate() {
+                    if (arrow.rotated) {
+                        arrowRotation.from = 90
+                        arrowRotation.to = 0
+                    } else {
+                        arrowRotation.from = 0
+                        arrowRotation.to = 90
+                    }
+
+                    arrowRotation.running = true
+                    arrow.rotated = !arrow.rotated
+                }
 
                 RotationAnimator {
                     id: arrowRotation
@@ -70,7 +104,7 @@ Item {
                 width: 20
                 height: 20
                 radius: width / 2
-                visible: control.newNotifier
+                visible: control.newNotifier || control.newNotifierOngoing
 
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
@@ -84,17 +118,19 @@ Item {
             }
         }
 
-        TextField {
+        CustomTextField {
             id: textField
 
             property bool focused: false
             property bool custEnabled: false
 
             text: textField.focused ? notifier.name : metrics.elidedText
+            placeholderText: "Enter notification name"
 
-            Layout.leftMargin: control.newNotifier ? 1 : -1
+            Layout.leftMargin: control.newNotifierOngoing ? 0 : control.newNotifier ? 1 : -1
             Layout.bottomMargin: control.newNotifier ? 4 : 2
             Layout.fillWidth: true
+            Layout.preferredHeight: 24
             color: control.newNotifier ? controlMa.containsMouse ? "#004c87" : "#555" : "#000"
             renderType: Text.NativeRendering
             font.pointSize: 10
@@ -122,8 +158,30 @@ Item {
             }
 
             onEditingFinished: {
-                notifier.name = textField.text
+                if (textField.text === "") {
+                    if (control.newNotifierOngoing)
+                        textField.error = true
+                    else
+                        textField.text = notifier.name
+                } else {
+                    notifier.name = textField.text
+                    textField.error = false
+                }
+
+                if (!control.newNotifierOngoing) {
+                    textField.custEnabled = false
+                }
+
                 parent.forceActiveFocus()
+                textField.focused = false
+            }
+
+            function custFocus() {
+                textField.custEnabled = true
+                textField.forceActiveFocus()
+            }
+
+            function custUnfocus() {
                 textField.focused = false
                 textField.custEnabled = false
             }
@@ -135,7 +193,7 @@ Item {
             Layout.fillHeight: true
             Layout.rightMargin: 3
             spacing: 5
-            visible: !control.newNotifier && !textField.focused
+            visible: !control.newNotifierOngoing && !textField.focused
                      && options.opacity !== 0
 
             // Edit Button
@@ -167,8 +225,7 @@ Item {
                     cursorShape: Qt.PointingHandCursor
 
                     onClicked: {
-                        textField.custEnabled = true
-                        textField.forceActiveFocus()
+                        textField.custFocus()
                     }
                 }
             }
@@ -201,7 +258,7 @@ Item {
                     hoverEnabled: true
                     cursorShape: Qt.PointingHandCursor
 
-                    onClicked: control.deleteSignal()
+                    onClicked: control.deleted()
                 }
             }
 

@@ -12,6 +12,7 @@ Item {
     property bool newNotifier: false
 
     signal canceled
+    signal addedNew
 
     ColumnLayout {
         id: mainColumn
@@ -241,10 +242,9 @@ Item {
                 width: 80
                 height: 24
                 text: "Cancel"
-                onClicked: {
-                    control.canceled()
-                }
+                onClicked: control.canceled()
             }
+
             CustomButton {
                 width: 80
                 height: 24
@@ -256,11 +256,15 @@ Item {
                 onClicked: {
                     try {
                         let regexp = new RegExp(notifier.regexStr)
-                        regexField.error = false
                     } catch (error) {
                         regexField.error = true
                         console.error("Invalid regular expression")
+                        return
                     }
+
+                    regexField.error = false
+                    control.addedNew()
+                    control.newNotifier = false
                 }
             }
         }
