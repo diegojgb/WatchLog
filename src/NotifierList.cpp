@@ -15,8 +15,7 @@ QVariant NotifierList::data(const QModelIndex& index, int role) const
         return QVariant();
 
     if(role == Qt::DisplayRole) {
-        qDebug() << m_notifiers[index.row()]->name();
-        return QVariant::fromValue(m_notifiers[index.row()]->name());
+        return QVariant::fromValue(m_notifiers[index.row()]);
     }
 
     return QVariant();

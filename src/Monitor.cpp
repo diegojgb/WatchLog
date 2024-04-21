@@ -31,6 +31,11 @@ void Monitor::startFile()
     m_file.seekg(0, std::ios::end);
 }
 
+NotifierList* Monitor::getNotifierList()
+{
+    return &m_notifiers;
+}
+
 json Monitor::toJSON() const
 {
     json obj;
@@ -41,9 +46,8 @@ json Monitor::toJSON() const
     obj["notifiers"] = json::array();
     obj["manyPerUpdate"] = manyPerUpdate;
 
-    for (const Notifier* notifier: m_notifiers) {
-        obj["notifiers"].push_back(notifier->toJSON());
-    }
+    for (int i = 0; i < m_notifiers.rowCount(); i++)
+        obj["notifiers"].push_back(m_notifiers.at(i)->toJSON());
 
     return obj;
 }
@@ -145,15 +149,15 @@ void Monitor::setName(const QString &newName)
     emit nameChanged();
 }
 
-int Monitor::nListLength() const
-{
-    return m_notifiers.length();
-}
+// int Monitor::nListLength() const
+// {
+//     return m_notifiers.length();
+// }
 
-Notifier* Monitor::nListAt(int i) const
-{
-    return m_notifiers[i];
-}
+// Notifier* Monitor::nListAt(int i) const
+// {
+//     return m_notifiers[i];
+// }
 
 void Monitor::notifierDisabled(Notifier* notifier)
 {

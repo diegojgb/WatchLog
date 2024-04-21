@@ -3,6 +3,7 @@
 
 #include "nlohmann/json.hpp"
 #include "Notifier.h"
+#include "NotifierList.h"
 #include "Utils.h"
 
 #include <QObject>
@@ -50,12 +51,13 @@ public:
     void showTypeError(json::type_error e, const std::string &key);
 
 public slots:
-    int nListLength() const;
-    Notifier* nListAt(int i) const;
+    // int nListLength() const;
+    // Notifier* nListAt(int i) const;
 
     void notifierDisabled(Notifier* notifier);
     void notifierEnabled(Notifier* notifier);
     void addEmptyNotifier();
+    NotifierList* getNotifierList();
 
 signals:
     void nameChanged();
@@ -67,7 +69,8 @@ signals:
 
 private:
     QString m_name;
-    QList<Notifier*> m_notifiers;
+    // QList<Notifier*> m_notifiers;
+    NotifierList m_notifiers;
     QString m_filePath;
     bool m_enabled;
     std::string m_defaultImage;
