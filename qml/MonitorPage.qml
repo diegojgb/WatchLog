@@ -116,6 +116,7 @@ ScrollView {
                     notifier: model.display
 
                     onAddedNew: monitor.addEmptyNotifier()
+                    onDeleted: monitor.removeNotifier(model.index)
                 }
             }
         }

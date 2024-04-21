@@ -163,6 +163,17 @@ void Monitor::addEmptyNotifier()
     QObject::connect(newNotifier, &Notifier::disabled, this, &Monitor::notifierDisabled);
 }
 
+void Monitor::removeNotifier(int i)
+{
+    Notifier* notifier = m_notifiers.at(i);
+
+    if (notifier->soundEnabled() || notifier->toastEnabled())
+        m_enabledNotifiers.removeOne(notifier);
+
+    m_notifiers.removeAt(i);
+    delete notifier;
+}
+
 QString Monitor::filePath() const
 {
     return m_filePath;

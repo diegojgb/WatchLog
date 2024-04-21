@@ -19,7 +19,7 @@ public:
 
 public slots:
     void append(Notifier* notifier);
-    void remove(int i);
+    void removeAt(int i);
     Notifier* at(int i) const;
 
 private:

@@ -38,7 +38,7 @@ void NotifierList::append(Notifier* notifier)
     endInsertRows();
 }
 
-void NotifierList::remove(int i)
+void NotifierList::removeAt(int i)
 {
     if (i < 0 || i >= m_notifiers.size())
         return;
