@@ -10,19 +10,6 @@ ScrollView {
 
     property var monitor
 
-    function addNewNotifier() {
-        monitor.addEmptyNotifier()
-
-        let newNotifier = Qt.createComponent("Notifier.qml").createObject(
-                content, {
-                    "notifier": monitor.nListAt(monitor.nListLength() - 1),
-                    "Layout.fillWidth": true,
-                    "newNotifier": true
-                })
-
-        newNotifier.addedNew.connect(page.addNewNotifier)
-    }
-
     Flickable {
         anchors.fill: parent
         anchors.bottomMargin: 40
@@ -120,17 +107,15 @@ ScrollView {
 
             Repeater {
                 id: repeater
-                model: monitor.nListLength()
+                model: monitor.notifiers
 
                 Notifier {
                     Layout.fillWidth: true
-                    newNotifier: modelData === monitor.nListLength() - 1
-                    notifier: monitor.nListAt(modelData)
+                    newNotifier: model.index === monitor.notifiers.rowCount(
+                                     ) - 1
+                    notifier: model.display
 
-                    // Needed for delegates with required properties.
-                    required property var modelData
-
-                    onAddedNew: page.addNewNotifier()
+                    onAddedNew: monitor.addEmptyNotifier()
                 }
             }
         }

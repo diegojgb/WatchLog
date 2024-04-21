@@ -5,7 +5,7 @@ import QtQuick.Controls.Fusion
 Column {
     id: control
 
-    required property var notifier
+    property var notifier
     property bool newNotifier: false
 
     signal addedNew

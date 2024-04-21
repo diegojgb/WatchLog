@@ -13,6 +13,7 @@ class NotifierList : public QAbstractListModel
 public:
     explicit NotifierList(QObject *parent = nullptr);
 
+    // QAbstractListModel interface
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 

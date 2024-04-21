@@ -4,7 +4,6 @@
 #include "nlohmann/json.hpp"
 #include "Notifier.h"
 #include "NotifierList.h"
-#include "Utils.h"
 
 #include <QObject>
 #include <QVarLengthArray>
@@ -20,6 +19,7 @@ class Monitor : public QObject
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged FINAL)
     Q_PROPERTY(QString filePath READ filePath WRITE setFilePath NOTIFY filePathChanged FINAL)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
+    Q_PROPERTY(NotifierList* notifiers READ notifiers CONSTANT)
 
 public:
     std::ifstream m_file;
@@ -50,14 +50,12 @@ public:
 
     void showTypeError(json::type_error e, const std::string &key);
 
-public slots:
-    // int nListLength() const;
-    // Notifier* nListAt(int i) const;
+    NotifierList* notifiers();
 
+public slots:
     void notifierDisabled(Notifier* notifier);
     void notifierEnabled(Notifier* notifier);
     void addEmptyNotifier();
-    NotifierList* getNotifierList();
 
 signals:
     void nameChanged();
@@ -69,7 +67,6 @@ signals:
 
 private:
     QString m_name;
-    // QList<Notifier*> m_notifiers;
     NotifierList m_notifiers;
     QString m_filePath;
     bool m_enabled;
