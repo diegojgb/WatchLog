@@ -53,7 +53,11 @@ Column {
                 preview.cancelNew()
             }
             onAddedNew: {
+                if (!preview.isValid())
+                    return
+
                 control.addedNew()
+                control.newNotifier = false
                 preview.finishNew()
                 exp.show = !exp.show
             }

@@ -39,11 +39,14 @@ Item {
     }
 
     function finishNew() {
-        control.newNotifier = false
         control.newNotifierOngoing = false
         textField.custUnfocus()
         arrow.rotated = true
         arrow.rotate()
+    }
+
+    function isValid() {
+        return !textField.error
     }
 
     MouseArea {
