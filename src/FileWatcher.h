@@ -24,7 +24,6 @@ public slots:
     void addFilePath(const QString &filePath);
     void removeFilePath(const QString &filePath);
     void addAllMonitors();
-    void removeAllMonitors();
 
 signals:
     void matchFound(const WinToastTemplate& templ);

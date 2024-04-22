@@ -25,10 +25,6 @@ void FileWatcher::removeFilePath(const QString &filePath)
     m_watcher.removePath(filePath);
 }
 
-void FileWatcher::removeAllMonitors() {
-
-}
-
 void FileWatcher::onFileChanged(const QString &path)
 {
     // In case the file was removed and added back again immediately.
