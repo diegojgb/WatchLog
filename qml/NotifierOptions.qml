@@ -48,9 +48,27 @@ Item {
                 }
 
                 onEditingFinished: {
-                    notifier.regexStr = text
-                    if (initValue !== text)
+                    if (isValid() && initValue !== text) {
+                        notifier.regexStr = text
                         root.saveEnabled = true
+                    }
+                }
+
+                function isValid() {
+                    if (regexField.text === "") {
+                        regexField.error = true
+                        return false
+                    }
+
+                    try {
+                        let regexp = new RegExp(regexField.text)
+                    } catch (error) {
+                        regexField.error = true
+                        return false
+                    }
+
+                    regexField.error = false
+                    return true
                 }
             }
         }
@@ -89,9 +107,10 @@ Item {
                 }
 
                 onEditingFinished: {
-                    notifier.title = text
-                    if (initValue !== text)
+                    if (initValue !== text) {
+                        notifier.title = text
                         root.saveEnabled = true
+                    }
                 }
             }
         }
@@ -119,9 +138,10 @@ Item {
                 }
 
                 onEditingFinished: {
-                    notifier.desc = text
-                    if (initValue !== text)
+                    if (initValue !== text) {
+                        notifier.desc = text
                         root.saveEnabled = true
+                    }
                 }
             }
         }
@@ -224,9 +244,10 @@ Item {
                 Component.onCompleted: loaded = true
 
                 onCheckedChanged: {
-                    notifier.sticky = checked
-                    if (loaded)
+                    if (loaded) {
+                        notifier.sticky = checked
                         root.saveEnabled = true
+                    }
                 }
             }
         }
@@ -254,17 +275,8 @@ Item {
                 text: "Add"
 
                 onClicked: {
-                    try {
-                        let regexp = new RegExp(notifier.regexStr)
-                    } catch (error) {
-                        regexField.error = true
-                        console.error("Invalid regular expression")
-                        return
-                    }
-
-                    regexField.error = false
-                    control.addedNew()
-                    control.newNotifier = false
+                    if (regexField.isValid())
+                        control.addedNew()
                 }
             }
         }

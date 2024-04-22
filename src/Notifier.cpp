@@ -221,6 +221,13 @@ void Notifier::setRegexStr(const QString &newRegexStr)
         templ.setTextField(descCopy.toStdWString(), WinToastTemplate::SecondLine);
     }
 
+    try {
+        regex = std::regex(newRegexStr.toStdString());
+    } catch (const std::exception& e) {
+        std::cerr << "Invalid regex: " << e.what() << std::endl;
+        throw std::runtime_error(e.what());
+    }
+
     emit regexStrChanged();
 }
 
