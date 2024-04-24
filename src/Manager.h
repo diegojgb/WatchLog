@@ -3,6 +3,7 @@
 
 #include "FileWatcher.h"
 #include "Monitor.h"
+#include "MonitorCollection.h"
 
 #include <QObject>
 #include <QHash>
@@ -15,32 +16,26 @@ class Manager: public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QStringList monitorsOrder READ monitorsOrder WRITE setMonitorsOrder NOTIFY monitorsOrderChanged FINAL)
+    Q_PROPERTY(MonitorCollection* monitors READ monitors CONSTANT)
 
 public:
     FileWatcher m_fileWatcher;
 
     explicit Manager(QObject *parent, const json &monitorsData);
 
-    QStringList monitorsOrder() const;
-    void setMonitorsOrder(const QStringList &newMonitorsOrder);
-
     bool hadInitErrors() const;
     json toJSON() const;
 
+    MonitorCollection* monitors();
+
 public slots:
-    Monitor* hashGet(const QString& key);
     void changeFilePath(const QString& oldKey, const QString& newKey);
     void disableMonitor(const Monitor* monitor);
     void enableMonitor(const Monitor* monitor);
     void updateJSON() const;
 
-signals:
-    void monitorsOrderChanged();
-
 private:
-    QHash<QString, Monitor*> m_monitorsHash;
-    QStringList m_monitorsOrder;
+    MonitorCollection m_monitors;
     bool m_error;
 };
 

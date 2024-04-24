@@ -60,10 +60,10 @@ Window {
                 currentIndex: sidebar.tabBar.tabIndex
 
                 Repeater {
-                    model: Manager.monitorsOrder
+                    model: Manager.monitors
 
                     MonitorPage {
-                        monitor: Manager.hashGet(modelData)
+                        monitor: model.edit
                     }
                 }
             }

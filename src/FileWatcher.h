@@ -2,14 +2,13 @@
 #define FILEWATCHER_H
 
 #include "Monitor.h"
-#include "Utils.h"
+#include "MonitorCollection.h"
 
 #include <QObject>
 #include <QFileSystemWatcher>
 #include <QHash>
 #include <windows.h>
 #include <mmsystem.h>
-#include <regex>
 
 
 class FileWatcher: public QObject
@@ -17,7 +16,7 @@ class FileWatcher: public QObject
     Q_OBJECT
 
 public:
-    explicit FileWatcher(QObject* parent, const QHash<QString, Monitor*> &monitorsHash);
+    explicit FileWatcher(QObject* parent, const MonitorCollection &monitors);
 
 public slots:
     void onFileChanged(const QString &path);
@@ -32,7 +31,7 @@ signals:
 private:
     QFileSystemWatcher m_watcher;
     QHash<QString, std::wstring> m_soundsHash;
-    const QHash<QString, Monitor*> &m_monitorsHash;
+    const MonitorCollection& m_monitors;
 };
 
 #endif // FILEWATCHER_H

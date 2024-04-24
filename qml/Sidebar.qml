@@ -47,22 +47,21 @@ Rectangle {
             Repeater {
                 id: tabRepeater
 
-                model: Manager.monitorsOrder
+                model: Manager.monitors
 
                 Tab {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 30
                     Layout.leftMargin: 10
                     Layout.rightMargin: 10
-                    text: Manager.hashGet(modelData).name
-                    enabled: Manager.hashGet(modelData).enabled
-                    selected: tabBarItem.tabIndex == index
+                    text: model.display
+                    enabled: model.edit.enabled
+                    selected: tabBarItem.tabIndex == idx
 
-                    property int index: tabRepeater.model.indexOf(modelData)
+                    property int idx: model.index
 
                     onClicked: {
-                        tabBarItem.tabIndex = tabRepeater.model.indexOf(
-                                    modelData)
+                        tabBarItem.tabIndex = model.index
                     }
                 }
             }

@@ -33,6 +33,8 @@ set(SOURCE_FILES
     src/Registry.cpp
     src/NotifierList.h
     src/NotifierList.cpp
+    src/MonitorCollection.h
+    src/MonitorCollection.cpp
 )
 
 qt_add_executable(appWatchLog 

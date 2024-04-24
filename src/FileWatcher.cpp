@@ -1,17 +1,19 @@
 #include "FileWatcher.h"
 
 
-FileWatcher::FileWatcher(QObject* parent, const QHash<QString, Monitor*> &monitorsHash)
-    : QObject{parent}, m_monitorsHash{monitorsHash}
+FileWatcher::FileWatcher(QObject* parent, const MonitorCollection& monitors)
+    : QObject{parent}, m_monitors{monitors}
 {
     connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &FileWatcher::onFileChanged);
 }
 
 void FileWatcher::addAllMonitors()
 {
-    for (auto i = m_monitorsHash.cbegin(), end = m_monitorsHash.cend(); i != end; ++i) {
-        if (i.value()->enabled())
-            addFilePath(i.key());
+    for (const QString& filePath: m_monitors.getOrder()) {
+        auto monitor = m_monitors.get(filePath);
+
+        if (monitor->enabled())
+            addFilePath(filePath);
     }
 }
 
@@ -36,7 +38,7 @@ void FileWatcher::onFileChanged(const QString &path)
         }
     }
 
-    Monitor* monitor = m_monitorsHash[path];
+    Monitor* monitor = m_monitors.get(path);
 
     if (monitor->m_file.is_open()) {
         std::string line;

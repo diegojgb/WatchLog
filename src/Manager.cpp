@@ -2,7 +2,7 @@
 
 
 Manager::Manager(QObject *parent, const json &data)
-    : QObject{parent}, m_fileWatcher{this, m_monitorsHash}, m_error{false}
+    : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false}
 {
     if (data.empty())
         Utils::throwError("The JSON file is empty");
@@ -17,8 +17,7 @@ Manager::Manager(QObject *parent, const json &data)
             Monitor* newMonitor = new Monitor(this, item);
             QString filePath = QString::fromStdString(item["filePath"].get<std::string>());
 
-            m_monitorsHash.insert(filePath, newMonitor);
-            m_monitorsOrder.append(filePath);
+            m_monitors.insert(filePath, newMonitor);
 
             QObject::connect(newMonitor, &Monitor::filePathChangedOverload, this, &Manager::changeFilePath);
             QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
@@ -34,18 +33,13 @@ Manager::Manager(QObject *parent, const json &data)
     }
 }
 
-Monitor* Manager::hashGet(const QString& key)
-{
-    return m_monitorsHash[key];
-}
-
 json Manager::toJSON() const
 {
     json obj;
     json monitorsArray = json::array();
 
-    for (const QString& monitorPath: m_monitorsOrder) {
-        monitorsArray.push_back(m_monitorsHash[monitorPath]->toJSON());
+    for (const QString& monitorPath: m_monitors.getOrder()) {
+        monitorsArray.push_back(m_monitors.get(monitorPath)->toJSON());
     }
 
     obj["monitors"] = monitorsArray;
@@ -55,11 +49,8 @@ json Manager::toJSON() const
 
 void Manager::changeFilePath(const QString& oldKey, const QString& newKey)
 {
-    if (m_monitorsHash.contains(oldKey)) {
-        Monitor* value = m_monitorsHash.value(oldKey);
-        m_monitorsHash.remove(oldKey);
-        m_monitorsHash.insert(newKey, value);
-    }
+    m_monitors.changeFilePath(oldKey, newKey);
+
     m_fileWatcher.removeFilePath(oldKey);
     m_fileWatcher.addFilePath(newKey);
 }
@@ -88,22 +79,12 @@ void Manager::updateJSON() const
     }
 }
 
-QStringList Manager::monitorsOrder() const
-{
-    return m_monitorsOrder;
-}
-
-void Manager::setMonitorsOrder(const QStringList &newMonitorsOrder)
-{
-    if (m_monitorsOrder == newMonitorsOrder)
-        return;
-
-    m_monitorsOrder = newMonitorsOrder;
-
-    emit monitorsOrderChanged();
-}
-
 bool Manager::hadInitErrors() const
 {
     return m_error;
+}
+
+MonitorCollection* Manager::monitors()
+{
+    return &m_monitors;
 }
