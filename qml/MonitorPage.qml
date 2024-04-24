@@ -91,14 +91,17 @@ ScrollView {
             Row {
                 spacing: 20
                 Layout.alignment: Qt.AlignRight
+                Layout.preferredHeight: 19
                 Layout.rightMargin: 8
 
                 Label {
+                    visible: repeater.count > 1
                     text: "TOAST"
                     font.pointSize: 10.5
                     font.bold: true
                 }
                 Label {
+                    visible: repeater.count > 1
                     text: "SOUND"
                     font.pointSize: 10.5
                     font.bold: true

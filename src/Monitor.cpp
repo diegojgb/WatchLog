@@ -18,6 +18,17 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
     addEmptyNotifier();
 }
 
+Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath)
+    : QObject{parent},
+      m_name{name},
+      m_filePath{filePath},
+      m_enabled{false},
+      m_defaultImage{Notifier::getDefaultImg().toStdString()},
+      manyPerUpdate{false}
+{
+    addEmptyNotifier();
+}
+
 void Monitor::startFile()
 {
     if (m_file.is_open())

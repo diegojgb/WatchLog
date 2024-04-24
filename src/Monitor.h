@@ -29,6 +29,7 @@ public:
     static json jsonFindByKey(const json &data, const std::string &key);
 
     explicit Monitor(QObject *parent, const json &monitorData);
+    explicit Monitor(QObject *parent, const QString& name, const QString& filePath);
 
     QString name() const;
     void setName(const QString &newName);

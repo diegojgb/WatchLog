@@ -79,6 +79,18 @@ void Manager::updateJSON() const
     }
 }
 
+void Manager::addMonitor(const QString &name, const QString &filePath)
+{
+    Monitor* newMonitor = new Monitor(this, name, filePath);
+
+    m_monitors.insert(filePath, newMonitor);
+
+    QObject::connect(newMonitor, &Monitor::filePathChangedOverload, this, &Manager::changeFilePath);
+    QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
+    QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
+    QObject::connect(&m_fileWatcher, &FileWatcher::fileReset, newMonitor, &Monitor::startFile);
+}
+
 bool Manager::hadInitErrors() const
 {
     return m_error;

@@ -34,16 +34,24 @@ Monitor* MonitorCollection::get(const QString &filePath) const
 
 void MonitorCollection::insert(QString filePath, Monitor* monitor)
 {
+    int newIndex = m_order.size();
+
+    beginInsertRows(QModelIndex(), newIndex, newIndex);
     m_hash.insert(filePath, monitor);
     m_order.append(filePath);
+    endInsertRows();
 }
 
 void MonitorCollection::remove(QString &filePath)
 {
     Monitor* monitor = m_hash[filePath];
+    int index = m_order.indexOf(filePath);
 
+    beginRemoveRows(QModelIndex(), index, index);
+    monitor->setEnabled(false);
     m_hash.remove(filePath);
-    m_order.removeOne(filePath);
+    m_order.removeAt(index);
+    endRemoveRows();
 
     delete monitor;
 }

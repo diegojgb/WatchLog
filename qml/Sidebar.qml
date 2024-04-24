@@ -46,7 +46,6 @@ Rectangle {
 
             Repeater {
                 id: tabRepeater
-
                 model: Manager.monitors
 
                 Tab {
@@ -172,6 +171,7 @@ Rectangle {
             }
 
             CustomTextField {
+                id: name
                 Layout.fillWidth: true
                 placeholderText: "Enter monitor name..."
             }
@@ -185,7 +185,9 @@ Rectangle {
                 font.weight: Font.DemiBold
             }
 
-            FileBrowser {// fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"
+            FileBrowser {
+                id: fileBrowser
+                // fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"
             }
 
             Row {
@@ -206,6 +208,12 @@ Rectangle {
                     bgItem.border.color: hovered ? "#44a9ff" : "#0078d4"
                     textItem.color: "#0078d4"
                     text: "Add"
+
+                    onClicked: {
+                        Manager.addMonitor(name.text, fileBrowser.selectedFile)
+                        tabBarItem.tabIndex = tabRepeater.count - 1
+                        addMonitorDialog.close()
+                    }
                 }
             }
         }

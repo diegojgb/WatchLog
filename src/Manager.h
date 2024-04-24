@@ -33,6 +33,7 @@ public slots:
     void disableMonitor(const Monitor* monitor);
     void enableMonitor(const Monitor* monitor);
     void updateJSON() const;
+    void addMonitor(const QString& name, const QString& filePath);
 
 private:
     MonitorCollection m_monitors;
