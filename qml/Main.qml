@@ -12,7 +12,7 @@ Window {
     height: 560
 
     property color accentColor: "#0078d4"
-    property color whiteColor: "#f0f0f0"
+    property color whiteColor: "#fbfbfb"
     property int transitionDuration: 150
     property bool saveEnabled: false
 

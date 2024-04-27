@@ -7,7 +7,7 @@ RowLayout {
     id: control
 
     property string filePath: ""
-    property color backgroundColor: "#e6e6e6"
+    property color backgroundColor: "#f5f5f5"
     property int fieldHeight: 25
     property FileDialog fileDialog: fileDialogItem
 

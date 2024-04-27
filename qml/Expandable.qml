@@ -4,7 +4,7 @@ Rectangle {
     id: info
     width: parent.width
     height: show ? expanded.height : 0
-    color: "#e6e6e6"
+    color: "#f5f5f5"
     border.color: "#bbb"
     border.width: 1
     clip: true

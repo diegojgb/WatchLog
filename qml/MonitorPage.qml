@@ -9,17 +9,22 @@ ScrollView {
     Layout.fillWidth: true
 
     property var monitor
+    property int custBottomPadding: 40
 
     Flickable {
         anchors.fill: parent
-        anchors.bottomMargin: 40
-        contentHeight: content.height + content.anchors.topMargin + content.anchors.bottomMargin
+        contentHeight: content.height + content.anchors.topMargin + content.anchors.bottomMargin + page.custBottomPadding
         boundsBehavior: Flickable.StopAtBounds
 
         // Makes widgets lose focus when clicked outside.
         Pane {
             anchors.fill: parent
             focusPolicy: Qt.ClickFocus
+
+            background: Rectangle {
+                anchors.fill: parent
+                color: root.whiteColor
+            }
         }
 
         ColumnLayout {
