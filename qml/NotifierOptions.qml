@@ -269,9 +269,7 @@ Item {
             CustomButton {
                 width: 80
                 height: 24
-                bgItem.color: pressed ? "#d0ffff" : root.whiteColor
-                bgItem.border.color: hovered ? "#44a9ff" : "#0078d4"
-                textItem.color: "#0078d4"
+                colorPreset: CustomButton.Color.Blue
                 text: "Add"
 
                 onClicked: {
