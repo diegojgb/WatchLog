@@ -252,29 +252,36 @@ Item {
             }
         }
 
-        Row {
+        Loader {
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.topMargin: -12
             Layout.bottomMargin: 6
-            visible: control.newNotifier
-            spacing: 5
+            sourceComponent: control.newNotifier ? addButtons : undefined
+        }
 
-            CustomButton {
-                width: 80
-                height: 24
-                text: "Cancel"
-                onClicked: control.canceled()
-            }
+        Component {
+            id: addButtons
 
-            CustomButton {
-                width: 80
-                height: 24
-                colorPreset: CustomButton.Color.Blue
-                text: "Add"
+            Row {
+                spacing: 5
 
-                onClicked: {
-                    if (regexField.isValid())
-                        control.addedNew()
+                CustomButton {
+                    width: 80
+                    height: 24
+                    text: "Cancel"
+                    onClicked: control.canceled()
+                }
+
+                CustomButton {
+                    width: 80
+                    height: 24
+                    colorPreset: CustomButton.Color.Blue
+                    text: "Add"
+
+                    onClicked: {
+                        if (regexField.isValid())
+                            control.addedNew()
+                    }
                 }
             }
         }
