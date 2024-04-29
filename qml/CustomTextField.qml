@@ -4,6 +4,7 @@ import QtQuick.Controls.Fusion
 TextField {
     id: control
     renderType: Text.NativeRendering
+    color: control.enabled ? "#000" : "#555"
 
     property bool error: false
     property Rectangle backgroundItem: bg
