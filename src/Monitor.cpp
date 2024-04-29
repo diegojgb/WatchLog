@@ -52,7 +52,7 @@ json Monitor::toJSON() const
     obj["notifiers"] = json::array();
     obj["manyPerUpdate"] = manyPerUpdate;
 
-    for (int i = 0; i < m_notifiers.rowCount(); i++)
+    for (int i = 0; i < m_notifiers.rowCount() - 1; i++)
         obj["notifiers"].push_back(m_notifiers.at(i)->toJSON());
 
     return obj;
