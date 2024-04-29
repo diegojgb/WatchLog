@@ -48,6 +48,13 @@ Column {
             custBottomMargin: 13
             notifier: control.notifier
 
+            onErrorChanged: {
+                if (options.error) {
+                    notifier.toastEnabled = false
+                    notifier.soundEnabled = false
+                }
+            }
+
             onCanceled: {
                 exp.show = false
                 preview.cancelNew()

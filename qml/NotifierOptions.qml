@@ -10,6 +10,7 @@ Item {
     property int cusTopMargin
     property int custBottomMargin
     property bool newNotifier: false
+    property bool error: regexField.error
 
     signal canceled
     signal addedNew
