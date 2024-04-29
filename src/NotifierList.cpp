@@ -4,6 +4,12 @@ NotifierList::NotifierList(QObject *parent)
     : QAbstractListModel{parent}
 {}
 
+NotifierList::~NotifierList()
+{
+    for (auto notifier: m_notifiers)
+        delete notifier;
+}
+
 int NotifierList::rowCount(const QModelIndex& parent) const
 {
     return m_notifiers.size();
