@@ -96,10 +96,17 @@ Column {
                 font.bold: true
             }
 
+            TextMetrics {
+                id: metrics
+                text: notifier.name
+                elide: Qt.ElideRight
+                elideWidth: 300
+            }
+
             Label {
                 Layout.topMargin: 10
                 Layout.preferredWidth: parent.width
-                text: "Are you sure you want to delete <b>\"" + notifier.name + "\"</b>?"
+                text: "Are you sure you want to delete <b>\"" + metrics.elidedText + "\"</b>?"
                 wrapMode: Text.Wrap
                 renderType: Text.NativeRendering
                 verticalAlignment: Text.AlignVCenter

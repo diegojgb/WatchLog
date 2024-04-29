@@ -217,10 +217,17 @@ ScrollView {
                 font.bold: true
             }
 
+            TextMetrics {
+                id: metrics
+                text: monitor.name
+                elide: Qt.ElideRight
+                elideWidth: 150
+            }
+
             Label {
                 Layout.topMargin: 10
                 Layout.preferredWidth: parent.width
-                text: "This will permanently delete <b>\"" + monitor.name
+                text: "This will permanently delete <b>\"" + metrics.elidedText
                       + "\"</b>and all its notifications. This can’t be undone."
                 wrapMode: Text.Wrap
                 renderType: Text.NativeRendering
