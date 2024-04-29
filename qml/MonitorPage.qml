@@ -13,7 +13,8 @@ ScrollView {
 
     Flickable {
         anchors.fill: parent
-        contentHeight: content.height + content.anchors.topMargin + content.anchors.bottomMargin + page.custBottomPadding
+        contentHeight: content.height + content.anchors.topMargin
+                       + content.anchors.bottomMargin + page.custBottomPadding
         boundsBehavior: Flickable.StopAtBounds
 
         // Makes widgets lose focus when clicked outside.
@@ -34,11 +35,73 @@ ScrollView {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.leftMargin: 25
-            anchors.topMargin: 30
+            anchors.topMargin: 20
             anchors.rightMargin: 28
+
+            Rectangle {
+                id: settingsButton
+                Layout.preferredWidth: 30
+                Layout.preferredHeight: 30
+                Layout.alignment: Qt.AlignRight
+                color: settingsButtonMa.containsMouse ? "#ccc" : root.whiteColor
+                radius: 4
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: root.transitionDuration
+                    }
+                }
+
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    source: "qrc:/assets/settings.png"
+                }
+
+                MouseArea {
+                    id: settingsButtonMa
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: {
+
+                        // var x = mouse.x - control.width
+                        // var y = mouse.y
+                        // control.popup(x, y)
+                        if (control.visible) {
+                            control.close()
+                            return
+                        }
+
+                        var x = parent.width - control.width
+                        var y = parent.height
+                        control.popup(x, y)
+                    }
+                }
+
+                Menu {
+                    id: control
+                    closePolicy: Popup.CloseOnPressOutsideParent
+
+                    background: Rectangle {
+                        implicitWidth: 150
+                        color: "#fff"
+                        border.color: "#ababab"
+                        radius: 4
+                    }
+
+                    CustomMenuItem {
+                        text: "Delete"
+                        textItem.color: "#ff0000"
+                    }
+                }
+            }
 
             Label {
                 Layout.fillWidth: true
+                Layout.rightMargin: settingsButton.width
+                Layout.topMargin: -26
                 text: monitor.name
                 font.pointSize: 20
                 font.bold: true

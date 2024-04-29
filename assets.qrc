@@ -10,5 +10,6 @@
         <file>assets/add-new.png</file>
         <file>assets/edit.png</file>
         <file>assets/trash.png</file>
+        <file>assets/settings.png</file>
     </qresource>
 </RCC>

@@ -15,5 +15,6 @@
         <file>qml/Sidebar.qml</file>
         <file>qml/Notifier.qml</file>
         <file>qml/CustomTextField.qml</file>
+        <file>qml/CustomMenuItem.qml</file>
     </qresource>
 </RCC>
