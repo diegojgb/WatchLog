@@ -114,16 +114,11 @@ Column {
                 spacing: 5
 
                 CustomButton {
-                    width: 80
-                    height: 24
                     text: "Cancel"
-
                     onClicked: deleteDialog.close()
                 }
 
                 CustomButton {
-                    width: 80
-                    height: 24
                     colorPreset: CustomButton.Color.Red
                     text: "Delete"
 

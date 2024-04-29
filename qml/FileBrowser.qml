@@ -45,7 +45,6 @@ RowLayout {
     }
 
     CustomButton {
-        Layout.preferredWidth: 80
         Layout.preferredHeight: control.fieldHeight
         text: "Browse..."
         onClicked: fileDialog.open()

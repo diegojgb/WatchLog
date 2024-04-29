@@ -266,15 +266,11 @@ Item {
                 spacing: 5
 
                 CustomButton {
-                    width: 80
-                    height: 24
                     text: "Cancel"
                     onClicked: control.canceled()
                 }
 
                 CustomButton {
-                    width: 80
-                    height: 24
                     colorPreset: CustomButton.Color.Blue
                     text: "Add"
 

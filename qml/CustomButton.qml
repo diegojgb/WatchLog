@@ -1,9 +1,14 @@
 import QtQuick
 import QtQuick.Controls.Fusion
+import QtQuick.Layouts
 
 Button {
     id: control
     font.pointSize: 8
+    Layout.preferredWidth: 80
+    Layout.preferredHeight: 24
+    width: 80
+    height: 24
 
     enum Color {
         Gray,
