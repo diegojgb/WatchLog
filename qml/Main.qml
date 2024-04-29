@@ -59,6 +59,7 @@ Window {
             id: mainbar
             Layout.fillHeight: true
             Layout.fillWidth: true
+            color: root.whiteColor
 
             StackLayout {
                 id: stackView

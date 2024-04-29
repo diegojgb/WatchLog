@@ -153,6 +153,8 @@ Rectangle {
                 id: name
                 Layout.fillWidth: true
                 placeholderText: "Enter monitor name..."
+
+                onEditingFinished: name.error = name.text === ""
             }
 
             Label {
@@ -166,6 +168,10 @@ Rectangle {
 
             FileBrowser {
                 id: fileBrowser
+
+                fileDialog.onAccepted: {
+                    fileBrowser.error = false
+                }
             }
 
             Row {
@@ -185,7 +191,16 @@ Rectangle {
                     text: "Add"
 
                     onClicked: {
-                        Manager.addMonitor(name.text, fileBrowser.selectedFile)
+                        if (name.text === "") {
+                            name.error = true
+                            return
+                        }
+                        if (fileBrowser.filePath === "") {
+                            fileBrowser.error = true
+                            return
+                        }
+
+                        Manager.addMonitor(name.text, fileBrowser.filePath)
                         tabBarItem.tabIndex = tabRepeater.count - 1
                         addMonitorDialog.close()
                     }

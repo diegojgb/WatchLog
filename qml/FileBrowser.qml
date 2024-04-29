@@ -8,8 +8,9 @@ RowLayout {
 
     property string filePath: ""
     property color backgroundColor: "#f5f5f5"
-    property int fieldHeight: 25
+    property int fieldHeight: 24
     property FileDialog fileDialog: fileDialogItem
+    property bool error: false
 
     signal fileAccepted
     signal selectedFileChanged(string newFilePath)
@@ -19,17 +20,22 @@ RowLayout {
         title: "Select a file"
         selectedFile: "file:///" + control.filePath
         fileMode: FileDialog.OpenFile
-        currentFolder: "file:///" + control.filePath.substring(
-                           0, control.filePath.lastIndexOf("/"))
 
         onAccepted: {
             control.filePath = selectedFile.toString().slice(8)
             control.fileAccepted()
+            fileDialogItem.currentFolder = ""
         }
         onSelectedFileChanged: control.selectedFileChanged(selectedFile)
+
+        Component.onCompleted: {
+            if (filePath !== "")
+                fileDialogItem.currentFolder = "file:///" + control.filePath.substring(
+                            0, control.filePath.lastIndexOf("/"))
+        }
     }
 
-    TextField {
+    CustomTextField {
         id: pathField
         Layout.fillWidth: true
         Layout.preferredHeight: control.fieldHeight
@@ -40,12 +46,8 @@ RowLayout {
         bottomPadding: 4
         placeholderText: "No file selected..."
         renderType: Text.NativeRendering
-
-        background: Rectangle {
-            color: control.backgroundColor
-            border.color: "#ababab"
-            radius: 2
-        }
+        backgroundItem.color: control.backgroundColor
+        error: control.error
     }
 
     CustomButton {
