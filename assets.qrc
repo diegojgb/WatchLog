@@ -11,5 +11,6 @@
         <file>assets/edit.png</file>
         <file>assets/trash.png</file>
         <file>assets/settings.png</file>
+        <file>assets/home-image.png</file>
     </qresource>
 </RCC>
