@@ -196,8 +196,8 @@ Item {
             Layout.fillHeight: true
             Layout.rightMargin: 3
             spacing: 5
-            visible: !control.newNotifierOngoing && !textField.focused
-                     && options.opacity !== 0
+            visible: !control.newNotifier && !control.newNotifierOngoing
+                     && !textField.focused && options.opacity !== 0
 
             // Edit Button
             Rectangle {
