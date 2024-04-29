@@ -23,9 +23,9 @@ public:
     const QHash<QString, Monitor*>& getHash() const;
 
 public slots:
-    Monitor* get(const QString& filePath) const;
+    Monitor* get(const QString filePath) const;
     void insert(QString filePath, Monitor* monitor);
-    void remove(QString& filePath);
+    void remove(QString filePath);
 
 private:
     QStringList m_order;

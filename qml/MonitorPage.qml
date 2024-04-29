@@ -11,6 +11,8 @@ ScrollView {
     property var monitor
     property int custBottomPadding: 40
 
+    signal deleted
+
     Flickable {
         anchors.fill: parent
         contentHeight: content.height + content.anchors.topMargin
@@ -94,6 +96,7 @@ ScrollView {
                     CustomMenuItem {
                         text: "Delete"
                         textItem.color: "#ff0000"
+                        onTriggered: deleteDialog.open()
                     }
                 }
             }
@@ -188,6 +191,57 @@ ScrollView {
 
                     onAddedNew: monitor.addEmptyNotifier()
                     onDeleted: monitor.removeNotifier(model.index)
+                }
+            }
+        }
+    }
+
+    CustomDialog {
+        id: deleteDialog
+
+        ColumnLayout {
+            id: dialogColumn
+            anchors.top: parent.top
+            anchors.topMargin: 14
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 12
+
+            Label {
+                text: "Delete?"
+                renderType: Text.NativeRendering
+                font.pointSize: 12
+                font.bold: true
+            }
+
+            Label {
+                Layout.topMargin: 10
+                Layout.preferredWidth: parent.width
+                text: "This will permanently delete <b>\"" + monitor.name
+                      + "\"</b>and all its notifications. This can’t be undone."
+                wrapMode: Text.Wrap
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Row {
+                Layout.preferredHeight: 30
+                Layout.topMargin: 25
+                Layout.alignment: Qt.AlignRight
+                Layout.bottomMargin: 20
+                spacing: 5
+
+                CustomButton {
+                    text: "Cancel"
+                    onClicked: deleteDialog.close()
+                }
+
+                CustomButton {
+                    colorPreset: CustomButton.Color.Red
+                    text: "Delete"
+
+                    onClicked: page.deleted()
                 }
             }
         }

@@ -59,9 +59,7 @@ Rectangle {
 
                     property int idx: model.index
 
-                    onClicked: {
-                        tabBarItem.tabIndex = model.index
-                    }
+                    onClicked: tabBarItem.tabIndex = model.index
                 }
             }
 

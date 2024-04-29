@@ -27,7 +27,7 @@ QVariant MonitorCollection::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-Monitor* MonitorCollection::get(const QString &filePath) const
+Monitor* MonitorCollection::get(const QString filePath) const
 {
     return m_hash[filePath];
 }
@@ -42,7 +42,7 @@ void MonitorCollection::insert(QString filePath, Monitor* monitor)
     endInsertRows();
 }
 
-void MonitorCollection::remove(QString &filePath)
+void MonitorCollection::remove(QString filePath)
 {
     Monitor* monitor = m_hash[filePath];
     int index = m_order.indexOf(filePath);

@@ -64,6 +64,13 @@ Window {
 
                     MonitorPage {
                         monitor: model.edit
+
+                        onDeleted: {
+                            if (Manager.monitors.rowCount() > 0)
+                                sidebar.tabBar.tabIndex = sidebar.tabBar.tabIndex - 1
+
+                            Manager.monitors.remove(model.edit.filePath)
+                        }
                     }
                 }
             }
