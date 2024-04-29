@@ -51,7 +51,9 @@ Item {
                 onEditingFinished: {
                     if (isValid() && initValue !== text) {
                         notifier.regexStr = text
-                        root.saveEnabled = true
+
+                        if (!control.newNotifier)
+                            root.saveEnabled = true
                     }
                 }
 
@@ -110,7 +112,9 @@ Item {
                 onEditingFinished: {
                     if (initValue !== text) {
                         notifier.title = text
-                        root.saveEnabled = true
+
+                        if (!control.newNotifier)
+                            root.saveEnabled = true
                     }
                 }
             }
@@ -141,7 +145,9 @@ Item {
                 onEditingFinished: {
                     if (initValue !== text) {
                         notifier.desc = text
-                        root.saveEnabled = true
+
+                        if (!control.newNotifier)
+                            root.saveEnabled = true
                     }
                 }
             }
@@ -168,7 +174,7 @@ Item {
 
                 onFileAccepted: notifier.imagePath = filePath
                 onSelectedFileChanged: {
-                    if (loaded)
+                    if (loaded && !control.newNotifier)
                         root.saveEnabled = true
                 }
             }
@@ -195,7 +201,7 @@ Item {
 
                 onFileAccepted: notifier.soundPath = filePath
                 onSelectedFileChanged: {
-                    if (loaded)
+                    if (loaded && !control.newNotifier)
                         root.saveEnabled = true
                 }
             }
@@ -231,7 +237,7 @@ Item {
 
                 onCurrentIndexChanged: {
                     notifier.duration = model[currentIndex]
-                    if (loaded)
+                    if (loaded && !control.newNotifier)
                         root.saveEnabled = true
                 }
             }
@@ -247,7 +253,9 @@ Item {
                 onCheckedChanged: {
                     if (loaded) {
                         notifier.sticky = checked
-                        root.saveEnabled = true
+
+                        if (!control.newNotifier)
+                            root.saveEnabled = true
                     }
                 }
             }

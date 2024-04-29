@@ -12,6 +12,7 @@ Item {
     property bool newNotifier: false
     property bool newNotifierOngoing: false
     property Row optionsItem: options
+    property bool error: textField.error
 
     signal customClicked
     signal deleted
@@ -167,7 +168,13 @@ Item {
                     else
                         textField.text = notifier.name
                 } else {
-                    notifier.name = textField.text
+                    if (textField.text !== notifier.name) {
+                        notifier.name = textField.text
+
+                        if (!control.newNotifierOngoing)
+                            root.saveEnabled = true
+                    }
+
                     textField.error = false
                 }
 

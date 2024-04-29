@@ -10,6 +10,7 @@ ScrollView {
 
     property var monitor
     property int custBottomPadding: 40
+    property int errorCount: 0
 
     signal deleted
 
@@ -191,6 +192,7 @@ ScrollView {
 
                     onAddedNew: monitor.addEmptyNotifier()
                     onDeleted: monitor.removeNotifier(model.index)
+                    onErrorChanged: page.errorCount += error ? 1 : -1
                 }
             }
         }

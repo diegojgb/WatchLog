@@ -7,6 +7,7 @@ Column {
 
     property var notifier
     property bool newNotifier: false
+    property bool error: preview.error || exp.optionsError
 
     signal addedNew
     signal deleted
@@ -37,6 +38,8 @@ Column {
     Expandable {
         id: exp
 
+        property bool optionsError: false
+
         NotifierOptions {
             id: options
             anchors.left: parent.left
@@ -53,6 +56,7 @@ Column {
                     notifier.toastEnabled = false
                     notifier.soundEnabled = false
                 }
+                exp.optionsError = options.error
             }
 
             onCanceled: {
@@ -67,6 +71,7 @@ Column {
                 control.newNotifier = false
                 preview.finishNew()
                 exp.show = !exp.show
+                root.saveEnabled = true
             }
             onNewNotifierChanged: control.newNotifier = options.newNotifier
         }

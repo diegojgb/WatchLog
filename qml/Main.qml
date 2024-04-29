@@ -15,6 +15,7 @@ Window {
     property color whiteColor: "#fbfbfb"
     property int transitionDuration: 150
     property bool saveEnabled: false
+    property int errorCount
 
     // Hide the window instead of closing it when the close button is clicked
     // @disable-check M16
@@ -22,6 +23,11 @@ Window {
                    hide()
                    close.accepted = false
                }
+
+    onErrorCountChanged: {
+        if (errorCount > 0)
+            root.saveEnabled = false
+    }
 
     // Makes widgets lose focus when clicked outside.
     Pane {
@@ -63,6 +69,7 @@ Window {
                     model: Manager.monitors
 
                     MonitorPage {
+                        id: monitorPage
                         monitor: model.edit
 
                         onDeleted: {
@@ -70,6 +77,15 @@ Window {
                                 sidebar.tabBar.tabIndex = sidebar.tabBar.tabIndex - 1
 
                             Manager.monitors.remove(model.edit.filePath)
+                        }
+
+                        property int prevErrorCount: 0
+
+                        onErrorCountChanged: {
+                            var delta = monitorPage.errorCount - monitorPage.prevErrorCount
+                            root.errorCount += delta
+
+                            monitorPage.prevErrorCount = monitorPage.errorCount
                         }
                     }
                 }
