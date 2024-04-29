@@ -16,5 +16,6 @@
         <file>qml/Notifier.qml</file>
         <file>qml/CustomTextField.qml</file>
         <file>qml/CustomMenuItem.qml</file>
+        <file>qml/CustomDialog.qml</file>
     </qresource>
 </RCC>

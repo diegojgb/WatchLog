@@ -122,28 +122,9 @@ Rectangle {
 
     SaveButton {}
 
-    Dialog {
+    CustomDialog {
         id: addMonitorDialog
-        anchors.centerIn: Overlay.overlay
-        modal: true
-        width: 300
         height: 250
-
-        // Makes widgets lose focus when clicked outside.
-        Pane {
-            anchors.fill: parent
-            focusPolicy: Qt.ClickFocus
-        }
-
-        Overlay.modal: Rectangle {
-            color: Qt.rgba(0, 0, 0, 0.4) // Use whatever color/opacity you like
-        }
-
-        background: Rectangle {
-            height: addMonitorDialog.height
-            width: addMonitorDialog.width
-            radius: 7
-        }
 
         ColumnLayout {
             id: dialogColumn
@@ -187,7 +168,6 @@ Rectangle {
 
             FileBrowser {
                 id: fileBrowser
-                // fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"
             }
 
             Row {

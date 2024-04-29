@@ -29,7 +29,7 @@ Column {
     Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
-        visible: !newNotifier
+        visible: !control.newNotifier
         height: 1
         color: '#bbb'
     }
@@ -65,21 +65,8 @@ Column {
         }
     }
 
-    Dialog {
+    CustomDialog {
         id: deleteDialog
-        anchors.centerIn: Overlay.overlay
-        modal: true
-        width: 300
-
-        Overlay.modal: Rectangle {
-            color: Qt.rgba(0, 0, 0, 0.4) // Use whatever color/opacity you like
-        }
-
-        background: Rectangle {
-            height: deleteDialog.height
-            width: deleteDialog.width
-            radius: 7
-        }
 
         ColumnLayout {
             id: dialogColumn
