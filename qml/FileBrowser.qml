@@ -18,6 +18,10 @@ RowLayout {
         id: fileDialogItem
         title: "Select a file"
         selectedFile: "file:///" + control.filePath
+        fileMode: FileDialog.OpenFile
+        currentFolder: "file:///" + control.filePath.substring(
+                           0, control.filePath.lastIndexOf("/"))
+
         onAccepted: {
             control.filePath = selectedFile.toString().slice(8)
             control.fileAccepted()
