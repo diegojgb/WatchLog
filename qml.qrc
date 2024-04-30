@@ -18,5 +18,6 @@
         <file>qml/CustomMenuItem.qml</file>
         <file>qml/CustomDialog.qml</file>
         <file>qml/HomePage.qml</file>
+        <file>qml/FilledButton.qml</file>
     </qresource>
 </RCC>
