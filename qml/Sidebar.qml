@@ -7,6 +7,8 @@ Rectangle {
 
     property var tabBar: tabBarItem
 
+    signal tabRightClicked(int tabIndex)
+
     ColumnLayout {
         anchors.left: parent.left
         anchors.right: parent.right
@@ -60,6 +62,7 @@ Rectangle {
                     property int idx: model.index
 
                     onClicked: tabBarItem.tabIndex = model.index
+                    onRightClicked: tabRightClicked(idx)
                 }
             }
 
