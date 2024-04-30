@@ -91,6 +91,11 @@ ScrollView {
                     }
 
                     CustomMenuItem {
+                        text: "Rename"
+                        onTriggered: renameDialogItem.open()
+                    }
+
+                    CustomMenuItem {
                         text: "Delete"
                         textItem.color: "#ff0000"
                         onTriggered: deleteDialogItem.open()
@@ -247,6 +252,77 @@ ScrollView {
                     text: "Delete"
 
                     onClicked: page.deleted()
+                }
+            }
+        }
+    }
+
+    CustomDialog {
+        id: renameDialogItem
+        height: 190
+
+        ColumnLayout {
+            anchors.top: parent.top
+            anchors.topMargin: 14
+            anchors.left: parent.left
+            anchors.leftMargin: 12
+            anchors.right: parent.right
+            anchors.rightMargin: 12
+
+            Label {
+                text: "Edit"
+                renderType: Text.NativeRendering
+                font.pointSize: 14
+                font.bold: true
+            }
+
+            Label {
+                Layout.topMargin: 14
+                Layout.preferredWidth: parent.width
+                text: "Name"
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                font.weight: Font.DemiBold
+            }
+
+            CustomTextField {
+                id: name
+                Layout.fillWidth: true
+                placeholderText: "Enter monitor name..."
+                text: monitor.name
+
+                onEditingFinished: {
+                    name.error = name.text === ""
+                }
+            }
+
+            Row {
+                Layout.topMargin: 30
+                Layout.alignment: Qt.AlignRight
+                spacing: 5
+
+                CustomButton {
+                    text: "Cancel"
+                    onClicked: renameDialogItem.close()
+                }
+
+                CustomButton {
+                    colorPreset: CustomButton.Color.Blue
+                    text: "Save"
+
+                    onClicked: {
+                        if (name.text === "") {
+                            name.error = true
+                            return
+                        }
+
+                        if (monitor.name !== name.text) {
+                            monitor.name = name.text
+                            root.saveEnabled = true
+                        }
+
+                        renameDialogItem.close()
+                    }
                 }
             }
         }

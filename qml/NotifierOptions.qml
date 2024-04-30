@@ -40,8 +40,8 @@ Item {
 
                 Layout.fillWidth: true
                 leftPadding: 5
-                text: notifier.regexStr
                 placeholderText: "Enter a regex expression"
+                text: notifier.regexStr
 
                 onActiveFocusChanged: {
                     if (activeFocus)

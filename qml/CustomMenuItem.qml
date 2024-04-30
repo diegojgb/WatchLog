@@ -17,7 +17,6 @@ MenuItem {
         leftPadding: 5
         text: control.text
         font: control.font
-        color: "#ff0000"
     }
 
     background: Rectangle {
