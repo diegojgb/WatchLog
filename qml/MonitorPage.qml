@@ -11,6 +11,7 @@ ScrollView {
     property var monitor
     property int custBottomPadding: 40
     property int errorCount: 0
+    property CustomDialog deleteDialog: deleteDialogItem
 
     signal deleted
 
@@ -68,15 +69,10 @@ ScrollView {
                     cursorShape: Qt.PointingHandCursor
 
                     onClicked: {
-
-                        // var x = mouse.x - control.width
-                        // var y = mouse.y
-                        // control.popup(x, y)
                         if (control.visible) {
                             control.close()
                             return
                         }
-
                         var x = parent.width - control.width
                         var y = parent.height
                         control.popup(x, y)
@@ -97,7 +93,7 @@ ScrollView {
                     CustomMenuItem {
                         text: "Delete"
                         textItem.color: "#ff0000"
-                        onTriggered: deleteDialog.open()
+                        onTriggered: deleteDialogItem.open()
                     }
                 }
             }
@@ -199,7 +195,7 @@ ScrollView {
     }
 
     CustomDialog {
-        id: deleteDialog
+        id: deleteDialogItem
 
         ColumnLayout {
             id: dialogColumn
@@ -243,7 +239,7 @@ ScrollView {
 
                 CustomButton {
                     text: "Cancel"
-                    onClicked: deleteDialog.close()
+                    onClicked: deleteDialogItem.close()
                 }
 
                 CustomButton {

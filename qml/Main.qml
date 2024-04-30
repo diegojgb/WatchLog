@@ -29,6 +29,30 @@ Window {
             root.saveEnabled = false
     }
 
+    Menu {
+        id: contextMenu
+        closePolicy: Popup.CloseOnPressOutside
+
+        property int tabIndex
+
+        background: Rectangle {
+            implicitWidth: 150
+            color: "#fff"
+            border.color: "#ababab"
+            radius: 4
+        }
+
+        CustomMenuItem {
+            text: "Delete"
+            textItem.color: "#ff0000"
+
+            onTriggered: {
+                var monitor = stackView.itemAt(contextMenu.tabIndex)
+                monitor.deleteDialog.open()
+            }
+        }
+    }
+
     // Makes widgets lose focus when clicked outside.
     Pane {
         anchors.fill: parent
@@ -45,6 +69,11 @@ Window {
             Layout.fillHeight: true
             Layout.preferredWidth: 190
             color: '#2d2e30'
+
+            onTabRightClicked: idx => {
+                                   contextMenu.tabIndex = idx
+                                   contextMenu.popup()
+                               }
         }
 
         // Separator
