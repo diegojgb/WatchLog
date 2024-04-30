@@ -10,6 +10,8 @@ TabButton {
     property bool selected
     property bool enabled
 
+    signal rightClicked
+
     checked: control.selected
     font.pointSize: 10
 
@@ -81,12 +83,17 @@ TabButton {
 
     MouseArea {
         id: mouseArea
-
         anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
         cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
-        onPressed: mouse => {
-                       mouse.accepted = false
+
+        onClicked: mouse => {
+                       if (mouse.button === Qt.LeftButton) {
+                           control.clicked()
+                       } else if (mouse.button === Qt.RightButton) {
+                           control.rightClicked()
+                       }
                    }
     }
 }
