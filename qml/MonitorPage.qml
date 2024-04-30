@@ -12,6 +12,7 @@ ScrollView {
     property int custBottomPadding: 40
     property int errorCount: 0
     property CustomDialog deleteDialog: deleteDialogItem
+    property CustomDialog renameDialog: renameDialogItem
 
     signal deleted
 

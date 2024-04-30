@@ -43,6 +43,15 @@ Window {
         }
 
         CustomMenuItem {
+            text: "Rename"
+
+            onTriggered: {
+                var monitor = stackView.itemAt(contextMenu.tabIndex)
+                monitor.renameDialog.open()
+            }
+        }
+
+        CustomMenuItem {
             text: "Delete"
             textItem.color: "#ff0000"
 
