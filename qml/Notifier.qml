@@ -62,6 +62,7 @@ Column {
             onCanceled: {
                 exp.show = false
                 preview.cancelNew()
+                notifier.reset()
             }
             onAddedNew: {
                 if (!preview.isValid())
