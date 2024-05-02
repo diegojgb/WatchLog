@@ -121,7 +121,14 @@ Rectangle {
         }
     }
 
-    SaveButton {}
+    SaveButton {
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.leftMargin: 25
+        anchors.rightMargin: 25
+        anchors.bottomMargin: 25
+    }
 
     CustomDialog {
         id: addMonitorDialog

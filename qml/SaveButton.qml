@@ -3,12 +3,6 @@ import QtQuick.Controls
 
 Rectangle {
     id: saveRect
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
-    anchors.right: parent.right
-    anchors.leftMargin: 25
-    anchors.rightMargin: 25
-    anchors.bottomMargin: 25
 
     height: 35
     radius: 3
@@ -65,6 +59,7 @@ Rectangle {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+        cursorShape: root.saveEnabled ? Qt.PointingHandCursor : Qt.ArrowCursor
         hoverEnabled: true
         enabled: root.saveEnabled
         onClicked: {
