@@ -122,6 +122,7 @@ ScrollView {
                 backgroundColor_on: root.accentColor
                 checked: monitor.enabled
                 font.pointSize: 10
+                enabled: monitor.enabledNotifierCount
                 text: "Enabled"
 
                 MouseArea {

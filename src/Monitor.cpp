@@ -132,8 +132,10 @@ void Monitor::readNotifiers(const json &data)
 
         m_notifiers.append(newNotifier);
 
-        if (toastEnabled || soundEnabled)
+        if (toastEnabled || soundEnabled) {
             m_enabledNotifiers.append(newNotifier);
+            setEnabledNotifierCount(m_enabledNotifiers.size());
+        }
 
         QObject::connect(newNotifier, &Notifier::enabled, this, &Monitor::notifierEnabled);
         QObject::connect(newNotifier, &Notifier::disabled, this, &Monitor::notifierDisabled);
@@ -158,11 +160,13 @@ void Monitor::setName(const QString &newName)
 void Monitor::notifierDisabled(Notifier* notifier)
 {
     m_enabledNotifiers.removeOne(notifier);
+    setEnabledNotifierCount(m_enabledNotifiers.size());
 }
 
 void Monitor::notifierEnabled(Notifier* notifier)
 {
     m_enabledNotifiers.append(notifier);
+    setEnabledNotifierCount(m_enabledNotifiers.size());
 }
 
 // Add a notifier that represents a "new notifier" object.
@@ -232,4 +236,19 @@ void Monitor::setEnabled(bool newEnabled)
 NotifierList* Monitor::notifiers()
 {
     return &m_notifiers;
+}
+
+int Monitor::enabledNotifierCount() const
+{
+    return m_enabledNotifierCount;
+}
+
+void Monitor::setEnabledNotifierCount(int newEnabledNotifierCount)
+{
+    if (m_enabledNotifierCount == newEnabledNotifierCount)
+        return;
+
+    m_enabledNotifierCount = newEnabledNotifierCount;
+
+    emit enabledNotifierCountChanged();
 }

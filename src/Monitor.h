@@ -20,6 +20,7 @@ class Monitor : public QObject
     Q_PROPERTY(QString filePath READ filePath WRITE setFilePath NOTIFY filePathChanged FINAL)
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
     Q_PROPERTY(NotifierList* notifiers READ notifiers CONSTANT)
+    Q_PROPERTY(int enabledNotifierCount READ enabledNotifierCount WRITE setEnabledNotifierCount NOTIFY enabledNotifierCountChanged FINAL)
 
 public:
     std::ifstream m_file;
@@ -39,6 +40,9 @@ public:
 
     bool enabled() const;
     void setEnabled(bool newEnabled);
+
+    int enabledNotifierCount() const;
+    void setEnabledNotifierCount(int newEnabledNotifierCount);
 
     void startFile();
     json toJSON() const;
@@ -64,6 +68,8 @@ signals:
     void filePathChanged();
     void filePathChangedOverload(const QString& oldFilePath, const QString& newFilePath);
     void enabledChanged();
+    void enabledNotifierCountChanged();
+
     void monitorEnabled(const Monitor* monitor);
     void monitorDisabled(const Monitor* monitor);
 
@@ -73,6 +79,7 @@ private:
     QString m_filePath;
     bool m_enabled;
     std::string m_defaultImage;
+    int m_enabledNotifierCount;
 
     void readNotifiers(const json &data);
 };
