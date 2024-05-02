@@ -93,6 +93,20 @@ json Notifier::toJSON() const
     return obj;
 }
 
+void Notifier::reset()
+{
+    setName("Add notification");
+    setRegexStr("");
+    setTitle(Notifier::getDefaultTitle());
+    setDesc(Notifier::getDefaultDesc());
+    setImagePath(Notifier::getDefaultImg());
+    setSoundPath(QString::fromStdString(SystemMedia::getDefaultSound()));
+    setDuration("System");
+    setToastEnabled(false);
+    setSoundEnabled(false);
+    setSticky(false);
+}
+
 void Notifier::updateSticky() {
     if (m_sticky)
     {

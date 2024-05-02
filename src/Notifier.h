@@ -83,6 +83,9 @@ public:
 
     json toJSON() const;
 
+public slots:
+    void reset();
+
 signals:
     void titleChanged();
     void descChanged();
