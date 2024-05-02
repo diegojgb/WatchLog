@@ -32,6 +32,11 @@ Monitor* MonitorCollection::get(const QString filePath) const
     return m_hash[filePath];
 }
 
+bool MonitorCollection::contains(const QString &filePath) const
+{
+    return m_hash.contains(filePath);
+}
+
 bool MonitorCollection::insert(QString filePath, Monitor* monitor)
 {
     if (m_hash.contains(filePath))
