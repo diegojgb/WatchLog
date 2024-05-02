@@ -161,6 +161,9 @@ void Monitor::notifierDisabled(Notifier* notifier)
 {
     m_enabledNotifiers.removeOne(notifier);
     setEnabledNotifierCount(m_enabledNotifiers.size());
+
+    if (enabledNotifierCount() == 0)
+        setEnabled(false);
 }
 
 void Monitor::notifierEnabled(Notifier* notifier)
@@ -182,8 +185,14 @@ void Monitor::removeNotifier(int i)
 {
     Notifier* notifier = m_notifiers.at(i);
 
-    if (notifier->soundEnabled() || notifier->toastEnabled())
+    if (notifier->soundEnabled() || notifier->toastEnabled()) {
         m_enabledNotifiers.removeOne(notifier);
+
+        setEnabledNotifierCount(m_enabledNotifiers.size());
+
+        if (enabledNotifierCount() == 0)
+            setEnabled(false);
+    }
 
     m_notifiers.removeAt(i);
     delete notifier;

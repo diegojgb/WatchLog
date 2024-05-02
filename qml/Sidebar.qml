@@ -97,7 +97,7 @@ Rectangle {
                 Row {
                     anchors.fill: parent
                     anchors.leftMargin: 10
-                    spacing: 5
+                    spacing: 6
 
                     Image {
                         anchors.verticalCenter: parent.verticalCenter
