@@ -6,6 +6,8 @@ Pane {
     Layout.fillHeight: true
     Layout.fillWidth: true
 
+    signal clickedAddMonitor
+
     background: Rectangle {
         anchors.fill: parent
         color: root.whiteColor
@@ -41,9 +43,13 @@ Pane {
             font.pixelSize: 14
         }
 
-        Button {
-            text: "Button"
+        FilledButton {
             Layout.alignment: Qt.AlignHCenter
+            text: "Add monitor"
+            textIconItem.visible: true
+            textItem.font.bold: true
+
+            onClicked: clickedAddMonitor()
         }
     }
 }

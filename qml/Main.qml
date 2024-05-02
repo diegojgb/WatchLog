@@ -129,7 +129,9 @@ Window {
                     }
                 }
 
-                HomePage {}
+                HomePage {
+                    onClickedAddMonitor: sidebar.openAddMonitorDialog()
+                }
             }
         }
     }

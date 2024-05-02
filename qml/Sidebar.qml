@@ -9,6 +9,10 @@ Rectangle {
 
     signal tabRightClicked(int tabIndex)
 
+    function openAddMonitorDialog() {
+        addMonitorDialog.open()
+    }
+
     ColumnLayout {
         anchors.left: parent.left
         anchors.right: parent.right

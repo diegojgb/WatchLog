@@ -9,7 +9,7 @@ Rectangle {
     width: childrenRect.width
 
     property color textColor: "#fff"
-    property color fillColor: "#005ba1"
+    property color fillColor: root.accentColor
     property color hoverColor: Qt.lighter(control.fillColor, 1.3)
     property color pressedColor: Qt.darker(control.fillColor, 1.2)
 
