@@ -276,7 +276,10 @@ Item {
 
                 CustomButton {
                     text: "Cancel"
-                    onClicked: control.canceled()
+                    onClicked: {
+                        regexField.error = false
+                        control.canceled()
+                    }
                 }
 
                 CustomButton {
