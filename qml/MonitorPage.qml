@@ -116,6 +116,7 @@ ScrollView {
             }
 
             CusSwitch {
+                id: enabledSwitch
                 Layout.topMargin: 17
                 Layout.leftMargin: -5
                 backgroundColor_on: root.accentColor
@@ -123,13 +124,17 @@ ScrollView {
                 font.pointSize: 10
                 text: "Enabled"
 
-                property bool loaded: false
-                Component.onCompleted: loaded = true
+                MouseArea {
+                    cursorShape: Qt.PointingHandCursor
+                    anchors.fill: parent
+                    onClicked: {
+                        var init = monitor.enabled
 
-                onCheckedChanged: {
-                    monitor.enabled = checked
-                    if (loaded)
-                        root.saveEnabled = true
+                        monitor.enabled = !enabledSwitch.checked
+
+                        if (init !== monitor.enabled)
+                            root.saveEnabled = true
+                    }
                 }
             }
 
