@@ -13,6 +13,7 @@ Item {
     property bool newNotifierOngoing: false
     property Row optionsItem: options
     property bool error: textField.error
+    property bool optionsAux: true
 
     signal customClicked
     signal deleted
@@ -208,6 +209,7 @@ Item {
             spacing: 5
             visible: !control.newNotifier && !control.newNotifierOngoing
                      && !textField.focused && options.opacity !== 0
+                     && control.optionsAux
 
             // Edit Button
             Rectangle {

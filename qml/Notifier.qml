@@ -18,6 +18,7 @@ Column {
         newNotifier: control.newNotifier
         onCustomClicked: exp.show = !exp.show
         optionsItem.opacity: exp.show ? 1 : 0
+        optionsAux: true
 
         onDeleted: deleteDialog.open()
     }
@@ -39,6 +40,11 @@ Column {
         id: exp
 
         property bool optionsError: false
+
+        onHeightChanged: {
+            if (exp.height === 0)
+                preview.optionsAux = true
+        }
 
         NotifierOptions {
             id: options
@@ -64,6 +70,7 @@ Column {
                 preview.cancelNew()
                 notifier.reset()
             }
+
             onAddedNew: {
                 if (!preview.isValid())
                     return
@@ -71,9 +78,11 @@ Column {
                 control.addedNew()
                 control.newNotifier = false
                 preview.finishNew()
+                preview.optionsAux = false
                 exp.show = !exp.show
                 root.saveEnabled = true
             }
+
             onNewNotifierChanged: control.newNotifier = options.newNotifier
         }
     }
