@@ -161,6 +161,7 @@ Item {
                     textField.focused = true
             }
 
+            // Enter or loses focus
             onEditingFinished: {
                 if (textField.text === "") {
                     if (control.newNotifierOngoing)
@@ -182,9 +183,11 @@ Item {
                     textField.custEnabled = false
                 }
 
-                parent.forceActiveFocus()
                 textField.focused = false
             }
+
+            // Enter only
+            onAccepted: parent.forceActiveFocus()
 
             function custFocus() {
                 textField.custEnabled = true
