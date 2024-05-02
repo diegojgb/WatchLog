@@ -32,14 +32,19 @@ Monitor* MonitorCollection::get(const QString filePath) const
     return m_hash[filePath];
 }
 
-void MonitorCollection::insert(QString filePath, Monitor* monitor)
+bool MonitorCollection::insert(QString filePath, Monitor* monitor)
 {
+    if (m_hash.contains(filePath))
+        return false;
+
     int newIndex = m_order.size();
 
     beginInsertRows(QModelIndex(), newIndex, newIndex);
     m_hash.insert(filePath, monitor);
     m_order.append(filePath);
     endInsertRows();
+
+    return true;
 }
 
 void MonitorCollection::remove(QString filePath)

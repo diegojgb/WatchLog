@@ -24,7 +24,7 @@ public:
 
 public slots:
     Monitor* get(const QString filePath) const;
-    void insert(QString filePath, Monitor* monitor);
+    bool insert(QString filePath, Monitor* monitor);
     void remove(QString filePath);
 
 private:
