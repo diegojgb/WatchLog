@@ -213,15 +213,18 @@ void Monitor::setEnabled(bool newEnabled)
     if (m_enabled == newEnabled)
         return;
 
-    m_enabled = newEnabled;
-
     if (newEnabled)
     {
+        if (!m_enabledNotifiers.size())
+            return;
+
         startFile();
         emit monitorEnabled(this);
     }
     else
         emit monitorDisabled(this);
+
+    m_enabled = newEnabled;
 
     emit enabledChanged();
 }
