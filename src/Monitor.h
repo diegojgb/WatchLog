@@ -79,7 +79,7 @@ private:
     QString m_filePath;
     bool m_enabled;
     std::string m_defaultImage;
-    int m_enabledNotifierCount;
+    int m_enabledNotifierCount = 0;
 
     void readNotifiers(const json &data);
 };
