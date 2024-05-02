@@ -138,6 +138,9 @@ Rectangle {
         id: addMonitorDialog
         height: 250
 
+        property bool alreadyInHash: false
+        property string prevFilePath
+
         ColumnLayout {
             id: dialogColumn
             anchors.top: parent.top
@@ -184,8 +187,22 @@ Rectangle {
                 id: fileBrowser
 
                 fileDialog.onAccepted: {
+                    if (addMonitorDialog.prevFilePath === fileBrowser.filePath)
+                        return
+
                     fileBrowser.error = false
+                    addMonitorDialog.alreadyInHash = false
                 }
+            }
+
+            // Error: filePath already in Hash.
+            Text {
+                Layout.topMargin: -2
+                renderType: Text.NativeRendering
+                text: "This file is already being monitored."
+                color: "#ff0000"
+                font.pointSize: 8
+                visible: addMonitorDialog.alreadyInHash
             }
 
             Row {
@@ -212,7 +229,16 @@ Rectangle {
                             return
                         }
 
-                        Manager.addMonitor(name.text, fileBrowser.filePath)
+                        var success = Manager.addMonitor(name.text,
+                                                         fileBrowser.filePath)
+
+                        if (!success) {
+                            fileBrowser.error = true
+                            addMonitorDialog.alreadyInHash = true
+                            addMonitorDialog.prevFilePath = fileBrowser.filePath
+                            return
+                        }
+
                         tabBarItem.tabIndex = tabRepeater.count - 1
                         addMonitorDialog.close()
                     }
