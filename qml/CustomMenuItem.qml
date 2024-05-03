@@ -8,6 +8,10 @@ MenuItem {
 
     property Text textItem: text
     property Rectangle backgroundItem: bg
+    property bool first: false
+    property bool last: false
+    property int radius: 4
+    property color hoverColor: "#eee"
 
     contentItem: Text {
         id: text
@@ -23,7 +27,10 @@ MenuItem {
         id: bg
         implicitWidth: 200
         implicitHeight: 27
-        color: control.highlighted ? "#eee" : "transparent"
-        radius: 4
+        color: control.highlighted ? control.hoverColor : "transparent"
+        topLeftRadius: control.first ? control.radius : 0
+        topRightRadius: control.first ? control.radius : 0
+        bottomLeftRadius: control.last ? control.radius : 0
+        bottomRightRadius: control.last ? control.radius : 0
     }
 }

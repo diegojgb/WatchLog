@@ -44,6 +44,7 @@ Window {
 
         CustomMenuItem {
             text: "Rename"
+            first: true
 
             onTriggered: {
                 var monitor = stackView.itemAt(contextMenu.tabIndex)
@@ -53,7 +54,7 @@ Window {
 
         CustomMenuItem {
             text: "Delete"
-            textItem.color: "#ff0000"
+            last: true
             textItem.anchors.top: textItem.parent.top
             textItem.anchors.bottom: textItem.parent.bottom
             textItem.anchors.bottomMargin: 3
@@ -80,6 +81,7 @@ Window {
 
         CustomMenuItem {
             text: "Rename"
+            first: true
 
             onTriggered: {
                 notifierMenu.notifier.rename()
@@ -88,6 +90,7 @@ Window {
 
         CustomMenuItem {
             text: "Delete"
+            last: true
             textItem.color: "#ff0000"
             textItem.anchors.top: textItem.parent.top
             textItem.anchors.bottom: textItem.parent.bottom

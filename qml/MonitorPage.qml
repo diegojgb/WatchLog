@@ -84,11 +84,13 @@ ScrollView {
 
                     CustomMenuItem {
                         text: "Rename"
+                        first: true
                         onTriggered: renameDialogItem.open()
                     }
 
                     CustomMenuItem {
                         text: "Delete"
+                        last: true
                         textItem.color: "#ff0000"
                         textItem.anchors.top: textItem.parent.top
                         textItem.anchors.bottom: textItem.parent.bottom
