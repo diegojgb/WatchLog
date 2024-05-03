@@ -34,17 +34,20 @@ Window {
         closePolicy: Popup.CloseOnPressOutside
 
         property int tabIndex
+        property color itemHoverColor: "#4e4f52"
 
         background: Rectangle {
             implicitWidth: 150
-            color: "#fff"
-            border.color: "#ababab"
+            color: "#3c3d40"
+            border.color: "#5d5e61"
             radius: 4
         }
 
         CustomMenuItem {
             text: "Rename"
             first: true
+            textItem.color: "#fff"
+            hoverColor: contextMenu.itemHoverColor
 
             onTriggered: {
                 var monitor = stackView.itemAt(contextMenu.tabIndex)
@@ -55,6 +58,8 @@ Window {
         CustomMenuItem {
             text: "Delete"
             last: true
+            textItem.color: "#ff6d62"
+            hoverColor: contextMenu.itemHoverColor
             textItem.anchors.top: textItem.parent.top
             textItem.anchors.bottom: textItem.parent.bottom
             textItem.anchors.bottomMargin: 3
