@@ -15,6 +15,7 @@ ScrollView {
     property CustomDialog renameDialog: renameDialogItem
 
     signal deleted
+    signal rightClicked(Notifier notifier)
 
     Flickable {
         anchors.fill: parent
@@ -92,6 +93,7 @@ ScrollView {
                         textItem.anchors.top: textItem.parent.top
                         textItem.anchors.bottom: textItem.parent.bottom
                         textItem.anchors.bottomMargin: 3
+
                         onTriggered: deleteDialogItem.open()
                     }
                 }
@@ -186,6 +188,8 @@ ScrollView {
                 model: monitor.notifiers
 
                 Notifier {
+                    id: notifier
+
                     Layout.fillWidth: true
                     newNotifier: model.index === monitor.notifiers.rowCount(
                                      ) - 1
@@ -194,6 +198,7 @@ ScrollView {
                     onAddedNew: monitor.addEmptyNotifier()
                     onDeleted: monitor.removeNotifier(model.index)
                     onErrorChanged: page.errorCount += error ? 1 : -1
+                    onRightClicked: page.rightClicked(notifier)
                 }
             }
         }

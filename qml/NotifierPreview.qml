@@ -15,8 +15,13 @@ Item {
     property bool error: textField.error
     property bool optionsAux: true
 
+    signal rightClicked
     signal customClicked
     signal deleted
+
+    function rename() {
+        textField.custFocus()
+    }
 
     function handleClick() {
         if (!newNotifierOngoing)
@@ -55,11 +60,18 @@ Item {
         id: controlMa
         anchors.fill: parent
         cursorShape: control.newNotifier ? Qt.PointingHandCursor : Qt.ArrowCursor
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
         hoverEnabled: true
         focusPolicy: Qt.ClickFocus
         z: newNotifier ? 1 : 0
 
-        onClicked: control.handleClick()
+        onClicked: mouse => {
+                       if (mouse.button === Qt.LeftButton) {
+                           control.handleClick()
+                       } else if (mouse.button === Qt.RightButton) {
+                           control.rightClicked()
+                       }
+                   }
     }
 
     RowLayout {

@@ -11,6 +11,15 @@ Column {
 
     signal addedNew
     signal deleted
+    signal rightClicked
+
+    function openDeleteDialog() {
+        deleteDialog.open()
+    }
+
+    function rename() {
+        preview.rename()
+    }
 
     NotifierPreview {
         id: preview
@@ -21,6 +30,10 @@ Column {
         optionsAux: true
 
         onDeleted: deleteDialog.open()
+        onRightClicked: {
+            if (!control.newNotifier)
+                control.rightClicked()
+        }
     }
 
     Item {

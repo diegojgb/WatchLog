@@ -65,6 +65,40 @@ Window {
         }
     }
 
+    Menu {
+        id: notifierMenu
+        closePolicy: Popup.CloseOnPressOutside
+
+        property Notifier notifier
+
+        background: Rectangle {
+            implicitWidth: 150
+            color: "#fff"
+            border.color: "#ababab"
+            radius: 4
+        }
+
+        CustomMenuItem {
+            text: "Rename"
+
+            onTriggered: {
+                notifierMenu.notifier.rename()
+            }
+        }
+
+        CustomMenuItem {
+            text: "Delete"
+            textItem.color: "#ff0000"
+            textItem.anchors.top: textItem.parent.top
+            textItem.anchors.bottom: textItem.parent.bottom
+            textItem.anchors.bottomMargin: 3
+
+            onTriggered: {
+                notifierMenu.notifier.openDeleteDialog()
+            }
+        }
+    }
+
     // Makes widgets lose focus when clicked outside.
     Pane {
         anchors.fill: parent
@@ -129,6 +163,11 @@ Window {
 
                             monitorPage.prevErrorCount = monitorPage.errorCount
                         }
+
+                        onRightClicked: notifier => {
+                                            notifierMenu.notifier = notifier
+                                            notifierMenu.popup()
+                                        }
                     }
                 }
 
