@@ -54,6 +54,9 @@ Window {
         CustomMenuItem {
             text: "Delete"
             textItem.color: "#ff0000"
+            textItem.anchors.top: textItem.parent.top
+            textItem.anchors.bottom: textItem.parent.bottom
+            textItem.anchors.bottomMargin: 3
 
             onTriggered: {
                 var monitor = stackView.itemAt(contextMenu.tabIndex)
