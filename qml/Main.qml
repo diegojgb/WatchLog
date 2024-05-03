@@ -30,7 +30,7 @@ Window {
     }
 
     Menu {
-        id: contextMenu
+        id: monitorMenu
         closePolicy: Popup.CloseOnPressOutside
 
         property int tabIndex
@@ -47,10 +47,10 @@ Window {
             text: "Rename"
             first: true
             textItem.color: "#fff"
-            hoverColor: contextMenu.itemHoverColor
+            hoverColor: monitorMenu.itemHoverColor
 
             onTriggered: {
-                var monitor = stackView.itemAt(contextMenu.tabIndex)
+                var monitor = stackView.itemAt(monitorMenu.tabIndex)
                 monitor.renameDialog.open()
             }
         }
@@ -59,13 +59,13 @@ Window {
             text: "Delete"
             last: true
             textItem.color: "#ff6d62"
-            hoverColor: contextMenu.itemHoverColor
+            hoverColor: monitorMenu.itemHoverColor
             textItem.anchors.top: textItem.parent.top
             textItem.anchors.bottom: textItem.parent.bottom
             textItem.anchors.bottomMargin: 3
 
             onTriggered: {
-                var monitor = stackView.itemAt(contextMenu.tabIndex)
+                var monitor = stackView.itemAt(monitorMenu.tabIndex)
                 monitor.deleteDialog.open()
             }
         }
@@ -125,8 +125,8 @@ Window {
             color: '#2d2e30'
 
             onTabRightClicked: idx => {
-                                   contextMenu.tabIndex = idx
-                                   contextMenu.popup()
+                                   monitorMenu.tabIndex = idx
+                                   monitorMenu.popup()
                                }
         }
 
