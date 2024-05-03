@@ -5,12 +5,15 @@ Manager::Manager(QObject *parent, const json &data)
     : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false}
 {
     if (data.empty())
-        Utils::throwError("The JSON file is empty");
+        return;
 
     json monitorsData = Monitor::jsonFindByKey(data, "monitors");
 
-    if (!monitorsData.is_array() || monitorsData.size() == 0)
+    if (!monitorsData.is_array())
         Utils::throwError("Invalid monitors array in JSON");
+
+    if  (monitorsData.size() == 0)
+        return;
 
     try {
         for (const json& item: monitorsData) {

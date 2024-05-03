@@ -28,22 +28,24 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     std::ifstream file("data.json");
-
-    if (!file.good()) {
-        QMessageBox::critical(nullptr, QObject::tr("WatchLog"), QObject::tr("Error opening data.json (does it exist?)"));
-        return -1;
-    }
-
     json data;
 
-    try {
-        data = json::parse(file);
-    } catch (const json::parse_error& e) {
-        std::cerr << "JSON parsing failed: " << e.what() << std::endl;
-        return 1;
-    } catch (const std::exception& e) {
-        std::cerr << "Exception caught during JSON parsing: " << e.what() << std::endl;
-        return 1;
+    if (file.good())
+    {
+        try
+        {
+            data = json::parse(file);
+        }
+        catch (const json::parse_error& e)
+        {
+            std::cerr << "JSON parsing failed: " << e.what() << std::endl;
+            return 1;
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Exception caught during JSON parsing: " << e.what() << std::endl;
+            return 1;
+        }
     }
 
     file.close();

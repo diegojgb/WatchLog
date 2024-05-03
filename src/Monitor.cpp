@@ -60,7 +60,7 @@ json Monitor::toJSON() const
 
 json Monitor::jsonFindByKey(const json &data, const std::string &key) {
     if (!data.contains(key))
-        Utils::throwError("Need a \""+key+"\" for every Notifier in data.json");
+        Utils::throwError("Missing a \""+key+"\" property for some element in data.json");
 
     return data[key];
 }
@@ -112,8 +112,10 @@ T Monitor::jsonGetValue(const json& data, const std::string& key, const T defaul
 
 void Monitor::readNotifiers(const json &data)
 {
-    if (!data.is_array() || data.size() == 0)
+    if (!data.is_array())
        Utils::throwError("Invalid notifiers array in JSON");
+    if (data.size() == 0)
+        return;
 
     for (const json& item: data) {
         QString name = QString::fromStdString(jsonGetValue<std::string>(item, "name"));
