@@ -4,7 +4,25 @@
 FileWatcher::FileWatcher(QObject* parent, const MonitorCollection& monitors)
     : QObject{parent}, m_monitors{monitors}
 {
-    connect(&m_watcher, &QFileSystemWatcher::fileChanged, this, &FileWatcher::onFileChanged);
+    m_watcher = new FileChangeWorker();
+    m_thread = new QThread(this);
+    m_watcher->moveToThread(m_thread);
+
+    connect(m_thread, &QThread::started, m_watcher, &FileChangeWorker::start);
+    connect(qApp, &QCoreApplication::aboutToQuit, m_watcher, &FileChangeWorker::finish);
+
+    connect(m_thread, &QThread::finished, m_thread, &QThread::deleteLater);
+    connect(m_watcher, &FileChangeWorker::finished, m_watcher, &FileChangeWorker::deleteLater);
+    connect(m_watcher, &FileChangeWorker::finished, m_thread, &QThread::quit, Qt::DirectConnection);
+
+    connect(m_watcher, &FileChangeWorker::fileChanged, this, &FileWatcher::onFileChanged);
+
+    m_thread->start();
+}
+
+FileWatcher::~FileWatcher()
+{
+    m_thread->wait();
 }
 
 void FileWatcher::addAllMonitors()
@@ -19,24 +37,26 @@ void FileWatcher::addAllMonitors()
 
 void FileWatcher::addFilePath(const QString &filePath)
 {
-    m_watcher.addPath(filePath);
+    QMetaObject::invokeMethod(m_watcher, "addPath", Qt::QueuedConnection,
+                              Q_ARG(QString, filePath));
 }
 
 void FileWatcher::removeFilePath(const QString &filePath)
 {
-    m_watcher.removePath(filePath);
+    QMetaObject::invokeMethod(m_watcher, "removePath", Qt::QueuedConnection,
+                              Q_ARG(QString, filePath));
 }
 
 void FileWatcher::onFileChanged(const QString &path)
 {
     // In case the file was removed and added back again immediately.
-    if (!m_watcher.files().contains(path)) {
-        if (std::filesystem::exists(path.toStdString())) {
-            addFilePath(path);
-            emit fileReset(); // So the monitor reopens the file, to prevent any unexpected behavior.
-            return;
-        }
-    }
+    // if (!m_watcher.files().contains(path)) {
+    //     if (std::filesystem::exists(path.toStdString())) {
+    //         addFilePath(path);
+    //         emit fileReset(); // So the monitor reopens the file, to prevent any unexpected behavior.
+    //         return;
+    //     }
+    // }
 
     Monitor* monitor = m_monitors.get(path);
 

@@ -35,6 +35,8 @@ set(SOURCE_FILES
     src/NotifierList.cpp
     src/MonitorCollection.h
     src/MonitorCollection.cpp
+    src/FileChangeWorker.h
+    src/FileChangeWorker.cpp
 )
 
 qt_add_executable(appWatchLog 
