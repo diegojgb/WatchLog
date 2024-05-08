@@ -1,22 +1,25 @@
 #include "MonitorCollection.h"
 
 
+MonitorData::MonitorData(const QString path, Monitor* monitor)
+    : filePath{path}, monitor{monitor}
+{}
+
 MonitorCollection::MonitorCollection(QObject *parent)
     : QAbstractListModel{parent}
 {}
 
 int MonitorCollection::rowCount(const QModelIndex& parent) const
 {
-    return m_order.size();
+    return m_list.size();
 }
 
 QVariant MonitorCollection::data(const QModelIndex& index, int role) const
 {
-    if (!index.isValid() || index.row() >= m_order.size())
+    if (!index.isValid() || index.row() >= m_list.size())
         return QVariant();
 
-    auto key = m_order[index.row()];
-    auto monitor = m_hash[key];
+    auto* monitor = getAt(index.row());
 
     if (role == Qt::DisplayRole)
         return QVariant::fromValue(monitor->name());
@@ -27,26 +30,35 @@ QVariant MonitorCollection::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-Monitor* MonitorCollection::get(const QString filePath) const
+Monitor* MonitorCollection::get(const QString &filePath) const
 {
-    return m_hash[filePath];
+    auto* monitorData = getMonitorData(filePath);
+
+    if (monitorData == nullptr)
+        return nullptr;
+
+    return monitorData->monitor;
+}
+
+Monitor *MonitorCollection::getAt(const int i) const
+{
+    return m_list[i]->monitor;
 }
 
 bool MonitorCollection::contains(const QString &filePath) const
 {
-    return m_hash.contains(filePath);
+    return getMonitorData(filePath) != nullptr;
 }
 
-bool MonitorCollection::insert(QString filePath, Monitor* monitor)
+bool MonitorCollection::insert(const QString &filePath, Monitor* monitor)
 {
-    if (m_hash.contains(filePath))
+    if (contains(filePath))
         return false;
 
-    int newIndex = m_order.size();
+    int newIndex = m_list.size();
 
     beginInsertRows(QModelIndex(), newIndex, newIndex);
-    m_hash.insert(filePath, monitor);
-    m_order.append(filePath);
+    m_list.append(new MonitorData(filePath, monitor));
     endInsertRows();
 
     return true;
@@ -54,34 +66,50 @@ bool MonitorCollection::insert(QString filePath, Monitor* monitor)
 
 void MonitorCollection::remove(QString filePath)
 {
-    Monitor* monitor = m_hash[filePath];
-    int index = m_order.indexOf(filePath);
+    for (int i = 0; i < m_list.size(); i++) {
+        if (m_list[i]->filePath != filePath)
+            continue;
 
-    beginRemoveRows(QModelIndex(), index, index);
-    monitor->setEnabled(false);
-    m_hash.remove(filePath);
-    m_order.removeAt(index);
-    endRemoveRows();
+        beginRemoveRows(QModelIndex(), i, i);
 
-    delete monitor;
+        auto monitor = m_list[i]->monitor;
+        monitor->setEnabled(false);
+        auto toDelete = m_list.takeAt(i);
+
+        endRemoveRows();
+
+        delete monitor;
+        delete toDelete;
+        break;
+    }
 }
 
-const QStringList& MonitorCollection::getOrder() const
+void MonitorCollection::removeAt(int i)
 {
-    return m_order;
+    delete m_list.takeAt(i);
 }
 
-const QHash<QString, Monitor*>& MonitorCollection::getHash() const
+MonitorData *MonitorCollection::getMonitorData(const QString &filePath) const
 {
-    return m_hash;
+    for (auto* monitorData: m_list) {
+        if (monitorData->filePath == filePath) {
+            return monitorData;
+        }
+    }
+
+    return nullptr;
+}
+
+const QList<MonitorData*>& MonitorCollection::getList() const
+{
+    return m_list;
 }
 
 void MonitorCollection::changeFilePath(const QString& oldKey, const QString& newKey)
 {
-    if (!m_hash.contains(oldKey))
+    if (!contains(oldKey))
         return;
 
-    Monitor* value = m_hash.value(oldKey);
-    m_hash.remove(oldKey);
-    m_hash.insert(newKey, value);
+    auto* monitorData = getMonitorData(oldKey);
+    monitorData->filePath = newKey;
 }

@@ -27,8 +27,9 @@ FileWatcher::~FileWatcher()
 
 void FileWatcher::addAllMonitors()
 {
-    for (const QString& filePath: m_monitors.getOrder()) {
-        auto monitor = m_monitors.get(filePath);
+    for (const MonitorData* monitorData: m_monitors.getList()) {
+        auto* monitor = monitorData->monitor;
+        auto filePath = monitorData->filePath;
 
         if (monitor->enabled())
             addFilePath(filePath);

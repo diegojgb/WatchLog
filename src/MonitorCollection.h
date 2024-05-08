@@ -7,6 +7,13 @@
 #include <QAbstractListModel>
 
 
+struct MonitorData {
+    QString filePath;
+    Monitor* monitor;
+
+    explicit MonitorData(const QString path, Monitor* monitor);
+};
+
 class MonitorCollection : public QAbstractListModel
 {
     Q_OBJECT
@@ -18,21 +25,20 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+    const QList<MonitorData*> &getList() const;
     void changeFilePath(const QString &oldKey, const QString &newKey);
-    const QStringList& getOrder() const;
-    const QHash<QString, Monitor*>& getHash() const;
-
-public slots:
-    Monitor* get(const QString filePath) const;
+    Monitor* get(const QString &filePath) const;
     bool contains(const QString &filePath) const;
-    bool insert(QString filePath, Monitor* monitor);
-    void remove(QString filePath);
+    bool insert(const QString &filePath, Monitor* monitor);
+
+    Q_INVOKABLE Monitor* getAt(const int i) const;
+    Q_INVOKABLE void remove(QString filePath);
+    Q_INVOKABLE void removeAt(int i);
 
 private:
-    QStringList m_order;
-    QHash<QString, Monitor*> m_hash;
+    QList<MonitorData*> m_list;
+
+    MonitorData* getMonitorData(const QString &filePath) const;
 };
 
 #endif // MONITORCOLLECTION_H
-
-

@@ -41,8 +41,9 @@ json Manager::toJSON() const
     json obj;
     json monitorsArray = json::array();
 
-    for (const QString& monitorPath: m_monitors.getOrder()) {
-        monitorsArray.push_back(m_monitors.get(monitorPath)->toJSON());
+    for (const MonitorData* monitorData: m_monitors.getList()) {
+        auto* monitor = monitorData->monitor;
+        monitorsArray.push_back(monitor->toJSON());
     }
 
     obj["monitors"] = monitorsArray;
