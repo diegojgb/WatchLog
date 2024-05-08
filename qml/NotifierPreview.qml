@@ -14,6 +14,7 @@ Item {
     property Row optionsItem: options
     property bool error: textField.error
     property bool optionsAux: true
+    property bool switchesEnabled: true
 
     signal rightClicked
     signal customClicked
@@ -302,6 +303,7 @@ Item {
 
             CusSwitch {
                 checked: notifier.toastEnabled
+                enabled: control.switchesEnabled
                 backgroundColor_on: root.accentColor
 
                 property bool loaded: false
@@ -315,6 +317,7 @@ Item {
             }
             CusSwitch {
                 checked: notifier.soundEnabled
+                enabled: control.switchesEnabled
                 backgroundColor_on: root.accentColor
 
                 property bool loaded: false
