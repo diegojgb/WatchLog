@@ -12,7 +12,7 @@ Item {
     property bool newNotifier: false
     property bool newNotifierOngoing: false
     property Row optionsItem: options
-    property bool error: textField.error
+    property bool textFieldError: textField.error
     property bool optionsAux: true
     property bool switchesEnabled: true
 
@@ -51,10 +51,6 @@ Item {
         textField.custUnfocus()
         arrow.rotated = true
         arrow.rotate()
-    }
-
-    function isValid() {
-        return !textField.error
     }
 
     MouseArea {
@@ -303,7 +299,7 @@ Item {
 
             CusSwitch {
                 checked: notifier.toastEnabled
-                enabled: control.switchesEnabled
+                enabled: control.switchesEnabled && !control.newNotifierOngoing
                 backgroundColor_on: root.accentColor
 
                 property bool loaded: false
@@ -317,7 +313,7 @@ Item {
             }
             CusSwitch {
                 checked: notifier.soundEnabled
-                enabled: control.switchesEnabled
+                enabled: control.switchesEnabled && !control.newNotifierOngoing
                 backgroundColor_on: root.accentColor
 
                 property bool loaded: false

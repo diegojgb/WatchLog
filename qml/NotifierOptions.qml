@@ -10,7 +10,7 @@ Item {
     property int cusTopMargin
     property int custBottomMargin
     property bool newNotifier: false
-    property bool error: regexField.error
+    required property bool notifierError
 
     signal canceled
     signal addedNew
@@ -37,11 +37,13 @@ Item {
                 id: regexField
 
                 property string initValue
+                property bool errorException: false
 
                 Layout.fillWidth: true
                 leftPadding: 5
                 placeholderText: "Enter a regex expression"
                 text: notifier.regexStr
+                error: !regexField.errorException && notifier.regexError
 
                 onActiveFocusChanged: {
                     if (activeFocus)
@@ -49,29 +51,19 @@ Item {
                 }
 
                 onEditingFinished: {
-                    if (isValid() && initValue !== text) {
+                    if (initValue !== text) {
                         notifier.regexStr = text
 
                         if (!control.newNotifier)
                             root.saveEnabled = true
                     }
+
+                    regexField.errorException = false
                 }
 
-                function isValid() {
-                    if (regexField.text === "") {
-                        regexField.error = true
-                        return false
-                    }
-
-                    try {
-                        let regexp = new RegExp(regexField.text)
-                    } catch (error) {
-                        regexField.error = true
-                        return false
-                    }
-
-                    regexField.error = false
-                    return true
+                Component.onCompleted: {
+                    if (control.newNotifier)
+                        regexField.errorException = true
                 }
             }
         }
@@ -169,6 +161,7 @@ Item {
                 fieldHeight: 23
                 filePath: notifier.imagePath
                 fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"]
+                error: notifier.imageFileError
 
                 property bool loaded: false
                 Component.onCompleted: loaded = true
@@ -197,6 +190,7 @@ Item {
                 fieldHeight: 23
                 filePath: notifier.soundPath
                 fileDialog.nameFilters: ["WAV files (*.wav)"]
+                error: notifier.soundFileError
 
                 property bool loaded: false
                 Component.onCompleted: loaded = true
@@ -289,7 +283,9 @@ Item {
                     text: "Add"
 
                     onClicked: {
-                        if (regexField.isValid())
+                        regexField.errorException = false
+
+                        if (!control.notifierError)
                             control.addedNew()
                     }
                 }

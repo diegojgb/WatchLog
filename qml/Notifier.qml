@@ -7,7 +7,8 @@ Column {
 
     property var notifier
     property bool newNotifier: false
-    property bool error: preview.error || exp.optionsError
+    property bool error: preview.error || notifier.regexError
+                         || notifier.soundFileError || notifier.imageFileError
 
     signal addedNew
     signal deleted
@@ -19,6 +20,13 @@ Column {
 
     function rename() {
         preview.rename()
+    }
+
+    onErrorChanged: {
+        if (control.error) {
+            notifier.toastEnabled = false
+            notifier.soundEnabled = false
+        }
     }
 
     NotifierPreview {
@@ -53,8 +61,6 @@ Column {
     Expandable {
         id: exp
 
-        property bool optionsError: false
-
         onHeightChanged: {
             if (exp.height === 0)
                 preview.optionsAux = true
@@ -70,14 +76,7 @@ Column {
             cusTopMargin: 20
             custBottomMargin: 13
             notifier: control.notifier
-
-            onErrorChanged: {
-                if (options.error) {
-                    notifier.toastEnabled = false
-                    notifier.soundEnabled = false
-                }
-                exp.optionsError = options.error
-            }
+            notifierError: control.error
 
             onCanceled: {
                 exp.show = false
@@ -86,7 +85,7 @@ Column {
             }
 
             onAddedNew: {
-                if (!preview.isValid())
+                if (preview.textFieldError)
                     return
 
                 control.addedNew()
