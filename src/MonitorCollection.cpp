@@ -64,7 +64,7 @@ bool MonitorCollection::insert(const QString &filePath, Monitor* monitor)
     return true;
 }
 
-void MonitorCollection::remove(QString filePath)
+void MonitorCollection::remove(const QString &filePath)
 {
     for (int i = 0; i < m_list.size(); i++) {
         if (m_list[i]->filePath != filePath)

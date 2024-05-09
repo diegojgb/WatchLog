@@ -32,7 +32,7 @@ public:
     bool insert(const QString &filePath, Monitor* monitor);
 
     Q_INVOKABLE Monitor* getAt(const int i) const;
-    Q_INVOKABLE void remove(QString filePath);
+    Q_INVOKABLE void remove(const QString &filePath);
     Q_INVOKABLE void removeAt(int i);
 
 private:

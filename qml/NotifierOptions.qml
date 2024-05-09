@@ -163,6 +163,7 @@ Item {
                 Layout.preferredWidth: descLabel.width
                 renderType: Text.NativeRendering
             }
+
             FileBrowser {
                 backgroundColor: root.whiteColor
                 fieldHeight: 23
@@ -190,6 +191,7 @@ Item {
                 Layout.preferredWidth: descLabel.width
                 renderType: Text.NativeRendering
             }
+
             FileBrowser {
                 backgroundColor: root.whiteColor
                 fieldHeight: 23

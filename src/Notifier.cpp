@@ -30,44 +30,21 @@ void Notifier::initializeConstants() {
 
 Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString title,
                    QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
-    : QObject{parent}, m_name{name}, m_regexStr{regexStr}, m_title{title},
-      m_desc{desc}, m_imagePath{imagePath}, m_soundPath{soundPath}, m_duration{duration}, m_toastEnabled{toastEnabled},
-      m_soundEnabled{soundEnabled}, m_sticky{sticky}, templ{WinToastTemplate(WinToastTemplate::ImageAndText02)},
-      regex{regexStr.toStdString()}
+    : QObject{parent},
+      templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
 {
-    if (regexStr == "" && (soundEnabled || toastEnabled))
-        Utils::throwError("Can't enable a Notification with an empty regex pattern");
+    setName(name);
+    setRegexStr(regexStr);
+    setToastEnabled(toastEnabled);
+    setSoundEnabled(soundEnabled);
+    setDuration(duration);
+    setSoundPath(soundPath);
+    setImagePath(imagePath);
+    setTitle(title);
+    setDesc(desc);
+    setSticky(sticky);
 
-    if (duration != "System" && duration != "Short" && duration != "Long")
-        Utils::throwError("Invalid duration value: must be either \"System\", \"Short\" or \"Long\"");
-
-    if (std::filesystem::path(soundPath.toStdString()).extension() != ".wav")
-        Utils::throwError("Invalid soundFile type (must be .wav): " + soundPath.toStdString());
-
-    if (!std::filesystem::exists(soundPath.toStdString()))
-        Utils::throwError("Specified soundFile doesn't exist: " + soundPath.toStdString());
-
-    auto imageExtension = std::filesystem::path(imagePath.toStdString()).extension();
-    if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png")
-        Utils::throwError("Invalid image file type (must be .jpg/jpeg/png): " + imagePath.toStdString());
-
-    if (!std::filesystem::exists(imagePath.toStdString()))
-        Utils::throwError("Specified image file doesn't exist: " + imagePath.toStdString());
-
-
-    templ.setImagePath(imagePath.toStdWString());
-    templ.setTextField(title
-                       .replace("${regex}", regexStr)
-                       .replace("${name}", name)
-                       .toStdWString(), WinToastTemplate::FirstLine);
-    templ.setTextField(desc
-                       .replace("${regex}", regexStr)
-                       .replace("${name}", name)
-                       .toStdWString(), WinToastTemplate::SecondLine);
-    templ.setDuration(toWinToastDuration(m_duration));
-    templ.setAudioOption(mapAudioOption(soundEnabled));
-
-    updateSticky();
+    m_initialized = true;
 }
 
 json Notifier::toJSON() const
@@ -144,7 +121,7 @@ QString Notifier::title() const
 
 void Notifier::setTitle(const QString &newTitle)
 {
-    if (m_title == newTitle)
+    if (m_initialized && m_title == newTitle)
         return;
 
     m_title = newTitle;
@@ -165,7 +142,7 @@ QString Notifier::desc() const
 
 void Notifier::setDesc(const QString &newDesc)
 {
-    if (m_desc == newDesc)
+    if (m_initialized && m_desc == newDesc)
         return;
 
     m_desc = newDesc;
@@ -186,8 +163,16 @@ QString Notifier::imagePath() const
 
 void Notifier::setImagePath(const QString &newImagePath)
 {
-    if (m_imagePath == newImagePath)
+    if (m_initialized && m_imagePath == newImagePath)
         return;
+
+    auto imageExtension = std::filesystem::path(newImagePath.toStdString()).extension();
+    if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png"
+            || !std::filesystem::exists(newImagePath.toStdString())) {
+        setImageFileError(true);
+    } else {
+        setImageFileError(false);
+    }
 
     m_imagePath = newImagePath;
     templ.setImagePath(newImagePath.toStdWString());
@@ -202,8 +187,11 @@ QString Notifier::duration() const
 
 void Notifier::setDuration(QString newDuration)
 {
-    if (m_duration == newDuration)
+    if (m_initialized && m_duration == newDuration)
         return;
+
+    if (newDuration != "System" && newDuration != "Short" && newDuration != "Long")
+        Utils::throwError("Invalid duration value: must be either \"System\", \"Short\" or \"Long\"");
 
     m_duration = newDuration;
     templ.setDuration(toWinToastDuration(newDuration));
@@ -218,7 +206,7 @@ QString Notifier::regexStr() const
 
 void Notifier::setRegexStr(const QString &newRegexStr)
 {
-    if (m_regexStr == newRegexStr)
+    if (m_initialized && m_regexStr == newRegexStr)
         return;
 
     m_regexStr = newRegexStr;
@@ -235,11 +223,16 @@ void Notifier::setRegexStr(const QString &newRegexStr)
         templ.setTextField(descCopy.toStdWString(), WinToastTemplate::SecondLine);
     }
 
-    try {
-        regex = std::regex(newRegexStr.toStdString());
-    } catch (const std::exception& e) {
-        std::cerr << "Invalid regex: " << e.what() << std::endl;
-        throw std::runtime_error(e.what());
+    if (newRegexStr == "") {
+        setRegexError(true);
+    } else {
+        try {
+            regex = std::regex(newRegexStr.toStdString());
+            setRegexError(false);
+        } catch (const std::exception& e) {
+            std::cerr << "Invalid regex: " << e.what() << std::endl;
+            setRegexError(true);
+        }
     }
 
     emit regexStrChanged();
@@ -252,7 +245,7 @@ QString Notifier::name() const
 
 void Notifier::setName(const QString &newName)
 {
-    if (m_name == newName)
+    if (m_initialized && m_name == newName)
         return;
 
     m_name = newName;
@@ -267,12 +260,17 @@ bool Notifier::toastEnabled() const
 
 void Notifier::setToastEnabled(bool newToastEnabled)
 {
-    if (m_toastEnabled == newToastEnabled)
+    if (m_initialized && m_toastEnabled == newToastEnabled)
         return;
 
-    if (m_regexStr == "" && newToastEnabled) {
-        Utils::showInfo("Can't enable a Notification with an empty regex pattern");
-        return;
+    if (newToastEnabled) {
+        if (m_regexStr == "") {
+            Utils::showInfo("Can't enable a Notification with an empty regex pattern.");
+            return;
+        }
+
+        if (m_regexError || m_soundFileError || m_imageFileError)
+            return;
     }
 
     if (!m_soundEnabled && !m_toastEnabled)
@@ -296,12 +294,17 @@ bool Notifier::soundEnabled() const
 
 void Notifier::setSoundEnabled(bool newSoundEnabled)
 {
-    if (m_soundEnabled == newSoundEnabled)
+    if (m_initialized && m_soundEnabled == newSoundEnabled)
         return;
 
-    if (m_regexStr == "" && newSoundEnabled) {
-        Utils::showInfo("Can't enable a Notification with an empty regex pattern");
-        return;
+    if (newSoundEnabled) {
+        if (m_regexStr == "") {
+            Utils::showInfo("Can't enable a Notification with an empty regex pattern.");
+            return;
+        }
+
+        if (m_regexError || m_soundFileError || m_imageFileError)
+            return;
     }
 
     if (!m_soundEnabled && !m_toastEnabled)
@@ -326,7 +329,7 @@ bool Notifier::sticky() const
 
 void Notifier::setSticky(bool newSticky)
 {
-    if (m_sticky == newSticky)
+    if (m_initialized && m_sticky == newSticky)
         return;
 
     m_sticky = newSticky;
@@ -342,10 +345,62 @@ QString Notifier::soundPath() const
 
 void Notifier::setSoundPath(const QString &newSoundPath)
 {
-    if (m_soundPath == newSoundPath)
+    if (m_initialized && m_soundPath == newSoundPath)
         return;
+
+    if (std::filesystem::path(newSoundPath.toStdString()).extension() != ".wav"
+            || !std::filesystem::exists(newSoundPath.toStdString())) {
+        setSoundFileError(true);
+    } else {
+        setSoundFileError(false);
+    }
 
     m_soundPath = newSoundPath;
 
     emit soundPathChanged();
+}
+
+bool Notifier::regexError() const
+{
+    return m_regexError;
+}
+
+void Notifier::setRegexError(bool newRegexError)
+{
+    if (m_regexError == newRegexError)
+        return;
+
+    m_regexError = newRegexError;
+
+    emit regexErrorChanged();
+}
+
+bool Notifier::soundFileError() const
+{
+    return m_soundFileError;
+}
+
+void Notifier::setSoundFileError(bool newSoundFileError)
+{
+    if (m_soundFileError == newSoundFileError)
+        return;
+
+    m_soundFileError = newSoundFileError;
+
+    emit soundFileErrorChanged();
+}
+
+bool Notifier::imageFileError() const
+{
+    return m_imageFileError;
+}
+
+void Notifier::setImageFileError(bool newImageFileError)
+{
+    if (m_imageFileError == newImageFileError)
+        return;
+
+    m_imageFileError = newImageFileError;
+
+    emit imageFileErrorChanged();
 }
