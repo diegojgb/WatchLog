@@ -11,7 +11,7 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
       m_filePath{QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath"))},
       m_enabled{jsonGetValue<bool>(monitorData, "enabled", true)},
       m_defaultImage{jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString())},
-      manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)}
+      m_manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)}
 {
     startFile();
     readNotifiers(jsonFindByKey(monitorData, "notifiers"));
@@ -24,7 +24,7 @@ Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath)
       m_filePath{filePath},
       m_enabled{false},
       m_defaultImage{Notifier::getDefaultImg().toStdString()},
-      manyPerUpdate{false}
+      m_manyPerUpdate{false}
 {
     addEmptyNotifier();
 }
@@ -50,12 +50,47 @@ json Monitor::toJSON() const
     obj["filePath"] = m_filePath.toStdString();
     obj["enabled"] = m_enabled;
     obj["notifiers"] = json::array();
-    obj["manyPerUpdate"] = manyPerUpdate;
+    obj["manyPerUpdate"] = m_manyPerUpdate;
 
     for (int i = 0; i < m_notifiers.rowCount() - 1; i++)
         obj["notifiers"].push_back(m_notifiers.at(i)->toJSON());
 
     return obj;
+}
+
+const QVarLengthArray<Notifier *> &Monitor::getEnabledNotifiers() const
+{
+    return m_enabledNotifiers;
+}
+
+const bool Monitor::getManyPerUpdate() const
+{
+    return m_manyPerUpdate;
+}
+
+bool Monitor::fileIsOpen() const
+{
+    return m_file.is_open();
+}
+
+bool Monitor::fileEof() const
+{
+    return m_file.eof();
+}
+
+std::istream& Monitor::fileGetLine(std::string &line)
+{
+    return std::getline(m_file, line);
+}
+
+void Monitor::fileClear()
+{
+    m_file.clear();
+}
+
+void Monitor::fileSeekEnd()
+{
+    m_file.seekg(0, std::ios::end);
 }
 
 json Monitor::jsonFindByKey(const json &data, const std::string &key) {

@@ -23,14 +23,23 @@ class Monitor : public QObject
     Q_PROPERTY(int enabledNotifierCount READ enabledNotifierCount WRITE setEnabledNotifierCount NOTIFY enabledNotifierCountChanged FINAL)
 
 public:
-    std::ifstream m_file;
-    QVarLengthArray<Notifier*> m_enabledNotifiers;
-    bool manyPerUpdate;
-
     static json jsonFindByKey(const json &data, const std::string &key);
 
     explicit Monitor(QObject *parent, const json &monitorData);
     explicit Monitor(QObject *parent, const QString& name, const QString& filePath);
+
+    void showTypeError(json::type_error e, const std::string &key);
+    void startFile();
+    json toJSON() const;
+
+    const QVarLengthArray<Notifier*>& getEnabledNotifiers() const;
+    const bool getManyPerUpdate() const;
+
+    bool fileIsOpen() const;
+    bool fileEof() const;
+    void fileClear();
+    void fileSeekEnd();
+    std::istream& fileGetLine(std::string& line);
 
     QString name() const;
     void setName(const QString &newName);
@@ -44,16 +53,11 @@ public:
     int enabledNotifierCount() const;
     void setEnabledNotifierCount(int newEnabledNotifierCount);
 
-    void startFile();
-    json toJSON() const;
-
     template<typename T>
     T jsonGetValue(const json &data, const std::string &key);
 
     template<typename T>
     T jsonGetValue(const json &data, const std::string &key, const T defaultValue);
-
-    void showTypeError(json::type_error e, const std::string &key);
 
     NotifierList* notifiers();
 
@@ -74,10 +78,13 @@ signals:
     void monitorDisabled(const Monitor* monitor);
 
 private:
-    QString m_name;
+    QVarLengthArray<Notifier*> m_enabledNotifiers;
     NotifierList m_notifiers;
-    QString m_filePath;
+    std::ifstream m_file;
+    bool m_manyPerUpdate;
     bool m_enabled;
+    QString m_name; 
+    QString m_filePath;
     std::string m_defaultImage;
     int m_enabledNotifierCount = 0;
 

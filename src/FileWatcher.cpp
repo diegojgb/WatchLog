@@ -61,18 +61,18 @@ void FileWatcher::onFileChanged(const QString &path)
 
     Monitor* monitor = m_monitors.get(path);
 
-    if (!monitor->m_file.is_open())
+    if (!monitor->fileIsOpen())
         Utils::throwError("FileWatcher: file's not open");
 
     std::string line;
 
-    if (!std::getline(monitor->m_file, line)) { // In case weird modifications were made, and the cursor is broken.
+    if (!monitor->fileGetLine(line)) { // In case modifications were made, and the cursor is broken.
         emit fileReset();
         return;
     }
 
     do {
-        for (const Notifier* notifier: monitor->m_enabledNotifiers) {
+        for (const Notifier* notifier: monitor->getEnabledNotifiers()) {
             if (!std::regex_search(line, notifier->getRegex()))
                 continue;
 
@@ -97,15 +97,15 @@ void FileWatcher::onFileChanged(const QString &path)
 
                 mciSendString(playCommand.c_str(), NULL, 0, NULL);
             }
-            if (!monitor->manyPerUpdate) {
-                monitor->m_file.seekg(0, std::ios::end);
+            if (!monitor->getManyPerUpdate()) {
+                monitor->fileSeekEnd();
                 return;
             }
         }
-    } while (std::getline(monitor->m_file, line));
+    } while (monitor->fileGetLine(line));
 
-    if (!monitor->m_file.eof())
+    if (!monitor->fileEof())
         Utils::throwError("FileWatcher: error reading file");
 
-    monitor->m_file.clear();
+    monitor->fileClear();
 }
