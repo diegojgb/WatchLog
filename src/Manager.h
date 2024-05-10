@@ -4,6 +4,7 @@
 #include "FileWatcher.h"
 #include "Monitor.h"
 #include "MonitorCollection.h"
+#include "TrayIcon.h"
 
 #include <QObject>
 #include <QHash>
@@ -19,9 +20,9 @@ class Manager: public QObject
     Q_PROPERTY(MonitorCollection* monitors READ monitors CONSTANT)
 
 public:
-    FileWatcher m_fileWatcher;
-
     explicit Manager(QObject *parent, const json &monitorsData);
+
+    void initTrayIcon(QObject* parent, QObject* root, HWND &hwnd);
 
     bool hadInitErrors() const;
     json toJSON() const;
@@ -36,8 +37,11 @@ public slots:
     bool addMonitor(const QString& name, const QString& filePath);
 
 private:
+    FileWatcher m_fileWatcher;
     MonitorCollection m_monitors;
+    TrayIcon* m_trayIcon;
     bool m_error;
+    bool m_trayIconInitialized = false;
 };
 
 #endif // MANAGER_H

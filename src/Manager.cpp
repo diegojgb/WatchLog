@@ -36,6 +36,18 @@ Manager::Manager(QObject *parent, const json &data)
     }
 }
 
+void Manager::initTrayIcon(QObject *parent, QObject *root, HWND &hwnd)
+{
+    if (m_trayIconInitialized)
+        Utils::throwError("Tray icon can only be initialized once.");
+
+    m_trayIcon = new TrayIcon(parent, root, hwnd);
+
+    QObject::connect(&m_fileWatcher, &FileWatcher::matchFound, m_trayIcon, &TrayIcon::sendNotification);
+
+    m_trayIconInitialized = true;
+}
+
 json Manager::toJSON() const
 {
     json obj;
