@@ -13,7 +13,6 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
       m_defaultImage{jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString())},
       m_manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)}
 {
-    startFile();
     readNotifiers(jsonFindByKey(monitorData, "notifiers"));
     addEmptyNotifier();
 }
@@ -27,19 +26,6 @@ Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath)
       m_manyPerUpdate{false}
 {
     addEmptyNotifier();
-}
-
-void Monitor::startFile()
-{
-    if (m_file.is_open())
-        m_file.close();
-
-    m_file = std::ifstream(m_filePath.toStdString());
-
-    if (!m_file.is_open())
-        Utils::throwError("Error opening file: " + m_filePath.toStdString());
-
-    m_file.seekg(0, std::ios::end);
 }
 
 json Monitor::toJSON() const
@@ -66,31 +52,6 @@ const QVarLengthArray<Notifier *> &Monitor::getEnabledNotifiers() const
 const bool Monitor::getManyPerUpdate() const
 {
     return m_manyPerUpdate;
-}
-
-bool Monitor::fileIsOpen() const
-{
-    return m_file.is_open();
-}
-
-bool Monitor::fileEof() const
-{
-    return m_file.eof();
-}
-
-std::istream& Monitor::fileGetLine(std::string &line)
-{
-    return std::getline(m_file, line);
-}
-
-void Monitor::fileClear()
-{
-    m_file.clear();
-}
-
-void Monitor::fileSeekEnd()
-{
-    m_file.seekg(0, std::ios::end);
 }
 
 json Monitor::jsonFindByKey(const json &data, const std::string &key) {
@@ -249,7 +210,6 @@ void Monitor::setFilePath(const QString &newFilePath)
 
     m_filePath = newFilePath;
 
-    startFile();
     emit filePathChanged();
 }
 
@@ -268,7 +228,6 @@ void Monitor::setEnabled(bool newEnabled)
         if (!m_enabledNotifiers.size())
             return;
 
-        startFile();
         emit monitorEnabled(this);
     }
     else

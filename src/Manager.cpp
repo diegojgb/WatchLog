@@ -25,7 +25,6 @@ Manager::Manager(QObject *parent, const json &data)
             QObject::connect(newMonitor, &Monitor::filePathChangedOverload, this, &Manager::changeFilePath);
             QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
             QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
-            QObject::connect(&m_fileWatcher, &FileWatcher::fileReset, newMonitor, &Monitor::startFile);
         }
 
         m_fileWatcher.addAllMonitors();
@@ -107,7 +106,6 @@ bool Manager::addMonitor(const QString &name, const QString &filePath)
     QObject::connect(newMonitor, &Monitor::filePathChangedOverload, this, &Manager::changeFilePath);
     QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
     QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
-    QObject::connect(&m_fileWatcher, &FileWatcher::fileReset, newMonitor, &Monitor::startFile);
 
     return true;
 }

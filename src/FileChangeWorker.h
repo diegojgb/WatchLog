@@ -1,20 +1,27 @@
 #ifndef FILECHANGEWORKER_H
 #define FILECHANGEWORKER_H
 
+#include "Utils.h"
+
 #include <QObject>
 #include <Windows.h>
 #include <QFileSystemWatcher>
 #include <QTimerEvent>
-#include <chrono>
-#include <thread>
 #include <QDebug>
+#include <fstream>
 
 struct FileData {
     QString filePath;
     HANDLE hFile;
     FILETIME lastWriteTime;
+    std::ifstream file;
 
     explicit FileData(const QString path);
+    ~FileData();
+
+    bool hasTimeChanged();
+    bool updateWriteTime();
+    void startFile();
 };
 
 class FileChangeWorker : public QObject
@@ -40,7 +47,7 @@ public slots:
     void finish();
 
 signals:
-    void fileChanged(const QString& path);
+    void fileChanged(FileData* fileData);
     void finished();
     void pollingRateChanged();
 
@@ -55,7 +62,7 @@ private:
     void timerEvent(QTimerEvent* event) override;
 
     void checkAll();
-    bool checkOne(FileData* file);
+    void pathToSignal(const QString& path);
 };
 
 #endif // FILECHANGEWORKER_H

@@ -29,17 +29,10 @@ public:
     explicit Monitor(QObject *parent, const QString& name, const QString& filePath);
 
     void showTypeError(json::type_error e, const std::string &key);
-    void startFile();
     json toJSON() const;
 
     const QVarLengthArray<Notifier*>& getEnabledNotifiers() const;
     const bool getManyPerUpdate() const;
-
-    bool fileIsOpen() const;
-    bool fileEof() const;
-    void fileClear();
-    void fileSeekEnd();
-    std::istream& fileGetLine(std::string& line);
 
     QString name() const;
     void setName(const QString &newName);
@@ -80,7 +73,6 @@ signals:
 private:
     QVarLengthArray<Notifier*> m_enabledNotifiers;
     NotifierList m_notifiers;
-    std::ifstream m_file;
     bool m_manyPerUpdate;
     bool m_enabled;
     QString m_name; 

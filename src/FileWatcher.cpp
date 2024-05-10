@@ -48,7 +48,7 @@ void FileWatcher::removeFilePath(const QString &filePath)
                               Q_ARG(QString, filePath));
 }
 
-void FileWatcher::onFileChanged(const QString &path)
+void FileWatcher::onFileChanged(FileData* fileData)
 {
     // In case the file was removed and added back again immediately.
     // if (!m_watcher.files().contains(path)) {
@@ -59,15 +59,19 @@ void FileWatcher::onFileChanged(const QString &path)
     //     }
     // }
 
-    Monitor* monitor = m_monitors.get(path);
+    // Return if a call for this file change has already executed.
+    if (!fileData->updateWriteTime())
+        return;
 
-    if (!monitor->fileIsOpen())
+    Monitor* monitor = m_monitors.get(fileData->filePath);
+
+    if (!fileData->file.is_open())
         Utils::throwError("FileWatcher: file's not open");
 
     std::string line;
 
-    if (!monitor->fileGetLine(line)) { // In case modifications were made, and the cursor is broken.
-        emit fileReset();
+    if (!std::getline(fileData->file, line)) { // In case modifications were made, and the cursor is broken.
+        fileData->startFile();
         return;
     }
 
@@ -98,14 +102,14 @@ void FileWatcher::onFileChanged(const QString &path)
                 mciSendString(playCommand.c_str(), NULL, 0, NULL);
             }
             if (!monitor->getManyPerUpdate()) {
-                monitor->fileSeekEnd();
+                fileData->file.seekg(0, std::ios::end);
                 return;
             }
         }
-    } while (monitor->fileGetLine(line));
+    } while (std::getline(fileData->file, line));
 
-    if (!monitor->fileEof())
+    if (!fileData->file.eof())
         Utils::throwError("FileWatcher: error reading file");
 
-    monitor->fileClear();
+    fileData->file.clear();
 }

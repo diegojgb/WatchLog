@@ -22,7 +22,7 @@ public:
     ~FileWatcher();
 
 public slots:
-    void onFileChanged(const QString &path);
+    void onFileChanged(FileData* fileData);
     void addFilePath(const QString &filePath);
     void removeFilePath(const QString &filePath);
     void addAllMonitors();

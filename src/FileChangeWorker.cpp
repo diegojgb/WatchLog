@@ -5,13 +5,57 @@ FileData::FileData(const QString path)
       hFile{FileChangeWorker::getHandle(path)}
 {
     GetFileTime(hFile, NULL, NULL, &lastWriteTime);
+    startFile();
+}
+
+FileData::~FileData()
+{
+    file.close();
+}
+
+bool FileData::hasTimeChanged()
+{
+    FILETIME newTime;
+
+    if (!GetFileTime(hFile, NULL, NULL, &newTime))
+        Utils::throwError("Couldn't poll the following file: " + filePath.toStdString());
+
+    return CompareFileTime(&lastWriteTime, &newTime) != 0;
+}
+
+bool FileData::updateWriteTime()
+{
+    FILETIME newTime;
+
+    if (!GetFileTime(hFile, NULL, NULL, &newTime))
+        Utils::throwError("Couldn't poll the following file: " + filePath.toStdString());
+
+    if (CompareFileTime(&lastWriteTime, &newTime) != 0) {
+        lastWriteTime = newTime;
+        return true;
+    }
+
+    return false;
+}
+
+void FileData::startFile()
+{
+    if (file.is_open())
+        file.close();
+
+    file = std::ifstream(filePath.toStdString());
+
+    if (!file.is_open())
+        Utils::throwError("Error opening file: " + filePath.toStdString());
+
+    file.seekg(0, std::ios::end);
 }
 
 FileChangeWorker::FileChangeWorker(QObject *parent)
     : QObject{parent}
 {
     m_qWatcher = new QFileSystemWatcher();
-    connect(m_qWatcher, &QFileSystemWatcher::fileChanged, this, &FileChangeWorker::fileChanged);
+    connect(m_qWatcher, &QFileSystemWatcher::fileChanged, this, &FileChangeWorker::pathToSignal);
 }
 
 FileChangeWorker::~FileChangeWorker()
@@ -33,24 +77,20 @@ HANDLE FileChangeWorker::getHandle(const QString &filePath)
 
 void FileChangeWorker::checkAll()
 {
-    for (FileData* file: m_files) {
-        checkOne(file);
+    for (FileData* fileData: m_files) {
+        if (fileData->hasTimeChanged())
+            emit fileChanged(fileData);
     }
 }
 
-bool FileChangeWorker::checkOne(FileData* file)
+void FileChangeWorker::pathToSignal(const QString& path)
 {
-    FILETIME newTime;
-
-    if (!GetFileTime(file->hFile, NULL, NULL, &newTime))
-        return false;
-
-    if (CompareFileTime(&file->lastWriteTime, &newTime) != 0) {
-        file->lastWriteTime = newTime;
-        emit fileChanged(file->filePath);
+    for (FileData* fileData: m_files) {
+        if (fileData->filePath == path) {
+            emit fileChanged(fileData);
+            return;
+        }
     }
-
-    return true;
 }
 
 void FileChangeWorker::addPath(const QString &filePath)
