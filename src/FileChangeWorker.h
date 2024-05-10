@@ -11,6 +11,8 @@
 #include <fstream>
 
 struct FileData {
+    static FILETIME timeAux; // To prevent the declaration of a new time variable in each polling iteration.
+
     QString filePath;
     HANDLE hFile;
     FILETIME lastWriteTime;

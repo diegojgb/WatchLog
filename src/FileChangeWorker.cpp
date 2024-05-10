@@ -1,5 +1,7 @@
 #include "FileChangeWorker.h"
 
+FILETIME FileData::timeAux;
+
 FileData::FileData(const QString path)
     : filePath{path},
       hFile{FileChangeWorker::getHandle(path)}
@@ -15,23 +17,19 @@ FileData::~FileData()
 
 bool FileData::hasTimeChanged()
 {
-    FILETIME newTime;
-
-    if (!GetFileTime(hFile, NULL, NULL, &newTime))
+    if (!GetFileTime(hFile, NULL, NULL, &timeAux))
         Utils::throwError("Couldn't poll the following file: " + filePath.toStdString());
 
-    return CompareFileTime(&lastWriteTime, &newTime) != 0;
+    return CompareFileTime(&lastWriteTime, &timeAux) != 0;
 }
 
 bool FileData::updateWriteTime()
 {
-    FILETIME newTime;
-
-    if (!GetFileTime(hFile, NULL, NULL, &newTime))
+    if (!GetFileTime(hFile, NULL, NULL, &timeAux))
         Utils::throwError("Couldn't poll the following file: " + filePath.toStdString());
 
-    if (CompareFileTime(&lastWriteTime, &newTime) != 0) {
-        lastWriteTime = newTime;
+    if (CompareFileTime(&lastWriteTime, &timeAux) != 0) {
+        lastWriteTime = timeAux;
         return true;
     }
 
