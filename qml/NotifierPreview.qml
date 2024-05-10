@@ -12,9 +12,10 @@ Item {
     property bool newNotifier: false
     property bool newNotifierOngoing: false
     property Row optionsItem: options
+    property Image exclamationItem: exclamation
     property bool textFieldError: textField.error
     property bool optionsAux: true
-    property bool switchesEnabled: true
+    required property bool notifierError
 
     signal rightClicked
     signal customClicked
@@ -210,85 +211,111 @@ Item {
             }
         }
 
-        // Edit and trash buttons
-        Row {
-            id: options
+        Item {
             Layout.fillHeight: true
+            Layout.preferredWidth: childrenRect.width
             Layout.rightMargin: 3
-            spacing: 5
-            visible: !control.newNotifier && !control.newNotifierOngoing
-                     && !textField.focused && options.opacity !== 0
-                     && control.optionsAux
 
-            // Edit Button
-            Rectangle {
-                anchors.top: parent.top
-                anchors.topMargin: 3
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 3
-                width: 26
-                color: editButtonMa.containsMouse ? "#ccc" : root.whiteColor
-                radius: 4
+            Image {
+                id: exclamation
+                anchors.right: parent.right
+                anchors.rightMargin: 5
+                anchors.verticalCenter: parent.verticalCenter
+                visible: control.notifierError && !control.newNotifier
+                         && !control.newNotifierOngoing
+                         && exclamation.opacity !== 0
 
-                Behavior on color {
-                    ColorAnimation {
+                source: "qrc:/assets/exclamation.png"
+
+                Behavior on opacity {
+                    NumberAnimation {
                         duration: root.transitionDuration
-                    }
-                }
-
-                Image {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    source: "qrc:/assets/edit.png"
-                }
-
-                MouseArea {
-                    id: editButtonMa
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
-
-                    onClicked: {
-                        textField.custFocus()
                     }
                 }
             }
 
-            // Trash Button
-            Rectangle {
+            // Edit and trash buttons
+            Row {
+                id: options
                 anchors.top: parent.top
-                anchors.topMargin: 1
                 anchors.bottom: parent.bottom
-                anchors.bottomMargin: 2.5
-                width: 26
-                color: trashButtonMa.containsMouse ? "#ccc" : root.whiteColor
-                radius: 4
+                anchors.right: parent.right
+                spacing: 5
+                visible: !control.newNotifier && !control.newNotifierOngoing
+                         && !textField.focused && options.opacity !== 0
+                         && control.optionsAux
 
-                Behavior on color {
-                    ColorAnimation {
-                        duration: root.transitionDuration
+                // Edit Button
+                Rectangle {
+                    anchors.top: parent.top
+                    anchors.topMargin: 3
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 3
+                    width: 26
+                    color: editButtonMa.containsMouse ? "#ccc" : root.whiteColor
+                    radius: 4
+
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: root.transitionDuration
+                        }
+                    }
+
+                    Image {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        source: "qrc:/assets/edit.png"
+                    }
+
+                    MouseArea {
+                        id: editButtonMa
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        z: 2
+
+                        onClicked: {
+                            textField.custFocus()
+                        }
                     }
                 }
 
-                Image {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    source: "qrc:/assets/trash.png"
+                // Trash Button
+                Rectangle {
+                    anchors.top: parent.top
+                    anchors.topMargin: 1
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 2.5
+                    width: 26
+                    color: trashButtonMa.containsMouse ? "#ccc" : root.whiteColor
+                    radius: 4
+
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: root.transitionDuration
+                        }
+                    }
+
+                    Image {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        source: "qrc:/assets/trash.png"
+                    }
+
+                    MouseArea {
+                        id: trashButtonMa
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: control.deleted()
+                    }
                 }
 
-                MouseArea {
-                    id: trashButtonMa
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
-
-                    onClicked: control.deleted()
-                }
-            }
-
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: root.transitionDuration
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: root.transitionDuration
+                    }
                 }
             }
         }
@@ -299,7 +326,7 @@ Item {
 
             CusSwitch {
                 checked: notifier.toastEnabled
-                enabled: control.switchesEnabled && !control.newNotifierOngoing
+                enabled: !control.notifierError && !control.newNotifierOngoing
                 backgroundColor_on: root.accentColor
 
                 property bool loaded: false
@@ -313,7 +340,7 @@ Item {
             }
             CusSwitch {
                 checked: notifier.soundEnabled
-                enabled: control.switchesEnabled && !control.newNotifierOngoing
+                enabled: !control.notifierError && !control.newNotifierOngoing
                 backgroundColor_on: root.accentColor
 
                 property bool loaded: false

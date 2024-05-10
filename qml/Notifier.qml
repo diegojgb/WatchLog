@@ -35,8 +35,8 @@ Column {
         newNotifier: control.newNotifier
         onCustomClicked: exp.show = !exp.show
         optionsItem.opacity: exp.show ? 1 : 0
-        optionsAux: true
-        switchesEnabled: !control.error
+        exclamationItem.opacity: exp.show ? 0 : 1
+        notifierError: control.error
 
         onDeleted: deleteDialog.open()
         onRightClicked: {

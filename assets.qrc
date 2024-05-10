@@ -12,5 +12,6 @@
         <file>assets/trash.png</file>
         <file>assets/settings.png</file>
         <file>assets/home-image.png</file>
+        <file>assets/exclamation.png</file>
     </qresource>
 </RCC>
