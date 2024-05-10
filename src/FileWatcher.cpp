@@ -73,11 +73,11 @@ void FileWatcher::onFileChanged(const QString &path)
 
     do {
         for (const Notifier* notifier: monitor->m_enabledNotifiers) {
-            if (!std::regex_search(line, notifier->regex))
+            if (!std::regex_search(line, notifier->getRegex()))
                 continue;
 
             if (notifier->toastEnabled()) {
-                emit matchFound(notifier->templ);
+                emit matchFound(notifier->getTempl());
             } else {
                 std::wstring playCommand;
 

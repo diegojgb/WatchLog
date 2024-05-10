@@ -31,7 +31,7 @@ void Notifier::initializeConstants() {
 Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString title,
                    QString desc, QString imagePath, QString soundPath, QString duration, bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent},
-      templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
+      m_templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
 {
     setName(name);
     setRegexStr(regexStr);
@@ -45,6 +45,16 @@ Notifier::Notifier(QObject *parent, QString name, QString regexStr, QString titl
     setSticky(sticky);
 
     m_initialized = true;
+}
+
+const std::regex &Notifier::getRegex() const
+{
+    return m_regex;
+}
+
+const WinToastTemplate &Notifier::getTempl() const
+{
+    return m_templ;
 }
 
 json Notifier::toJSON() const
@@ -87,13 +97,13 @@ void Notifier::reset()
 void Notifier::updateSticky() {
     if (m_sticky)
     {
-        templ.addAction(L"Dismiss");
-        templ.setScenario(WinToastTemplate::Scenario::Reminder);
+        m_templ.addAction(L"Dismiss");
+        m_templ.setScenario(WinToastTemplate::Scenario::Reminder);
     }
     else
     {
-        templ.removeAction(L"Dismiss");
-        templ.setScenario(WinToastTemplate::Scenario::Default);
+        m_templ.removeAction(L"Dismiss");
+        m_templ.setScenario(WinToastTemplate::Scenario::Default);
     }
 }
 
@@ -127,7 +137,7 @@ void Notifier::setTitle(const QString &newTitle)
     m_title = newTitle;
 
     QString titleCopy = newTitle;
-    templ.setTextField(titleCopy
+    m_templ.setTextField(titleCopy
                        .replace("${regex}", m_regexStr)
                        .replace("${name}", m_name)
                        .toStdWString(), WinToastTemplate::FirstLine);
@@ -148,7 +158,7 @@ void Notifier::setDesc(const QString &newDesc)
     m_desc = newDesc;
 
     QString descCopy = newDesc;
-    templ.setTextField(descCopy
+    m_templ.setTextField(descCopy
                        .replace("${regex}", m_regexStr)
                        .replace("${name}", m_name)
                        .toStdWString(), WinToastTemplate::SecondLine);
@@ -175,7 +185,7 @@ void Notifier::setImagePath(const QString &newImagePath)
     }
 
     m_imagePath = newImagePath;
-    templ.setImagePath(newImagePath.toStdWString());
+    m_templ.setImagePath(newImagePath.toStdWString());
 
     emit imagePathChanged();
 }
@@ -194,7 +204,7 @@ void Notifier::setDuration(QString newDuration)
         Utils::throwError("Invalid duration value: must be either \"System\", \"Short\" or \"Long\"");
 
     m_duration = newDuration;
-    templ.setDuration(toWinToastDuration(newDuration));
+    m_templ.setDuration(toWinToastDuration(newDuration));
 
     emit durationChanged();
 }
@@ -214,20 +224,20 @@ void Notifier::setRegexStr(const QString &newRegexStr)
     if (m_title.contains("${regex}")) {
         QString titleCopy = m_title;
         titleCopy.replace("${regex}", newRegexStr);
-        templ.setTextField(titleCopy.toStdWString(), WinToastTemplate::FirstLine);
+        m_templ.setTextField(titleCopy.toStdWString(), WinToastTemplate::FirstLine);
     }
 
     if (m_desc.contains("${regex}")) {
         QString descCopy = m_desc;
         descCopy.replace("${regex}", newRegexStr);
-        templ.setTextField(descCopy.toStdWString(), WinToastTemplate::SecondLine);
+        m_templ.setTextField(descCopy.toStdWString(), WinToastTemplate::SecondLine);
     }
 
     if (newRegexStr == "") {
         setRegexError(true);
     } else {
         try {
-            regex = std::regex(newRegexStr.toStdString());
+            m_regex = std::regex(newRegexStr.toStdString());
             setRegexError(false);
         } catch (const std::exception& e) {
             std::cerr << "Invalid regex: " << e.what() << std::endl;
@@ -317,7 +327,7 @@ void Notifier::setSoundEnabled(bool newSoundEnabled)
     }
 
     m_soundEnabled = newSoundEnabled;
-    templ.setAudioOption(mapAudioOption(newSoundEnabled));
+    m_templ.setAudioOption(mapAudioOption(newSoundEnabled));
 
     emit soundEnabledChanged();
 }

@@ -39,9 +39,6 @@ public:
     static const QString& getDefaultDesc();
     static const QString& getDefaultImg();
 
-    std::regex regex;
-    WinToastTemplate templ;
-
     explicit Notifier(QObject *parent,
                       QString name = "Add notification",
                       QString regexStr = "",
@@ -53,6 +50,10 @@ public:
                       bool toastEnabled = false,
                       bool soundEnabled = false,
                       bool sticky = false);
+
+    const std::regex& getRegex() const;
+    const WinToastTemplate& getTempl() const;
+    json toJSON() const;
 
     QString title() const;
     void setTitle(const QString &newTitle);
@@ -93,12 +94,13 @@ public:
     bool imageFileError() const;
     void setImageFileError(bool newImageFileError);
 
-    json toJSON() const;
-
 public slots:
     void reset();
 
 signals:
+    void disabled(Notifier* notifier);
+    void enabled(Notifier* notifier);
+
     void titleChanged();
     void descChanged();
     void imagePathChanged();
@@ -113,9 +115,6 @@ signals:
     void soundFileErrorChanged();
     void imageFileErrorChanged();
 
-    void disabled(Notifier* notifier);
-    void enabled(Notifier* notifier);
-
 private:
     static QString defaultTitle;
     static QString defaultDesc;
@@ -123,6 +122,8 @@ private:
 
     static void initializeConstants();
 
+    std::regex m_regex;
+    WinToastTemplate m_templ;
     QString m_name;
     QString m_title;
     QString m_desc;
