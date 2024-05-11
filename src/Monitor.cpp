@@ -230,7 +230,7 @@ void Monitor::setEnabled(bool newEnabled)
 
     if (newEnabled)
     {
-        if (!m_enabledNotifiers.size())
+        if (!m_enabledNotifiers.size() || m_fileError)
             return;
 
         emit monitorEnabled(this);
