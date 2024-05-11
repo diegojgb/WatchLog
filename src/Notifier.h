@@ -131,9 +131,9 @@ private:
     QString m_soundPath;
     QString m_regexStr;
     QString m_duration;
-    bool m_soundEnabled;
-    bool m_toastEnabled;
-    bool m_sticky;
+    bool m_soundEnabled = false;
+    bool m_toastEnabled = false;
+    bool m_sticky = false;
     bool m_regexError = false;
     bool m_soundFileError = false;
     bool m_imageFileError = false;

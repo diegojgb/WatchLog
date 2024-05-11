@@ -270,7 +270,7 @@ bool Notifier::toastEnabled() const
 
 void Notifier::setToastEnabled(bool newToastEnabled)
 {
-    if (m_initialized && m_toastEnabled == newToastEnabled)
+    if (m_toastEnabled == newToastEnabled)
         return;
 
     if (newToastEnabled) {
@@ -304,7 +304,7 @@ bool Notifier::soundEnabled() const
 
 void Notifier::setSoundEnabled(bool newSoundEnabled)
 {
-    if (m_initialized && m_soundEnabled == newSoundEnabled)
+    if (m_soundEnabled == newSoundEnabled)
         return;
 
     if (newSoundEnabled) {
@@ -339,7 +339,7 @@ bool Notifier::sticky() const
 
 void Notifier::setSticky(bool newSticky)
 {
-    if (m_initialized && m_sticky == newSticky)
+    if (m_sticky == newSticky)
         return;
 
     m_sticky = newSticky;
