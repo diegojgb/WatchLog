@@ -7,8 +7,10 @@ Column {
 
     property var notifier
     property bool newNotifier: false
-    property bool error: preview.error || notifier.regexError
-                         || notifier.soundFileError || notifier.imageFileError
+    property bool error: !control.newNotifier && (preview.error
+                                                  || notifier.regexError
+                                                  || notifier.soundFileError
+                                                  || notifier.imageFileError)
 
     signal addedNew
     signal deleted
