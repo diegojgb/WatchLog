@@ -32,6 +32,8 @@ Manager::Manager(QObject *parent, const json &data)
         std::cerr << "Exception caught: " << e.what() << std::endl;
         m_error = true;
     }
+
+    connect(&m_fileWatcher, &FileWatcher::checkFailed, this, &Manager::onCheckFailed);
 }
 
 void Manager::initTrayIcon(QObject *parent, QObject *root, HWND &hwnd)
@@ -99,6 +101,11 @@ bool Manager::addMonitor(const QString &name, const QString &filePath)
     QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
 
     return true;
+}
+
+void Manager::onCheckFailed(const QString &filePath)
+{
+
 }
 
 bool Manager::hadInitErrors() const

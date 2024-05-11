@@ -34,6 +34,7 @@ public slots:
     void enableMonitor(const Monitor* monitor);
     void updateJSON() const;
     bool addMonitor(const QString& name, const QString& filePath);
+    void onCheckFailed(const QString& filePath);
 
 private:
     FileWatcher m_fileWatcher;

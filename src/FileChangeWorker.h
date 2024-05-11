@@ -10,7 +10,12 @@
 #include <QDebug>
 #include <fstream>
 
-struct FileData {
+
+struct FileData: public QObject
+{
+    Q_OBJECT
+
+public:
     static FILETIME timeAux; // To prevent the declaration of a new time variable in each polling iteration.
 
     QString filePath;
@@ -21,10 +26,14 @@ struct FileData {
     explicit FileData(const QString path);
     ~FileData();
 
-    bool hasTimeChanged();
-    bool updateWriteTime();
+    bool isFileTimeDiff();
+    bool saveCurTime(); // Returns false if it is same as current.
     void startFile();
+
+signals:
+    void checkFailed(const QString& filePath);
 };
+
 
 class FileChangeWorker : public QObject
 {
@@ -51,6 +60,8 @@ public slots:
 signals:
     void fileChanged(FileData* fileData);
     void finished();
+    void checkFailed(const QString& filePath);
+
     void pollingRateChanged();
 
 private:

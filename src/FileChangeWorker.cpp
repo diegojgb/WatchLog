@@ -15,18 +15,22 @@ FileData::~FileData()
     file.close();
 }
 
-bool FileData::hasTimeChanged()
+bool FileData::isFileTimeDiff()
 {
-    if (!GetFileTime(hFile, NULL, NULL, &timeAux))
-        Utils::throwError("Couldn't poll the following file: " + filePath.toStdString());
+    if (!GetFileTime(hFile, NULL, NULL, &timeAux)) {
+        Utils::showInfo("Couldn't check the following file: " + filePath.toStdString());
+        emit checkFailed(filePath);
+    }
 
     return CompareFileTime(&lastWriteTime, &timeAux) != 0;
 }
 
-bool FileData::updateWriteTime()
+bool FileData::saveCurTime()
 {
-    if (!GetFileTime(hFile, NULL, NULL, &timeAux))
-        Utils::throwError("Couldn't poll the following file: " + filePath.toStdString());
+    if (!GetFileTime(hFile, NULL, NULL, &timeAux)) {
+        Utils::showInfo("Couldn't check the following file: " + filePath.toStdString());
+        emit checkFailed(filePath);
+    }
 
     if (CompareFileTime(&lastWriteTime, &timeAux) != 0) {
         lastWriteTime = timeAux;
@@ -76,7 +80,7 @@ HANDLE FileChangeWorker::getHandle(const QString &filePath)
 void FileChangeWorker::checkAll()
 {
     for (FileData* fileData: m_files) {
-        if (fileData->hasTimeChanged())
+        if (fileData->isFileTimeDiff())
             emit fileChanged(fileData);
     }
 }
@@ -94,7 +98,10 @@ void FileChangeWorker::pathToSignal(const QString& path)
 void FileChangeWorker::addPath(const QString &filePath)
 {
     m_qWatcher->addPath(filePath);
-    m_files.append(new FileData(filePath));
+    auto* fileData = new FileData(filePath);
+    m_files.append(fileData);
+
+    connect(fileData, &FileData::checkFailed, this, &FileChangeWorker::checkFailed);
 }
 
 void FileChangeWorker::removePath(const QString &filePath)

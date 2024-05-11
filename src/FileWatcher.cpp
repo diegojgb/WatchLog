@@ -16,6 +16,7 @@ FileWatcher::FileWatcher(QObject* parent, const MonitorCollection& monitors)
     connect(m_watcher, &FileChangeWorker::finished, m_thread, &QThread::quit, Qt::DirectConnection);
 
     connect(m_watcher, &FileChangeWorker::fileChanged, this, &FileWatcher::onFileChanged);
+    connect(m_watcher, &FileChangeWorker::checkFailed, this, &FileWatcher::checkFailed);
 
     m_thread->start();
 }
@@ -66,7 +67,7 @@ void FileWatcher::onFileChanged(FileData* fileData)
     // }
 
     // Return if a call for this file change has already executed.
-    if (!fileData->updateWriteTime())
+    if (!fileData->saveCurTime())
         return;
 
     Monitor* monitor = m_monitors.get(fileData->filePath);
