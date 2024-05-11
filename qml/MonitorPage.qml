@@ -18,6 +18,11 @@ ScrollView {
     signal deleted
     signal rightClicked(Notifier notifier)
 
+    onFileErrorChanged: {
+        if (page.fileError)
+            monitor.enabled = false
+    }
+
     Flickable {
         anchors.fill: parent
         contentHeight: content.height + content.anchors.topMargin
