@@ -129,7 +129,7 @@ ScrollView {
                 backgroundColor_on: root.accentColor
                 checked: monitor.enabled
                 font.pointSize: 10
-                enabled: monitor.enabledNotifierCount
+                enabled: monitor.enabledNotifierCount && !monitor.fileError
                 text: "Enabled"
 
                 MouseArea {
@@ -150,6 +150,7 @@ ScrollView {
                 Layout.topMargin: 15
                 Layout.rightMargin: 10
                 filePath: monitor.filePath
+                error: monitor.fileError
 
                 onFileAccepted: {
                     monitor.filePath = filePath
