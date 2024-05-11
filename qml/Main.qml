@@ -165,6 +165,8 @@ Window {
 
                         property int prevErrorCount: 0
 
+                        onFileErrorChanged: monitorPage.errorCount += fileError ? 1 : -1
+
                         onErrorCountChanged: {
                             var delta = monitorPage.errorCount - monitorPage.prevErrorCount
                             root.errorCount += delta

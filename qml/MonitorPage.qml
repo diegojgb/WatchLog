@@ -13,6 +13,7 @@ ScrollView {
     property int errorCount: 0
     property CustomDialog deleteDialog: deleteDialogItem
     property CustomDialog renameDialog: renameDialogItem
+    property bool fileError: monitor.fileError
 
     signal deleted
     signal rightClicked(Notifier notifier)
@@ -129,7 +130,7 @@ ScrollView {
                 backgroundColor_on: root.accentColor
                 checked: monitor.enabled
                 font.pointSize: 10
-                enabled: monitor.enabledNotifierCount && !monitor.fileError
+                enabled: monitor.enabledNotifierCount && !page.fileError
                 text: "Enabled"
 
                 MouseArea {
@@ -150,7 +151,7 @@ ScrollView {
                 Layout.topMargin: 15
                 Layout.rightMargin: 10
                 filePath: monitor.filePath
-                error: monitor.fileError
+                error: page.fileError
 
                 onFileAccepted: {
                     monitor.filePath = filePath
