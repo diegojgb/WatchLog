@@ -128,6 +128,11 @@ void Monitor::readNotifiers(const json &data)
 
         m_notifiers.append(newNotifier);
 
+        if (toastEnabled || soundEnabled) {
+            m_enabledNotifiers.append(newNotifier);
+            setEnabledNotifierCount(m_enabledNotifiers.size());
+        }
+
         QObject::connect(newNotifier, &Notifier::enabled, this, &Monitor::notifierEnabled);
         QObject::connect(newNotifier, &Notifier::disabled, this, &Monitor::notifierDisabled);
     }

@@ -26,6 +26,8 @@ Manager::Manager(QObject *parent, const json &data)
             QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
             QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
         }
+
+        m_fileWatcher.addAllMonitors();
     } catch(const std::exception& e) {
         std::cerr << "Exception caught: " << e.what() << std::endl;
         m_error = true;
