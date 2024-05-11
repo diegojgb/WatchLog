@@ -53,6 +53,8 @@ public:
 public slots:
     void addPath(const QString &filePath);
     void removePath(const QString &filePath);
+    void removeFromPolling(const QString &filePath);
+    void onCheckFailed(const QString &filePath);
     void start();
     void stop();
     void finish();

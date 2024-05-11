@@ -18,8 +18,8 @@ FileData::~FileData()
 bool FileData::isFileTimeDiff()
 {
     if (!GetFileTime(hFile, NULL, NULL, &timeAux)) {
-        Utils::showInfo("Couldn't check the following file: " + filePath.toStdString());
         emit checkFailed(filePath);
+        return false;
     }
 
     return CompareFileTime(&lastWriteTime, &timeAux) != 0;
@@ -28,8 +28,8 @@ bool FileData::isFileTimeDiff()
 bool FileData::saveCurTime()
 {
     if (!GetFileTime(hFile, NULL, NULL, &timeAux)) {
-        Utils::showInfo("Couldn't check the following file: " + filePath.toStdString());
         emit checkFailed(filePath);
+        return false;
     }
 
     if (CompareFileTime(&lastWriteTime, &timeAux) != 0) {
@@ -48,7 +48,7 @@ void FileData::startFile()
     file = std::ifstream(filePath.toStdString());
 
     if (!file.is_open())
-        Utils::throwError("Error opening file: " + filePath.toStdString());
+        throw std::runtime_error("Error opening file: " + filePath.toStdString());
 
     file.seekg(0, std::ios::end);
 }
@@ -101,7 +101,10 @@ void FileChangeWorker::addPath(const QString &filePath)
     auto* fileData = new FileData(filePath);
     m_files.append(fileData);
 
-    connect(fileData, &FileData::checkFailed, this, &FileChangeWorker::checkFailed);
+    if (m_files.size() == 1)
+        start();
+
+    connect(fileData, &FileData::checkFailed, this, &FileChangeWorker::onCheckFailed);
 }
 
 void FileChangeWorker::removePath(const QString &filePath)
@@ -109,12 +112,26 @@ void FileChangeWorker::removePath(const QString &filePath)
     m_qWatcher->removePath(filePath);
 
     // Remove from m_files list
+    removeFromPolling(filePath);
+}
+
+void FileChangeWorker::removeFromPolling(const QString &filePath)
+{
     for (int i = 0; i < m_files.size(); i++) {
         if (m_files[i]->filePath == filePath) {
             delete m_files.takeAt(i);
             break;
         }
     }
+
+    if (m_files.size() == 0)
+        stop();
+}
+
+void FileChangeWorker::onCheckFailed(const QString &filePath)
+{
+    emit checkFailed(filePath);
+    removeFromPolling(filePath);
 }
 
 void FileChangeWorker::start()

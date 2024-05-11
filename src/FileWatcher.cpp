@@ -8,7 +8,6 @@ FileWatcher::FileWatcher(QObject* parent, const MonitorCollection& monitors)
     m_thread = new QThread(this);
     m_watcher->moveToThread(m_thread);
 
-    connect(m_thread, &QThread::started, m_watcher, &FileChangeWorker::start);
     connect(qApp, &QCoreApplication::aboutToQuit, m_watcher, &FileChangeWorker::finish);
 
     connect(m_thread, &QThread::finished, m_thread, &QThread::deleteLater);
