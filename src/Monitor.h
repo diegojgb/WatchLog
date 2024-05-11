@@ -4,10 +4,10 @@
 #include "nlohmann/json.hpp"
 #include "Notifier.h"
 #include "NotifierList.h"
+#include "SystemMedia.h"
 
 #include <QObject>
 #include <QVarLengthArray>
-#include <fstream>
 
 using json = nlohmann::json;
 
@@ -21,6 +21,7 @@ class Monitor : public QObject
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
     Q_PROPERTY(NotifierList* notifiers READ notifiers CONSTANT)
     Q_PROPERTY(int enabledNotifierCount READ enabledNotifierCount WRITE setEnabledNotifierCount NOTIFY enabledNotifierCountChanged FINAL)
+    Q_PROPERTY(bool fileError READ fileError WRITE setFileError NOTIFY fileErrorChanged FINAL)
 
 public:
     static json jsonFindByKey(const json &data, const std::string &key);
@@ -46,6 +47,9 @@ public:
     int enabledNotifierCount() const;
     void setEnabledNotifierCount(int newEnabledNotifierCount);
 
+    bool fileError() const;
+    void setFileError(bool newFileError);
+
     template<typename T>
     T jsonGetValue(const json &data, const std::string &key);
 
@@ -66,6 +70,7 @@ signals:
     void filePathChangedOverload(const QString& oldFilePath, const QString& newFilePath);
     void enabledChanged();
     void enabledNotifierCountChanged();
+    void fileErrorChanged();
 
     void monitorEnabled(const Monitor* monitor);
     void monitorDisabled(const Monitor* monitor);
@@ -73,11 +78,13 @@ signals:
 private:
     QVarLengthArray<Notifier*> m_enabledNotifiers;
     NotifierList m_notifiers;
-    bool m_manyPerUpdate;
-    bool m_enabled;
+    std::string m_defaultImage;
     QString m_name; 
     QString m_filePath;
-    std::string m_defaultImage;
+    bool m_manyPerUpdate;
+    bool m_fileError = false;
+    bool m_enabled = false;
+    bool m_initialized = false;
     int m_enabledNotifierCount = 0;
 
     void readNotifiers(const json &data);

@@ -25,7 +25,7 @@ public slots:
     void onFileChanged(FileData* fileData);
     void addFilePath(const QString &filePath);
     void removeFilePath(const QString &filePath);
-    void addAllMonitors();
+    void changeFilePath(const QString &oldKey, const QString &newKey);
 
 signals:
     void matchFound(const WinToastTemplate& templ);

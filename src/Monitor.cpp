@@ -1,20 +1,18 @@
 #include "Monitor.h"
-#include "SystemMedia.h"
-
-#include <fstream>
-#include <QMessageBox>
 
 
 Monitor::Monitor(QObject *parent, const json &monitorData)
     : QObject{parent},
-      m_name{QString::fromStdString(jsonGetValue<std::string>(monitorData, "name"))},
-      m_filePath{QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath"))},
-      m_enabled{jsonGetValue<bool>(monitorData, "enabled", true)},
       m_defaultImage{jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString())},
       m_manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)}
 {
+    setFilePath(QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath")));
+    setName(QString::fromStdString(jsonGetValue<std::string>(monitorData, "name")));
+
     readNotifiers(jsonFindByKey(monitorData, "notifiers"));
     addEmptyNotifier();
+
+    setEnabled(jsonGetValue<bool>(monitorData, "enabled", true));
 }
 
 Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath)
@@ -142,7 +140,7 @@ QString Monitor::name() const
 
 void Monitor::setName(const QString &newName)
 {
-    if (m_name == newName)
+    if (m_initialized && m_name == newName)
         return;
 
     m_name = newName;
@@ -198,12 +196,20 @@ QString Monitor::filePath() const
 
 void Monitor::setFilePath(const QString &newFilePath)
 {
-    if (m_filePath == newFilePath)
+    if (m_initialized && m_filePath == newFilePath)
         return;
 
-    emit filePathChangedOverload(m_filePath, newFilePath);
-
     m_filePath = newFilePath;
+
+    bool exists = std::filesystem::exists(newFilePath.toStdString());
+
+    if (!exists)
+        setFileError(true);
+    else
+        setFileError(false);
+
+    if (m_enabled && exists)
+        emit filePathChangedOverload(m_filePath, newFilePath);
 
     emit filePathChanged();
 }
@@ -225,8 +231,9 @@ void Monitor::setEnabled(bool newEnabled)
 
         emit monitorEnabled(this);
     }
-    else
+    else {
         emit monitorDisabled(this);
+    }
 
     m_enabled = newEnabled;
 
@@ -251,4 +258,19 @@ void Monitor::setEnabledNotifierCount(int newEnabledNotifierCount)
     m_enabledNotifierCount = newEnabledNotifierCount;
 
     emit enabledNotifierCountChanged();
+}
+
+bool Monitor::fileError() const
+{
+    return m_fileError;
+}
+
+void Monitor::setFileError(bool newFileError)
+{
+    if (m_fileError == newFileError)
+        return;
+
+    m_fileError = newFileError;
+
+    emit fileErrorChanged();
 }

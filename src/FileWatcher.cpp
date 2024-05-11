@@ -25,15 +25,10 @@ FileWatcher::~FileWatcher()
     m_thread->wait();
 }
 
-void FileWatcher::addAllMonitors()
+void FileWatcher::changeFilePath(const QString& oldKey, const QString& newKey)
 {
-    for (const MonitorData* monitorData: m_monitors.getList()) {
-        auto* monitor = monitorData->monitor;
-        auto filePath = monitorData->filePath;
-
-        if (monitor->enabled())
-            addFilePath(filePath);
-    }
+    removeFilePath(oldKey);
+    addFilePath(newKey);
 }
 
 void FileWatcher::addFilePath(const QString &filePath)

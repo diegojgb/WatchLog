@@ -22,14 +22,11 @@ Manager::Manager(QObject *parent, const json &data)
 
             m_monitors.insert(filePath, newMonitor);
 
-            QObject::connect(newMonitor, &Monitor::filePathChangedOverload, this, &Manager::changeFilePath);
+            QObject::connect(newMonitor, &Monitor::filePathChangedOverload, &m_fileWatcher, &FileWatcher::changeFilePath);
             QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
             QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
         }
-
-        m_fileWatcher.addAllMonitors();
-    }
-    catch(const std::exception& e) {
+    } catch(const std::exception& e) {
         std::cerr << "Exception caught: " << e.what() << std::endl;
         m_error = true;
     }
@@ -60,14 +57,6 @@ json Manager::toJSON() const
     obj["monitors"] = monitorsArray;
 
     return obj;
-}
-
-void Manager::changeFilePath(const QString& oldKey, const QString& newKey)
-{
-    m_monitors.changeFilePath(oldKey, newKey);
-
-    m_fileWatcher.removeFilePath(oldKey);
-    m_fileWatcher.addFilePath(newKey);
 }
 
 void Manager::disableMonitor(const Monitor* monitor)
@@ -103,7 +92,7 @@ bool Manager::addMonitor(const QString &name, const QString &filePath)
 
     m_monitors.insert(filePath, newMonitor);
 
-    QObject::connect(newMonitor, &Monitor::filePathChangedOverload, this, &Manager::changeFilePath);
+    QObject::connect(newMonitor, &Monitor::filePathChangedOverload, &m_fileWatcher, &FileWatcher::changeFilePath);
     QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
     QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
 
