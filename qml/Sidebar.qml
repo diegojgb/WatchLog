@@ -137,6 +137,7 @@ Rectangle {
     CustomDialog {
         id: addMonitorDialog
         height: 250
+        width: 330
 
         property bool alreadyInHash: false
         property string prevFilePath
