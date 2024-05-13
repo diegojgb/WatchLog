@@ -91,9 +91,9 @@ void FileWatcher::onFileChanged(FileData* fileData)
             } else {
                 std::wstring playCommand;
 
-                if (m_soundsHash.contains(notifier->soundPath())) {
-                    playCommand = m_soundsHash[notifier->soundPath()];
-                } else {
+                playCommand = m_soundsHash.value(notifier->soundPath(), L"default");
+
+                if (playCommand == L"default") {
                     std::wstring soundAlias = L"NotificationSound" + std::to_wstring(m_soundsHash.size());
                     std::wstring command = L"open \"" + notifier->soundPath().toStdWString() + L"\" type waveaudio alias " + soundAlias;
 
