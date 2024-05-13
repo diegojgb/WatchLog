@@ -76,6 +76,7 @@ Window {
         closePolicy: Popup.CloseOnPressOutside
 
         property Notifier notifier
+        property var monitor
 
         background: Rectangle {
             implicitWidth: 150
@@ -102,7 +103,10 @@ Window {
             textItem.anchors.bottomMargin: 3
 
             onTriggered: {
-                notifierMenu.notifier.openDeleteDialog()
+                delNDialog.name = notifierMenu.notifier.notifier.name
+                delNDialog.idx = notifierMenu.notifier.index
+                delNDialog.monitor = notifierMenu.monitor
+                delNDialog.open()
             }
         }
     }
@@ -174,8 +178,16 @@ Window {
                             monitorPage.prevErrorCount = monitorPage.errorCount
                         }
 
+                        onDeletedNotifier: notifier => {
+                                               delNDialog.name = notifier.notifier.name
+                                               delNDialog.idx = notifier.index
+                                               delNDialog.monitor = model.edit
+                                               delNDialog.open()
+                                           }
+
                         onRightClicked: notifier => {
                                             notifierMenu.notifier = notifier
+                                            notifierMenu.monitor = model.edit
                                             notifierMenu.popup()
                                         }
                     }
@@ -183,6 +195,71 @@ Window {
 
                 HomePage {
                     onClickedAddMonitor: sidebar.openAddMonitorDialog()
+                }
+            }
+        }
+    }
+
+    CustomDialog {
+        id: delNDialog
+
+        property var monitor
+        property string name
+        property int idx
+
+        ColumnLayout {
+            id: dialogColumn
+            anchors.top: parent.top
+            anchors.topMargin: 14
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.right: parent.right
+            anchors.rightMargin: 12
+
+            Label {
+                text: "Delete?"
+                renderType: Text.NativeRendering
+                font.pointSize: 12
+                font.bold: true
+            }
+
+            TextMetrics {
+                id: metrics
+                text: delNDialog.name
+                elide: Qt.ElideRight
+                elideWidth: 300
+            }
+
+            Label {
+                Layout.topMargin: 10
+                Layout.preferredWidth: parent.width
+                text: "Are you sure you want to delete <b>\"" + metrics.elidedText + "\"</b>?"
+                wrapMode: Text.Wrap
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Row {
+                Layout.preferredHeight: 30
+                Layout.topMargin: 25
+                Layout.alignment: Qt.AlignRight
+                Layout.bottomMargin: 20
+                spacing: 5
+
+                CustomButton {
+                    text: "Cancel"
+                    onClicked: delNDialog.close()
+                }
+
+                CustomButton {
+                    colorPreset: CustomButton.Color.Red
+                    text: "Delete"
+
+                    onClicked: {
+                        delNDialog.monitor.removeNotifier(delNDialog.idx)
+                        root.saveEnabled = true
+                        delNDialog.close()
+                    }
                 }
             }
         }

@@ -17,6 +17,7 @@ ScrollView {
 
     signal deleted
     signal rightClicked(Notifier notifier)
+    signal deletedNotifier(Notifier notifier)
 
     onFileErrorChanged: {
         if (page.fileError)
@@ -203,6 +204,7 @@ ScrollView {
 
                 Notifier {
                     id: notifier
+                    index: model.index
 
                     Layout.fillWidth: true
                     newNotifier: model.index === monitor.notifiers.rowCount(
@@ -210,7 +212,7 @@ ScrollView {
                     notifier: model.display
 
                     onAddedNew: monitor.addEmptyNotifier()
-                    onDeleted: monitor.removeNotifier(model.index)
+                    onDeleted: page.deletedNotifier(notifier)
                     onErrorChanged: page.errorCount += error ? 1 : -1
                     onRightClicked: page.rightClicked(notifier)
                 }

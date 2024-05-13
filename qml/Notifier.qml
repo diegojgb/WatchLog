@@ -6,6 +6,7 @@ Column {
     id: control
 
     property var notifier
+    property int index
     property bool newNotifier: false
     property bool error: !control.newNotifier && (preview.error
                                                   || notifier.regexError
@@ -15,10 +16,6 @@ Column {
     signal addedNew
     signal deleted
     signal rightClicked
-
-    function openDeleteDialog() {
-        deleteDialog.open()
-    }
 
     function rename() {
         preview.rename()
@@ -40,7 +37,7 @@ Column {
         exclamationItem.opacity: exp.show ? 0 : 1
         notifierError: control.error
 
-        onDeleted: deleteDialog.open()
+        onDeleted: control.deleted()
         onRightClicked: {
             if (!control.newNotifier)
                 control.rightClicked()
@@ -99,66 +96,6 @@ Column {
             }
 
             onNewNotifierChanged: control.newNotifier = options.newNotifier
-        }
-    }
-
-    CustomDialog {
-        id: deleteDialog
-
-        ColumnLayout {
-            id: dialogColumn
-            anchors.top: parent.top
-            anchors.topMargin: 14
-            anchors.left: parent.left
-            anchors.leftMargin: 10
-            anchors.right: parent.right
-            anchors.rightMargin: 12
-
-            Label {
-                text: "Delete?"
-                renderType: Text.NativeRendering
-                font.pointSize: 12
-                font.bold: true
-            }
-
-            TextMetrics {
-                id: metrics
-                text: notifier.name
-                elide: Qt.ElideRight
-                elideWidth: 300
-            }
-
-            Label {
-                Layout.topMargin: 10
-                Layout.preferredWidth: parent.width
-                text: "Are you sure you want to delete <b>\"" + metrics.elidedText + "\"</b>?"
-                wrapMode: Text.Wrap
-                renderType: Text.NativeRendering
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            Row {
-                Layout.preferredHeight: 30
-                Layout.topMargin: 25
-                Layout.alignment: Qt.AlignRight
-                Layout.bottomMargin: 20
-                spacing: 5
-
-                CustomButton {
-                    text: "Cancel"
-                    onClicked: deleteDialog.close()
-                }
-
-                CustomButton {
-                    colorPreset: CustomButton.Color.Red
-                    text: "Delete"
-
-                    onClicked: {
-                        root.saveEnabled = true
-                        control.deleted()
-                    }
-                }
-            }
         }
     }
 }
