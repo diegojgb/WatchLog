@@ -41,6 +41,8 @@ json Monitor::toJSON() const
     obj["enabled"] = m_enabled;
     obj["notifiers"] = json::array();
     obj["manyPerUpdate"] = m_manyPerUpdate;
+    obj["defaultImage"] = m_defaultImage.toStdString();
+    obj["defaultSound"] = m_defaultSound.toStdString();
 
     for (int i = 0; i < m_notifiers.rowCount() - 1; i++)
         obj["notifiers"].push_back(m_notifiers.at(i)->toJSON());
@@ -235,14 +237,12 @@ void Monitor::setEnabled(bool newEnabled)
     if (m_enabled == newEnabled)
         return;
 
-    if (newEnabled)
-    {
+    if (newEnabled) {
         if (!m_enabledNotifiers.size() || m_fileError)
             return;
 
         emit monitorEnabled(this);
-    }
-    else {
+    } else {
         emit monitorDisabled(this);
     }
 
