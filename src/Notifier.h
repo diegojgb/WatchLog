@@ -30,9 +30,9 @@ class Notifier : public QObject
     Q_PROPERTY(bool toastEnabled READ toastEnabled WRITE setToastEnabled NOTIFY toastEnabledChanged FINAL)
     Q_PROPERTY(bool soundEnabled READ soundEnabled WRITE setSoundEnabled NOTIFY soundEnabledChanged FINAL)
     Q_PROPERTY(bool sticky READ sticky WRITE setSticky NOTIFY stickyChanged FINAL)
-    Q_PROPERTY(bool regexError READ regexError WRITE setRegexError NOTIFY regexErrorChanged FINAL)
-    Q_PROPERTY(bool soundFileError READ soundFileError WRITE setSoundFileError NOTIFY soundFileErrorChanged FINAL)
-    Q_PROPERTY(bool imageFileError READ imageFileError WRITE setImageFileError NOTIFY imageFileErrorChanged FINAL)
+    Q_PROPERTY(bool regexError READ regexError NOTIFY regexErrorChanged FINAL)
+    Q_PROPERTY(bool soundFileError READ soundFileError NOTIFY soundFileErrorChanged FINAL)
+    Q_PROPERTY(bool imageFileError READ imageFileError NOTIFY imageFileErrorChanged FINAL)
 
 public:
     static const QString& getDefaultTitle();
@@ -86,13 +86,8 @@ public:
     void setSoundPath(const QString &newSoundPath);
 
     bool regexError() const;
-    void setRegexError(bool newRegexError);
-
     bool soundFileError() const;
-    void setSoundFileError(bool newSoundFileError);
-
     bool imageFileError() const;
-    void setImageFileError(bool newImageFileError);
 
 public slots:
     void reset();
@@ -142,6 +137,10 @@ private:
     WinToastTemplate::Duration toWinToastDuration(const QString& duration);
     WinToastTemplate::AudioOption mapAudioOption(bool soundEnabled) const;
     void updateSticky();
+
+    void setRegexError(bool newRegexError);
+    void setImageFileError(bool newImageFileError);
+    void setSoundFileError(bool newSoundFileError);
 };
 
 #endif // NOTIFIER_H
