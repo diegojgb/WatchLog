@@ -296,6 +296,11 @@ void Monitor::setDefaultImage(const QString &newDefaultImage)
     if (m_defaultImage == newDefaultImage)
         return;
 
+    for (int i = 0; i < m_notifiers.rowCount(); i++) {
+        if (m_notifiers.at(i)->imagePath() == m_defaultImage)
+            m_notifiers.at(i)->setImagePath(newDefaultImage);
+    }
+
     m_defaultImage = newDefaultImage;
 
     emit defaultImageChanged();
@@ -310,6 +315,11 @@ void Monitor::setDefaultSound(const QString &newDefaultSound)
 {
     if (m_defaultSound == newDefaultSound)
         return;
+
+    for (int i = 0; i < m_notifiers.rowCount(); i++) {
+        if (m_notifiers.at(i)->soundPath() == m_defaultSound)
+            m_notifiers.at(i)->setSoundPath(newDefaultSound);
+    }
 
     m_defaultSound = newDefaultSound;
 

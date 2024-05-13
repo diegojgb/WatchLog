@@ -377,11 +377,10 @@ ScrollView {
             }
 
             FileBrowser {
+                id: imageBrowser
                 filePath: monitor.defaultImage
                 fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"]
                 error: monitor.imageError
-
-                onFileAccepted: monitor.defaultImage = filePath
             }
 
             Label {
@@ -394,11 +393,10 @@ ScrollView {
             }
 
             FileBrowser {
+                id: soundBrowser
                 filePath: monitor.defaultSound
                 fileDialog.nameFilters: ["WAV files (*.wav)"]
                 error: monitor.soundError
-
-                onFileAccepted: monitor.defaultSound = filePath
             }
 
             Row {
@@ -413,10 +411,13 @@ ScrollView {
 
                 CustomButton {
                     colorPreset: CustomButton.Color.Blue
-                    text: "Add"
+                    text: "Save"
 
                     onClicked: {
+                        monitor.defaultSound = soundBrowser.filePath
+                        monitor.defaultImage = imageBrowser.filePath
 
+                        settingsDialog.close()
                     }
                 }
             }
