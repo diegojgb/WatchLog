@@ -95,6 +95,11 @@ ScrollView {
                     }
 
                     CustomMenuItem {
+                        text: "Settings"
+                        onTriggered: settingsDialog.open()
+                    }
+
+                    CustomMenuItem {
                         text: "Delete"
                         last: true
                         textItem.color: "#ff0000"
@@ -336,6 +341,70 @@ ScrollView {
                         }
 
                         renameDialogItem.close()
+                    }
+                }
+            }
+        }
+    }
+
+    CustomDialog {
+        id: settingsDialog
+        height: 260
+        width: 370
+
+        ColumnLayout {
+            anchors.top: parent.top
+            anchors.topMargin: 18
+            anchors.left: parent.left
+            anchors.leftMargin: 12
+            anchors.right: parent.right
+            anchors.rightMargin: 12
+
+            Label {
+                text: "Monitor settings"
+                renderType: Text.NativeRendering
+                font.pointSize: 14
+                font.bold: true
+            }
+
+            Label {
+                Layout.topMargin: 18
+                Layout.preferredWidth: parent.width
+                text: "Default image"
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                font.weight: Font.DemiBold
+            }
+
+            FileBrowser {}
+
+            Label {
+                Layout.topMargin: 10
+                Layout.preferredWidth: parent.width
+                text: "Default sound"
+                renderType: Text.NativeRendering
+                verticalAlignment: Text.AlignVCenter
+                font.weight: Font.DemiBold
+            }
+
+            FileBrowser {}
+
+            Row {
+                Layout.topMargin: 30
+                Layout.alignment: Qt.AlignRight
+                spacing: 5
+
+                CustomButton {
+                    text: "Cancel"
+                    onClicked: settingsDialog.close()
+                }
+
+                CustomButton {
+                    colorPreset: CustomButton.Color.Blue
+                    text: "Add"
+
+                    onClicked: {
+
                     }
                 }
             }
