@@ -270,7 +270,10 @@ ScrollView {
                     colorPreset: CustomButton.Color.Red
                     text: "Delete"
 
-                    onClicked: page.deleted()
+                    onClicked: {
+                        root.saveEnabled = true
+                        page.deleted()
+                    }
                 }
             }
         }
@@ -418,6 +421,7 @@ ScrollView {
                         monitor.defaultImage = imageBrowser.filePath
 
                         settingsDialog.close()
+                        root.saveEnabled = true
                     }
                 }
             }

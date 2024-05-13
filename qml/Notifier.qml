@@ -153,7 +153,10 @@ Column {
                     colorPreset: CustomButton.Color.Red
                     text: "Delete"
 
-                    onClicked: control.deleted()
+                    onClicked: {
+                        root.saveEnabled = true
+                        control.deleted()
+                    }
                 }
             }
         }
