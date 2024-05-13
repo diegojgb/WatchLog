@@ -1,7 +1,7 @@
 import QtQuick
 
 Rectangle {
-    id: info
+    id: control
     width: parent.width
     height: show ? expanded.height : 0
     color: "#f5f5f5"
@@ -17,7 +17,7 @@ Rectangle {
     Loader {
         id: expanded
         width: parent.width
-        y: info.height - height
+        y: control.height - height
     }
 
     Rectangle {
