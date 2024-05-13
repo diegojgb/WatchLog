@@ -3,11 +3,16 @@
 
 Monitor::Monitor(QObject *parent, const json &monitorData)
     : QObject{parent},
-      m_defaultImage{jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString())},
       m_manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)}
 {
     setFilePath(QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath")));
     setName(QString::fromStdString(jsonGetValue<std::string>(monitorData, "name")));
+
+    auto imagePath = jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString());
+    setDefaultImage(QString::fromStdString(imagePath));
+
+    auto soundPath = jsonGetValue<std::string>(monitorData, "defaultSound", SystemMedia::getDefaultSound());
+    setDefaultSound(QString::fromStdString(soundPath));
 
     readNotifiers(jsonFindByKey(monitorData, "notifiers"));
     addEmptyNotifier();
@@ -17,11 +22,13 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
 
 Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath)
     : QObject{parent},
-      m_defaultImage{Notifier::getDefaultImg().toStdString()},
       m_manyPerUpdate{false}
 {
     setName(name);
     setFilePath(filePath);
+    setDefaultImage(Notifier::getDefaultImg());
+    setDefaultSound(QString::fromStdString(SystemMedia::getDefaultSound()));
+
     addEmptyNotifier();
 }
 
@@ -115,8 +122,8 @@ void Monitor::readNotifiers(const json &data)
         QString regexStr = QString::fromStdString(jsonGetValue<std::string>(item, "pattern"));
         QString title = QString::fromStdString(jsonGetValue<std::string>(item, "title", Notifier::getDefaultTitle().toStdString()));
         QString desc = QString::fromStdString(jsonGetValue<std::string>(item, "desc", Notifier::getDefaultDesc().toStdString()));
-        QString soundPath = QString::fromStdString(jsonGetValue<std::string>(item, "soundFile", SystemMedia::getDefaultSound()));
-        QString imagePath = QString::fromStdString(jsonGetValue<std::string>(item, "image", m_defaultImage));
+        QString soundPath = QString::fromStdString(jsonGetValue<std::string>(item, "soundFile", m_defaultSound.toStdString()));
+        QString imagePath = QString::fromStdString(jsonGetValue<std::string>(item, "image", m_defaultImage.toStdString()));
         QString duration = QString::fromStdString(jsonGetValue<std::string>(item, "duration", "System"));
         bool toastEnabled = jsonGetValue<bool>(item, "toast", true);
         bool soundEnabled = jsonGetValue<bool>(item, "sound", true);
@@ -277,4 +284,64 @@ void Monitor::setFileError(bool newFileError)
     m_fileError = newFileError;
 
     emit fileErrorChanged();
+}
+
+QString Monitor::defaultImage() const
+{
+    return m_defaultImage;
+}
+
+void Monitor::setDefaultImage(const QString &newDefaultImage)
+{
+    if (m_defaultImage == newDefaultImage)
+        return;
+
+    m_defaultImage = newDefaultImage;
+
+    emit defaultImageChanged();
+}
+
+QString Monitor::defaultSound() const
+{
+    return m_defaultSound;
+}
+
+void Monitor::setDefaultSound(const QString &newDefaultSound)
+{
+    if (m_defaultSound == newDefaultSound)
+        return;
+
+    m_defaultSound = newDefaultSound;
+
+    emit defaultSoundChanged();
+}
+
+bool Monitor::imageError() const
+{
+    return m_imageError;
+}
+
+void Monitor::setImageError(bool newImageError)
+{
+    if (m_imageError == newImageError)
+        return;
+
+    m_imageError = newImageError;
+
+    emit imageErrorChanged();
+}
+
+bool Monitor::soundError() const
+{
+    return m_soundError;
+}
+
+void Monitor::setSoundError(bool newSoundError)
+{
+    if (m_soundError == newSoundError)
+        return;
+
+    m_soundError = newSoundError;
+
+    emit soundErrorChanged();
 }

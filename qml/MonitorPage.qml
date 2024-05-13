@@ -376,7 +376,13 @@ ScrollView {
                 font.weight: Font.DemiBold
             }
 
-            FileBrowser {}
+            FileBrowser {
+                filePath: monitor.defaultImage
+                fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"]
+                error: monitor.imageError
+
+                onFileAccepted: monitor.defaultImage = filePath
+            }
 
             Label {
                 Layout.topMargin: 10
@@ -387,7 +393,13 @@ ScrollView {
                 font.weight: Font.DemiBold
             }
 
-            FileBrowser {}
+            FileBrowser {
+                filePath: monitor.defaultSound
+                fileDialog.nameFilters: ["WAV files (*.wav)"]
+                error: monitor.soundError
+
+                onFileAccepted: monitor.defaultSound = filePath
+            }
 
             Row {
                 Layout.topMargin: 30

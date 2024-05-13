@@ -22,6 +22,10 @@ class Monitor : public QObject
     Q_PROPERTY(NotifierList* notifiers READ notifiers CONSTANT)
     Q_PROPERTY(int enabledNotifierCount READ enabledNotifierCount WRITE setEnabledNotifierCount NOTIFY enabledNotifierCountChanged FINAL)
     Q_PROPERTY(bool fileError READ fileError WRITE setFileError NOTIFY fileErrorChanged FINAL)
+    Q_PROPERTY(QString defaultImage READ defaultImage WRITE setDefaultImage NOTIFY defaultImageChanged FINAL)
+    Q_PROPERTY(QString defaultSound READ defaultSound WRITE setDefaultSound NOTIFY defaultSoundChanged FINAL)
+    Q_PROPERTY(bool imageError READ imageError NOTIFY imageErrorChanged FINAL)
+    Q_PROPERTY(bool soundError READ soundError NOTIFY soundErrorChanged FINAL)
 
 public:
     static json jsonFindByKey(const json &data, const std::string &key);
@@ -31,6 +35,12 @@ public:
 
     void showTypeError(json::type_error e, const std::string &key);
     json toJSON() const;
+
+    template<typename T>
+    T jsonGetValue(const json &data, const std::string &key);
+
+    template<typename T>
+    T jsonGetValue(const json &data, const std::string &key, const T defaultValue);
 
     const QVarLengthArray<Notifier*>& getEnabledNotifiers() const;
     const bool getManyPerUpdate() const;
@@ -50,13 +60,17 @@ public:
     bool fileError() const;
     void setFileError(bool newFileError);
 
-    template<typename T>
-    T jsonGetValue(const json &data, const std::string &key);
-
-    template<typename T>
-    T jsonGetValue(const json &data, const std::string &key, const T defaultValue);
-
     NotifierList* notifiers();
+
+    QString defaultImage() const;
+    void setDefaultImage(const QString &newDefaultImage);
+
+    QString defaultSound() const;
+    void setDefaultSound(const QString &newDefaultSound);
+
+    bool imageError() const;
+    bool soundError() const;
+
 
 public slots:
     void notifierDisabled(Notifier* notifier);
@@ -65,29 +79,39 @@ public slots:
     void removeNotifier(int i);
 
 signals:
+    void monitorEnabled(const Monitor* monitor);
+    void monitorDisabled(const Monitor* monitor);
+    void filePathChangedOverload(const QString& oldFilePath, const QString& newFilePath);
+
     void nameChanged();
     void filePathChanged();
-    void filePathChangedOverload(const QString& oldFilePath, const QString& newFilePath);
     void enabledChanged();
     void enabledNotifierCountChanged();
     void fileErrorChanged();
-
-    void monitorEnabled(const Monitor* monitor);
-    void monitorDisabled(const Monitor* monitor);
+    void defaultImageChanged();
+    void defaultSoundChanged();
+    void imageErrorChanged();
+    void soundErrorChanged();
 
 private:
     QVarLengthArray<Notifier*> m_enabledNotifiers;
     NotifierList m_notifiers;
-    std::string m_defaultImage;
     QString m_name; 
     QString m_filePath;
+    QString m_defaultImage;
+    QString m_defaultSound;
     bool m_manyPerUpdate;
-    bool m_fileError = false;
     bool m_enabled = false;
+    bool m_fileError = false;
     bool m_initialized = false;
+    bool m_imageError = false;
+    bool m_soundError = false;
     int m_enabledNotifierCount = 0;
 
     void readNotifiers(const json &data);
+
+    void setSoundError(bool newSoundError);
+    void setImageError(bool newImageError);
 };
 
 #endif // MONITOR_H
