@@ -131,7 +131,7 @@ void FileChangeWorker::removeFromPolling(const QString &filePath)
 void FileChangeWorker::onCheckFailed(const QString &filePath)
 {
     emit checkFailed(filePath);
-    removeFromPolling(filePath);
+    removePath(filePath);
 }
 
 void FileChangeWorker::start()
