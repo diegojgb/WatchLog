@@ -69,7 +69,7 @@ Item {
         }
 
         Text {
-            Layout.leftMargin: descLabel.width + firstItem.spacing
+            Layout.leftMargin: descLabel.width + firstItem.spacing + 1
             Layout.topMargin: -2
             renderType: Text.NativeRendering
             text: "Invalid regex expression."
@@ -157,6 +157,7 @@ Item {
             }
 
             FileBrowser {
+                id: imageBrowser
                 backgroundColor: root.whiteColor
                 fieldHeight: 23
                 filePath: notifier.imagePath
@@ -174,6 +175,16 @@ Item {
             }
         }
 
+        Text {
+            Layout.leftMargin: descLabel.width + firstItem.spacing + 1
+            Layout.topMargin: -2
+            renderType: Text.NativeRendering
+            text: "File not available."
+            color: "#ff0000"
+            font.pointSize: 8
+            visible: imageBrowser.error
+        }
+
         RowLayout {
             Layout.fillWidth: true
             spacing: 5
@@ -186,6 +197,7 @@ Item {
             }
 
             FileBrowser {
+                id: soundBrowser
                 backgroundColor: root.whiteColor
                 fieldHeight: 23
                 filePath: notifier.soundPath
@@ -201,6 +213,16 @@ Item {
                         root.saveEnabled = true
                 }
             }
+        }
+
+        Text {
+            Layout.leftMargin: descLabel.width + firstItem.spacing + 1
+            Layout.topMargin: -2
+            renderType: Text.NativeRendering
+            text: "File not available."
+            color: "#ff0000"
+            font.pointSize: 8
+            visible: soundBrowser.error
         }
 
         Row {
