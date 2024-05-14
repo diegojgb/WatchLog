@@ -159,6 +159,7 @@ ScrollView {
             }
 
             FileBrowser {
+                id: mainFileBrowser
                 Layout.topMargin: 15
                 Layout.rightMargin: 10
                 filePath: monitor.filePath
@@ -168,6 +169,17 @@ ScrollView {
                     monitor.filePath = filePath
                     root.saveEnabled = true
                 }
+            }
+
+            // Error text.
+            Text {
+                Layout.topMargin: -2
+                Layout.leftMargin: 1
+                renderType: Text.NativeRendering
+                text: "File not available."
+                color: "#ff0000"
+                font.pointSize: 8
+                visible: mainFileBrowser.error
             }
 
             Label {
