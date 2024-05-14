@@ -48,7 +48,7 @@ void FileData::startFile()
     file = std::ifstream(filePath.toStdString());
 
     if (!file.is_open())
-        throw std::runtime_error("Error opening file: " + filePath.toStdString());
+        emit checkFailed(filePath);
 
     file.seekg(0, std::ios::end);
 }
