@@ -139,7 +139,7 @@ Rectangle {
         height: 250
         width: 330
 
-        property bool alreadyInHash: false
+        property bool alreadyMonitored: false
         property string prevFilePath
 
         ColumnLayout {
@@ -192,7 +192,7 @@ Rectangle {
                         return
 
                     fileBrowser.error = false
-                    addMonitorDialog.alreadyInHash = false
+                    addMonitorDialog.alreadyMonitored = false
                 }
             }
 
@@ -203,7 +203,7 @@ Rectangle {
                 text: "This file is already being monitored."
                 color: "#ff0000"
                 font.pointSize: 8
-                visible: addMonitorDialog.alreadyInHash
+                visible: addMonitorDialog.alreadyMonitored
             }
 
             Row {
@@ -235,7 +235,7 @@ Rectangle {
 
                         if (!success) {
                             fileBrowser.error = true
-                            addMonitorDialog.alreadyInHash = true
+                            addMonitorDialog.alreadyMonitored = true
                             addMonitorDialog.prevFilePath = fileBrowser.filePath
                             return
                         }
