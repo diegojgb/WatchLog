@@ -196,9 +196,10 @@ Rectangle {
                 }
             }
 
-            // Error: filePath already in Hash.
+            // Error: filePath already being monitored.
             Text {
                 Layout.topMargin: -2
+                Layout.leftMargin: 2
                 renderType: Text.NativeRendering
                 text: "This file is already being monitored."
                 color: "#ff0000"
