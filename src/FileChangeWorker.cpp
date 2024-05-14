@@ -13,6 +13,7 @@ FileData::FileData(const QString path)
 FileData::~FileData()
 {
     file.close();
+    CloseHandle(hFile);
 }
 
 bool FileData::isFileTimeDiff()
@@ -110,12 +111,10 @@ void FileChangeWorker::addPath(const QString &filePath)
 void FileChangeWorker::removePath(const QString &filePath)
 {
     m_qWatcher->removePath(filePath);
-
-    // Remove from m_files list
-    removeFromPolling(filePath);
+    removeFromList(filePath);
 }
 
-void FileChangeWorker::removeFromPolling(const QString &filePath)
+void FileChangeWorker::removeFromList(const QString &filePath)
 {
     for (int i = 0; i < m_files.size(); i++) {
         if (m_files[i]->filePath == filePath) {
