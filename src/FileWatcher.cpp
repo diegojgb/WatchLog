@@ -56,15 +56,6 @@ void FileWatcher::removeFilePath(const QString &filePath)
 
 void FileWatcher::onFileChanged(FileData* fileData)
 {
-    // In case the file was removed and added back again immediately.
-    // if (!m_watcher.files().contains(path)) {
-    //     if (std::filesystem::exists(path.toStdString())) {
-    //         addFilePath(path);
-    //         emit fileReset(); // So the monitor reopens the file, to prevent any unexpected behavior.
-    //         return;
-    //     }
-    // }
-
     // Return if a call for this file change has already executed.
     if (!fileData->saveCurTime())
         return;
