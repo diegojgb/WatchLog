@@ -37,6 +37,12 @@ set(SOURCE_FILES
     src/MonitorCollection.cpp
     src/FileChangeWorker.h
     src/FileChangeWorker.cpp
+    src/MultiDirMonitor.cpp
+    src/MultiDirMonitor.h
+    src/SingleDirMonitor.cpp
+    src/SingleDirMonitor.h
+    src/WinFileMonitor.cpp
+    src/WinFileMonitor.h
 )
 
 qt_add_executable(appWatchLog 
