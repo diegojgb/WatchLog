@@ -13,7 +13,7 @@ WinFileMonitor::WinFileMonitor(QObject *parent)
 
     connect(m_thread, &QThread::started, m_worker, &MultiDirMonitor::start);
 
-    connect(m_worker, &MultiDirMonitor::changeFound, this, &WinFileMonitor::onChangeFound);
+    connect(m_worker, &MultiDirMonitor::changeFound, this, &WinFileMonitor::changeFound);
 
     connect(qApp, &QCoreApplication::aboutToQuit, m_thread, &QThread::quit, Qt::DirectConnection);
     connect(m_thread, &QThread::finished, m_thread, &QThread::deleteLater);
@@ -26,19 +26,3 @@ void WinFileMonitor::addFile(const QString &path)
     QMetaObject::invokeMethod(m_worker, "addFile", Qt::QueuedConnection,
                               Q_ARG(QString, path));
 }
-
-void WinFileMonitor::onChangeFound(const QString &filePath, const Change type)
-{
-    switch(type) {
-        case Change::Added:
-            qDebug() << "Added: " << filePath;
-            break;
-
-        case Change::Removed:
-            qDebug() << "Removed: " << filePath;
-            break;
-    }
-}
-
-
-

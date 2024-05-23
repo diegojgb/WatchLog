@@ -20,9 +20,7 @@ public:
     void removeFile(const QString &filePath); // Por implementar
 
 signals:
-
-public slots:
-    void onChangeFound(const QString& filePath, const Change type);
+    void changeFound(const QString& filePath, const Change type);
 
 private:
     QThread* m_thread;
