@@ -34,6 +34,7 @@ Manager::Manager(QObject *parent, const json &data)
     }
 
     connect(&m_fileWatcher, &FileWatcher::checkFailed, this, &Manager::onCheckFailed);
+    connect(&m_winFileMonitor, &WinFileMonitor::changeFound, this, &Manager::onChangeFound);
 }
 
 void Manager::initTrayIcon(QObject *parent, QObject *root, HWND &hwnd)
@@ -109,6 +110,19 @@ void Manager::onCheckFailed(const QString &filePath)
 
     auto* monitor = m_monitors.get(filePath);
     monitor->setFileError(true);
+}
+
+void Manager::onChangeFound(const QString &filePath, const Change type)
+{
+    switch(type) {
+        case Change::Added:
+            qDebug() << "Added: " << filePath;
+            break;
+
+        case Change::Removed:
+            qDebug() << "Removed: " << filePath;
+            break;
+    }
 }
 
 bool Manager::hadInitErrors() const

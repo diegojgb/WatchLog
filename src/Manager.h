@@ -5,6 +5,7 @@
 #include "Monitor.h"
 #include "MonitorCollection.h"
 #include "TrayIcon.h"
+#include "WinFileMonitor.h"
 
 #include <QObject>
 #include <QHash>
@@ -35,11 +36,13 @@ public slots:
     void updateJSON() const;
     bool addMonitor(const QString& name, const QString& filePath);
     void onCheckFailed(const QString& filePath);
+    void onChangeFound(const QString &filePath, const Change type);
 
 private:
     FileWatcher m_fileWatcher;
     MonitorCollection m_monitors;
     TrayIcon* m_trayIcon;
+    WinFileMonitor m_winFileMonitor;
     bool m_error;
     bool m_trayIconInitialized = false;
 };
