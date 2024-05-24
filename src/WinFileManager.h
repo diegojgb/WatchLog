@@ -29,10 +29,11 @@ class WinFileManager: public QObject
 public:
     explicit WinFileManager(QObject *parent);
 
-    FileStatus* findOrCreate(const QString &path);
+    FileStatus* findOrCreate(const QString& path);
+    FileStatus* find(const QString& path);
 
 public slots:
-    void onChangeFound(const QString &filePath, const Change type);
+    void onChangeFound(const QString& filePath, const Change type);
 
 private:
     WinFileMonitor m_winFileMonitor;

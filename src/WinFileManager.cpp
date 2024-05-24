@@ -25,6 +25,16 @@ FileStatus *WinFileManager::findOrCreate(const QString &path)
     return fs;
 }
 
+FileStatus* WinFileManager::find(const QString &path)
+{
+    for (auto* file: m_fileList) {
+        if (file->filePath == path)
+            return file;
+    }
+
+    return nullptr;
+}
+
 void WinFileManager::onChangeFound(const QString &filePath, const Change type)
 {
     bool removed = Change::Removed == type;
