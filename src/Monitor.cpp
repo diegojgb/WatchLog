@@ -21,6 +21,7 @@ Monitor::Monitor(QObject *parent, const json &monitorData, WinFileManager& winFi
     setEnabled(jsonGetValue<bool>(monitorData, "enabled", true));
 
     connectFiles();
+    m_initialized = true;
 }
 
 Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath, WinFileManager& winFileManager)
@@ -35,6 +36,7 @@ Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath, 
 
     addEmptyNotifier();
     connectFiles();
+    m_initialized = true;
 }
 
 json Monitor::toJSON() const
