@@ -329,6 +329,18 @@ void Monitor::setDefaultImage(const QString &newDefaultImage)
     if (m_defaultImage == newDefaultImage)
         return;
 
+    if (m_initialized) {
+        auto* oldFileStatus = m_winFileManager.find(m_defaultImage);
+
+        if (oldFileStatus == nullptr)
+            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultImage.toStdString());
+        else
+            QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setImageError);
+
+        auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultImage);
+        QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setImageError);
+    }
+
     for (int i = 0; i < m_notifiers.rowCount(); i++) {
         if (m_notifiers.at(i)->imagePath() == m_defaultImage)
             m_notifiers.at(i)->setImagePath(newDefaultImage);
