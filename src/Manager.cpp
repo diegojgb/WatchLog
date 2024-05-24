@@ -1,6 +1,11 @@
 #include "Manager.h"
 
 
+FileStatus::FileStatus(const QString path)
+    : filePath{path},
+      exists{std::filesystem::exists(path.toStdString())}
+{}
+
 Manager::Manager(QObject *parent, const json &data)
     : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false}
 {

@@ -14,6 +14,21 @@
 using json = nlohmann::json;
 
 
+struct FileStatus: public QObject
+{
+    Q_OBJECT
+
+public:
+    QString filePath;
+    bool exists;
+
+    explicit FileStatus(const QString path);
+
+signals:
+    void existsChanged(const QString& path);
+};
+
+
 class Manager: public QObject
 {
     Q_OBJECT
