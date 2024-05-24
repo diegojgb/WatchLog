@@ -25,7 +25,7 @@ public:
     explicit FileStatus(const QString path);
 
 signals:
-    void existsChanged(const QString& path);
+    void existsChanged(bool removed);
 };
 
 
@@ -58,8 +58,12 @@ private:
     MonitorCollection m_monitors;
     TrayIcon* m_trayIcon;
     WinFileMonitor m_winFileMonitor;
+    QList<FileStatus*> m_fileList;
     bool m_error;
     bool m_trayIconInitialized = false;
+
+    void connectFiles(Monitor* monitor);
+    FileStatus* addFile(const QString &path);
 };
 
 #endif // MANAGER_H

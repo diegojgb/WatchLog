@@ -69,8 +69,10 @@ public:
     void setDefaultSound(const QString &newDefaultSound);
 
     bool imageError() const;
-    bool soundError() const;
+    void setImageError(bool newImageError);
 
+    bool soundError() const;
+    void setSoundError(bool newSoundError);
 
 public slots:
     void notifierDisabled(Notifier* notifier);
@@ -109,9 +111,6 @@ private:
     int m_enabledNotifierCount = 0;
 
     void readNotifiers(const json &data);
-
-    void setSoundError(bool newSoundError);
-    void setImageError(bool newImageError);
 };
 
 #endif // MONITOR_H

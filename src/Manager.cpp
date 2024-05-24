@@ -27,6 +27,7 @@ Manager::Manager(QObject *parent, const json &data)
 
             m_monitors.insert(filePath, newMonitor);
 
+            connectFiles(newMonitor);
             QObject::connect(newMonitor, &Monitor::filePathChangedOverload, &m_fileWatcher, &FileWatcher::changeFilePath);
             QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
             QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
@@ -119,15 +120,40 @@ void Manager::onCheckFailed(const QString &filePath)
 
 void Manager::onChangeFound(const QString &filePath, const Change type)
 {
-    switch(type) {
-        case Change::Added:
-            qDebug() << "Added: " << filePath;
-            break;
+    bool removed = Change::Removed == type;
 
-        case Change::Removed:
-            qDebug() << "Removed: " << filePath;
-            break;
+    for (auto* file: m_fileList) {
+        if (file->filePath == filePath)
+            emit file->existsChanged(removed);
     }
+}
+
+void Manager::connectFiles(Monitor *monitor)
+{
+    FileStatus* fileStatus;
+
+    fileStatus = addFile(monitor->filePath());
+    QObject::connect(fileStatus, &FileStatus::existsChanged, monitor, &Monitor::setFileError);
+
+    fileStatus = addFile(monitor->defaultImage());
+    QObject::connect(fileStatus, &FileStatus::existsChanged, monitor, &Monitor::setImageError);
+
+    fileStatus = addFile(monitor->defaultSound());
+    QObject::connect(fileStatus, &FileStatus::existsChanged, monitor, &Monitor::setSoundError);
+}
+
+FileStatus* Manager::addFile(const QString &path)
+{
+    for (auto* file: m_fileList) {
+        if (file->filePath == path)
+            return file;
+    }
+
+    auto* fs = new FileStatus(path);
+    m_fileList.append(fs);
+    m_winFileMonitor.addFile(path);
+
+    return fs;
 }
 
 bool Manager::hadInitErrors() const
