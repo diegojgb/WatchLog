@@ -233,6 +233,18 @@ void Monitor::setFilePath(const QString &newFilePath)
     if (m_initialized && m_filePath == newFilePath)
         return;
 
+    if (m_initialized) {
+        auto* oldFileStatus = m_winFileManager.find(m_filePath);
+
+        if (oldFileStatus == nullptr)
+            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_filePath.toStdString());
+        else
+            QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
+
+        auto* newFileStatus = m_winFileManager.findOrCreate(newFilePath);
+        QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
+    }
+
     m_filePath = newFilePath;
 
     bool exists = std::filesystem::exists(newFilePath.toStdString());
