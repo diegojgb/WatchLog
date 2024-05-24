@@ -1,13 +1,8 @@
 #include "Manager.h"
 
 
-FileStatus::FileStatus(const QString path)
-    : filePath{path},
-      exists{std::filesystem::exists(path.toStdString())}
-{}
-
 Manager::Manager(QObject *parent, const json &data)
-    : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false}
+    : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false}, m_winFileManager{this}
 {
     if (data.empty())
         return;
@@ -22,12 +17,11 @@ Manager::Manager(QObject *parent, const json &data)
 
     try {
         for (const json& item: monitorsData) {
-            Monitor* newMonitor = new Monitor(this, item);
+            Monitor* newMonitor = new Monitor(this, item, m_winFileManager);
             QString filePath = QString::fromStdString(item["filePath"].get<std::string>());
 
             m_monitors.insert(filePath, newMonitor);
 
-            connectFiles(newMonitor);
             QObject::connect(newMonitor, &Monitor::filePathChangedOverload, &m_fileWatcher, &FileWatcher::changeFilePath);
             QObject::connect(newMonitor, &Monitor::monitorEnabled, this, &Manager::enableMonitor);
             QObject::connect(newMonitor, &Monitor::monitorDisabled, this, &Manager::disableMonitor);
@@ -40,7 +34,6 @@ Manager::Manager(QObject *parent, const json &data)
     }
 
     connect(&m_fileWatcher, &FileWatcher::checkFailed, this, &Manager::onCheckFailed);
-    connect(&m_winFileMonitor, &WinFileMonitor::changeFound, this, &Manager::onChangeFound);
 }
 
 void Manager::initTrayIcon(QObject *parent, QObject *root, HWND &hwnd)
@@ -99,7 +92,7 @@ bool Manager::addMonitor(const QString &name, const QString &filePath)
     if (m_monitors.contains(filePath))
         return false;
 
-    Monitor* newMonitor = new Monitor(this, name, filePath);
+    Monitor* newMonitor = new Monitor(this, name, filePath, m_winFileManager);
 
     m_monitors.insert(filePath, newMonitor);
 
@@ -116,44 +109,6 @@ void Manager::onCheckFailed(const QString &filePath)
 
     auto* monitor = m_monitors.get(filePath);
     monitor->setFileError(true);
-}
-
-void Manager::onChangeFound(const QString &filePath, const Change type)
-{
-    bool removed = Change::Removed == type;
-
-    for (auto* file: m_fileList) {
-        if (file->filePath == filePath)
-            emit file->existsChanged(removed);
-    }
-}
-
-void Manager::connectFiles(Monitor *monitor)
-{
-    FileStatus* fileStatus;
-
-    fileStatus = addFile(monitor->filePath());
-    QObject::connect(fileStatus, &FileStatus::existsChanged, monitor, &Monitor::setFileError);
-
-    fileStatus = addFile(monitor->defaultImage());
-    QObject::connect(fileStatus, &FileStatus::existsChanged, monitor, &Monitor::setImageError);
-
-    fileStatus = addFile(monitor->defaultSound());
-    QObject::connect(fileStatus, &FileStatus::existsChanged, monitor, &Monitor::setSoundError);
-}
-
-FileStatus* Manager::addFile(const QString &path)
-{
-    for (auto* file: m_fileList) {
-        if (file->filePath == path)
-            return file;
-    }
-
-    auto* fs = new FileStatus(path);
-    m_fileList.append(fs);
-    m_winFileMonitor.addFile(path);
-
-    return fs;
 }
 
 bool Manager::hadInitErrors() const

@@ -1,9 +1,10 @@
 #include "Monitor.h"
 
 
-Monitor::Monitor(QObject *parent, const json &monitorData)
+Monitor::Monitor(QObject *parent, const json &monitorData, WinFileManager& winFileManager)
     : QObject{parent},
-      m_manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)}
+      m_manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)},
+      m_winFileManager{winFileManager}
 {
     setFilePath(QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath")));
     setName(QString::fromStdString(jsonGetValue<std::string>(monitorData, "name")));
@@ -18,11 +19,14 @@ Monitor::Monitor(QObject *parent, const json &monitorData)
     addEmptyNotifier();
 
     setEnabled(jsonGetValue<bool>(monitorData, "enabled", true));
+
+    connectFiles();
 }
 
-Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath)
+Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath, WinFileManager& winFileManager)
     : QObject{parent},
-      m_manyPerUpdate{false}
+      m_manyPerUpdate{false},
+      m_winFileManager{winFileManager}
 {
     setName(name);
     setFilePath(filePath);
@@ -30,6 +34,7 @@ Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath)
     setDefaultSound(QString::fromStdString(SystemMedia::getDefaultSound()));
 
     addEmptyNotifier();
+    connectFiles();
 }
 
 json Monitor::toJSON() const
@@ -144,6 +149,20 @@ void Monitor::readNotifiers(const json &data)
         QObject::connect(newNotifier, &Notifier::enabled, this, &Monitor::notifierEnabled);
         QObject::connect(newNotifier, &Notifier::disabled, this, &Monitor::notifierDisabled);
     }
+}
+
+void Monitor::connectFiles()
+{
+    FileStatus* fileStatus;
+
+    fileStatus = m_winFileManager.findOrCreate(m_filePath);
+    QObject::connect(fileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
+
+    fileStatus = m_winFileManager.findOrCreate(m_defaultImage);
+    QObject::connect(fileStatus, &FileStatus::existsChanged, this, &Monitor::setImageError);
+
+    fileStatus = m_winFileManager.findOrCreate(m_defaultSound);
+    QObject::connect(fileStatus, &FileStatus::existsChanged, this, &Monitor::setSoundError);
 }
 
 QString Monitor::name() const

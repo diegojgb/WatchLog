@@ -5,6 +5,7 @@
 #include "Notifier.h"
 #include "NotifierList.h"
 #include "SystemMedia.h"
+#include "WinFileManager.h"
 
 #include <QObject>
 #include <QVarLengthArray>
@@ -30,8 +31,8 @@ class Monitor : public QObject
 public:
     static json jsonFindByKey(const json &data, const std::string &key);
 
-    explicit Monitor(QObject *parent, const json &monitorData);
-    explicit Monitor(QObject *parent, const QString& name, const QString& filePath);
+    explicit Monitor(QObject *parent, const json &monitorData, WinFileManager& winFileManager);
+    explicit Monitor(QObject *parent, const QString& name, const QString& filePath, WinFileManager& winFileManager);
 
     void showTypeError(json::type_error e, const std::string &key);
     json toJSON() const;
@@ -96,6 +97,7 @@ signals:
     void soundErrorChanged();
 
 private:
+    WinFileManager& m_winFileManager;
     QVarLengthArray<Notifier*> m_enabledNotifiers;
     NotifierList m_notifiers;
     QString m_name; 
@@ -111,6 +113,7 @@ private:
     int m_enabledNotifierCount = 0;
 
     void readNotifiers(const json &data);
+    void connectFiles();
 };
 
 #endif // MONITOR_H

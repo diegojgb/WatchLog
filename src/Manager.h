@@ -5,28 +5,12 @@
 #include "Monitor.h"
 #include "MonitorCollection.h"
 #include "TrayIcon.h"
-#include "WinFileMonitor.h"
 
 #include <QObject>
 #include <QHash>
 #include <QStringList>
 
 using json = nlohmann::json;
-
-
-struct FileStatus: public QObject
-{
-    Q_OBJECT
-
-public:
-    QString filePath;
-    bool exists;
-
-    explicit FileStatus(const QString path);
-
-signals:
-    void existsChanged(bool removed);
-};
 
 
 class Manager: public QObject
@@ -51,19 +35,14 @@ public slots:
     void updateJSON() const;
     bool addMonitor(const QString& name, const QString& filePath);
     void onCheckFailed(const QString& filePath);
-    void onChangeFound(const QString &filePath, const Change type);
 
 private:
     FileWatcher m_fileWatcher;
     MonitorCollection m_monitors;
+    WinFileManager m_winFileManager;
     TrayIcon* m_trayIcon;
-    WinFileMonitor m_winFileMonitor;
-    QList<FileStatus*> m_fileList;
     bool m_error;
     bool m_trayIconInitialized = false;
-
-    void connectFiles(Monitor* monitor);
-    FileStatus* addFile(const QString &path);
 };
 
 #endif // MANAGER_H
