@@ -361,6 +361,18 @@ void Monitor::setDefaultSound(const QString &newDefaultSound)
     if (m_defaultSound == newDefaultSound)
         return;
 
+    if (m_initialized) {
+        auto* oldFileStatus = m_winFileManager.find(m_defaultSound);
+
+        if (oldFileStatus == nullptr)
+            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultSound.toStdString());
+        else
+            QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setSoundError);
+
+        auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultSound);
+        QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setSoundError);
+    }
+
     for (int i = 0; i < m_notifiers.rowCount(); i++) {
         if (m_notifiers.at(i)->soundPath() == m_defaultSound)
             m_notifiers.at(i)->setSoundPath(newDefaultSound);
