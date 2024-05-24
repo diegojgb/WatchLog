@@ -20,7 +20,6 @@ Monitor::Monitor(QObject *parent, const json &monitorData, WinFileManager& winFi
 
     setEnabled(jsonGetValue<bool>(monitorData, "enabled", true));
 
-    connectFiles();
     m_initialized = true;
 }
 
@@ -35,7 +34,7 @@ Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath, 
     setDefaultSound(QString::fromStdString(SystemMedia::getDefaultSound()));
 
     addEmptyNotifier();
-    connectFiles();
+
     m_initialized = true;
 }
 
@@ -138,7 +137,7 @@ void Monitor::readNotifiers(const json &data)
         bool soundEnabled = jsonGetValue<bool>(item, "sound", true);
         bool sticky = jsonGetValue<bool>(item, "sticky", false);
 
-        Notifier* newNotifier = new Notifier(this, name, regexStr, title, desc, imagePath,
+        Notifier* newNotifier = new Notifier(this, m_winFileManager, name, regexStr, title, desc, imagePath,
                                              soundPath, duration, toastEnabled, soundEnabled, sticky);
 
         m_notifiers.append(newNotifier);
@@ -151,20 +150,6 @@ void Monitor::readNotifiers(const json &data)
         QObject::connect(newNotifier, &Notifier::enabled, this, &Monitor::notifierEnabled);
         QObject::connect(newNotifier, &Notifier::disabled, this, &Monitor::notifierDisabled);
     }
-}
-
-void Monitor::connectFiles()
-{
-    FileStatus* fileStatus;
-
-    fileStatus = m_winFileManager.findOrCreate(m_filePath);
-    QObject::connect(fileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
-
-    fileStatus = m_winFileManager.findOrCreate(m_defaultImage);
-    QObject::connect(fileStatus, &FileStatus::existsChanged, this, &Monitor::setImageError);
-
-    fileStatus = m_winFileManager.findOrCreate(m_defaultSound);
-    QObject::connect(fileStatus, &FileStatus::existsChanged, this, &Monitor::setSoundError);
 }
 
 QString Monitor::name() const
@@ -200,7 +185,7 @@ void Monitor::notifierEnabled(Notifier* notifier)
 // Add a notifier that represents a "new notifier" object.
 void Monitor::addEmptyNotifier()
 {
-    Notifier* newNotifier = new Notifier(this);
+    Notifier* newNotifier = new Notifier(this, m_winFileManager);
     m_notifiers.append(newNotifier);
     QObject::connect(newNotifier, &Notifier::enabled, this, &Monitor::notifierEnabled);
     QObject::connect(newNotifier, &Notifier::disabled, this, &Monitor::notifierDisabled);
@@ -240,10 +225,10 @@ void Monitor::setFilePath(const QString &newFilePath)
             Utils::showCritical("Error: the following file path wasn't being monitored: " + m_filePath.toStdString());
         else
             QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
-
-        auto* newFileStatus = m_winFileManager.findOrCreate(newFilePath);
-        QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
     }
+
+    auto* newFileStatus = m_winFileManager.findOrCreate(newFilePath);
+    QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
 
     m_filePath = newFilePath;
 
@@ -336,6 +321,15 @@ void Monitor::setDefaultImage(const QString &newDefaultImage)
             Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultImage.toStdString());
         else
             QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setImageError);
+    }
+
+    auto imageExtension = std::filesystem::path(newDefaultImage.toStdString()).extension();
+
+    if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png"
+            || !std::filesystem::exists(newDefaultImage.toStdString())) {
+        setImageError(true);
+    } else {
+        setImageError(false);
 
         auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultImage);
         QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setImageError);
@@ -368,6 +362,13 @@ void Monitor::setDefaultSound(const QString &newDefaultSound)
             Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultSound.toStdString());
         else
             QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setSoundError);
+    }
+
+    if (std::filesystem::path(newDefaultSound.toStdString()).extension() != ".wav"
+            || !std::filesystem::exists(newDefaultSound.toStdString())) {
+        setSoundError(true);
+    } else {
+        setSoundError(false);
 
         auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultSound);
         QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setSoundError);

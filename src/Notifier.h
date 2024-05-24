@@ -5,6 +5,7 @@
 #include "wintoastlib.h"
 #include "SystemMedia.h"
 #include "Utils.h"
+#include "WinFileManager.h"
 
 #include <QObject>
 #include <QMessageBox>
@@ -40,6 +41,7 @@ public:
     static const QString& getDefaultImg();
 
     explicit Notifier(QObject *parent,
+                      WinFileManager& winFileManager,
                       QString name = "Add notification",
                       QString regexStr = "",
                       QString title = Notifier::getDefaultTitle(),
@@ -85,9 +87,13 @@ public:
     QString soundPath() const;
     void setSoundPath(const QString &newSoundPath);
 
-    bool regexError() const;
-    bool soundFileError() const;
     bool imageFileError() const;
+    void setImageFileError(bool newImageFileError);
+
+    bool soundFileError() const;
+    void setSoundFileError(bool newSoundFileError);
+
+    bool regexError() const;
 
 public slots:
     void reset();
@@ -117,6 +123,7 @@ private:
 
     static void initializeConstants();
 
+    WinFileManager& m_winFileManager;
     std::regex m_regex;
     WinToastTemplate m_templ;
     QString m_name;
@@ -139,8 +146,6 @@ private:
     void updateSticky();
 
     void setRegexError(bool newRegexError);
-    void setImageFileError(bool newImageFileError);
-    void setSoundFileError(bool newSoundFileError);
 };
 
 #endif // NOTIFIER_H

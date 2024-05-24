@@ -113,7 +113,6 @@ private:
     int m_enabledNotifierCount = 0;
 
     void readNotifiers(const json &data);
-    void connectFiles();
 };
 
 #endif // MONITOR_H
