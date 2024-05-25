@@ -48,7 +48,9 @@ Window {
             hoverColor: monitorMenu.itemHoverColor
 
             onTriggered: {
-                var monitor = stackView.itemAt(monitorMenu.tabIndex)
+                var loader = stackView.itemAt(monitorMenu.tabIndex)
+                var monitor = loader.item
+
                 monitor.renameDialog.open()
             }
         }

@@ -59,9 +59,9 @@ Rectangle {
                     Layout.preferredHeight: 30
                     Layout.leftMargin: 10
                     Layout.rightMargin: 10
-                    text: model.display
+                    text: model.edit.name
                     enabled: model.edit.enabled
-                    selected: tabBarItem.tabIndex == idx
+                    selected: tabBarItem.tabIndex === idx
 
                     property int idx: model.index
 
