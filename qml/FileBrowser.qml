@@ -39,7 +39,7 @@ RowLayout {
         id: pathField
         Layout.fillWidth: true
         Layout.preferredHeight: control.fieldHeight
-        enabled: false
+        readOnly: true
         text: control.filePath
         verticalAlignment: Text.AlignVCenter
         leftPadding: 5
