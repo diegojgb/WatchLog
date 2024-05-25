@@ -1,4 +1,5 @@
 #include "Monitor.h"
+#include "Notifier.h"
 
 
 Monitor::Monitor(QObject *parent, const json &monitorData, WinFileManager& winFileManager)

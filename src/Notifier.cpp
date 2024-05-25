@@ -1,4 +1,5 @@
 #include "Notifier.h"
+#include "Monitor.h"
 
 
 QString Notifier::defaultTitle;
@@ -32,6 +33,7 @@ Notifier::Notifier(QObject *parent, WinFileManager& winFileManager, QString name
                    QString title, QString desc, QString imagePath, QString soundPath, QString duration,
                    bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent},
+      m_monitor{qobject_cast<Monitor*>(parent)},
       m_winFileManager{winFileManager},
       m_templ{WinToastTemplate(WinToastTemplate::ImageAndText02)}
 {
@@ -69,9 +71,9 @@ json Notifier::toJSON() const
         obj["title"] = m_title.toStdString();
     if (m_desc != defaultDesc)
         obj["desc"] = m_desc.toStdString();
-    if (m_soundPath.toStdString() != SystemMedia::getDefaultSound())
+    if (m_soundPath != m_monitor->defaultSound())
         obj["soundFile"] = m_soundPath.toStdString();
-    if (m_imagePath != defaultImg)
+    if (m_imagePath != m_monitor->defaultImage())
         obj["image"] = m_imagePath.toStdString();
     if (m_duration != "System")
         obj["duration"] = m_duration.toStdString();

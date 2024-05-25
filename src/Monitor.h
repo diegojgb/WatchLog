@@ -2,7 +2,6 @@
 #define MONITOR_H
 
 #include "nlohmann/json.hpp"
-#include "Notifier.h"
 #include "NotifierList.h"
 #include "SystemMedia.h"
 #include "WinFileManager.h"
@@ -12,6 +11,7 @@
 
 using json = nlohmann::json;
 
+class Notifier; // Forward declaration.
 
 class Monitor : public QObject
 {

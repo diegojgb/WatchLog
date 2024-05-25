@@ -16,6 +16,7 @@
 using namespace WinToastLib;
 using json = nlohmann::json;
 
+class Monitor; // Forward declaration.
 
 class Notifier : public QObject
 {
@@ -123,6 +124,7 @@ private:
 
     static void initializeConstants();
 
+    const Monitor* m_monitor;
     WinFileManager& m_winFileManager;
     std::regex m_regex;
     WinToastTemplate m_templ;
