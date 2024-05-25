@@ -25,11 +25,6 @@ Window {
                    close.accepted = false
                }
 
-    onErrorCountChanged: {
-        if (errorCount > 0)
-            root.saveEnabled = false
-    }
-
     Component.onCompleted: root.initialized = true
 
     Menu {
