@@ -242,6 +242,7 @@ Rectangle {
                         }
 
                         tabBarItem.tabIndex = tabRepeater.count - 1
+                        root.saveEnabled = true
                         addMonitorDialog.close()
                     }
                 }
