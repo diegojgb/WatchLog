@@ -21,6 +21,7 @@ public slots:
     void addFile(const QString& path);
     void start();
     void onCdUpped(SingleDirMonitor* instance);
+    void onClearForDeletion(SingleDirMonitor* instance);
 
 private:
     QList<SingleDirMonitor*> m_dirs;

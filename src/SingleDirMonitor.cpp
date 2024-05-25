@@ -5,8 +5,8 @@ namespace fs = std::filesystem;
 
 SingleDirMonitor::SingleDirMonitor(QObject* parent, const QString& path)
     : QObject{parent},
-      m_qPath{path},
-      m_qParentPath{firstParent(path)},
+      m_qPath{firstAvailable(path)},
+      m_qParentPath{firstParent(m_qPath)},
       m_wParentPath{m_qParentPath.toStdWString()}
 {
     startFile();
@@ -15,7 +15,9 @@ SingleDirMonitor::SingleDirMonitor(QObject* parent, const QString& path)
 
 SingleDirMonitor::~SingleDirMonitor()
 {
-    CancelIoEx(m_dir, NULL);
+    if (!m_pendingDelete)
+        CancelIoEx(m_dir, NULL);
+
     CloseHandle(m_dir);
 }
 
@@ -32,7 +34,6 @@ void SingleDirMonitor::startWatching()
     if (!success) {
         DWORD error = GetLastError();
         std::cerr << "ReadDirectoryChangesW failed with error: " << std::to_string(error) << std::endl;
-        emit this->error(this);
     }
 }
 
@@ -41,12 +42,16 @@ VOID CALLBACK SingleDirMonitor::onDirectoryChange(DWORD dwErrorCode, DWORD dwNum
 {
     SingleDirMonitor* instance = (SingleDirMonitor*)lpOverlapped->hEvent;
 
+    if (instance->hasPendingDelete()) {
+        emit instance->clearForDeletion(instance);
+        return;
+    }
+
     if (instance->clearPending())
         return;
 
     if (dwErrorCode == ERROR_OPERATION_ABORTED) {
         std::cerr <<  "Directory I/O operation aborted." << std::endl;
-        emit instance->error(instance);
         return;
     }
 
@@ -80,7 +85,6 @@ void SingleDirMonitor::processNotification()
             *((uint8_t**)&event) += event->NextEntryOffset;
         } else {
             if (dirRemoved) {
-                qDebug() << "Dir removed";
                 cdUp();
             }
 
@@ -135,7 +139,6 @@ void SingleDirMonitor::startFile()
     if (m_dir == INVALID_HANDLE_VALUE) {
         DWORD error = GetLastError();
         std::cerr << "Failed to open directory: " << std::to_string(error) << std::endl;
-        emit this->error(this);
     }
 }
 
@@ -147,12 +150,12 @@ void SingleDirMonitor::resetFile()
 
 void SingleDirMonitor::cdUp()
 {
-    emit cdUpped(this);
-
     m_qPath = m_qParentPath;
     m_qParentPath = firstParent(m_qParentPath);
     m_wParentPath = m_qParentPath.toStdWString();
     resetFile();
+
+    emit cdUpped(this);
 }
 
 bool SingleDirMonitor::cdUpTo(const QString &path)
@@ -166,6 +169,17 @@ bool SingleDirMonitor::cdUpTo(const QString &path)
     resetFile();
 
     return true;
+}
+
+void SingleDirMonitor::deleteLater()
+{
+    m_pendingDelete = true;
+    CancelIoEx(m_dir, NULL);
+}
+
+bool SingleDirMonitor::hasPendingDelete()
+{
+    return m_pendingDelete;
 }
 
 QString SingleDirMonitor::parseFileName(const std::wstring& fileName)
@@ -196,20 +210,27 @@ bool SingleDirMonitor::isMonitored(const QString &path)
     return m_files.contains(path);
 }
 
-QString SingleDirMonitor::firstParent(const QString& filePath)
+// static
+QString SingleDirMonitor::firstAvailable(const QString &filePath)
 {
     QFileInfo dir(filePath);
 
-    do {
+    while (!dir.exists() && !dir.isRoot()) {
         dir.setFile(dir.absolutePath());
     }
-    while (!dir.exists() && !dir.isRoot());
 
     // If dir is root and doesn't exist.
     if (!dir.exists()) {
         std::cerr <<  "Root directory doesn't exist" << std::endl;
-        emit this->error(this);
     }
 
     return dir.absoluteFilePath();
+}
+
+// static
+QString SingleDirMonitor::firstParent(const QString &filePath)
+{
+    QFileInfo dir(filePath);
+
+    return firstAvailable(dir.absolutePath());
 }

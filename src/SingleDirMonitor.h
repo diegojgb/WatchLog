@@ -24,6 +24,8 @@ public:
     explicit SingleDirMonitor(QObject* parent, const QString& path);
     ~SingleDirMonitor();
 
+    static QString firstParent(const QString& filePath);
+    static QString firstAvailable(const QString& filePath);
     static VOID CALLBACK onDirectoryChange(DWORD dwErrorCode, DWORD dwNumberOfBytesTransfered, LPOVERLAPPED lpOverlapped);
 
     void startWatching();
@@ -32,11 +34,14 @@ public:
     const QList<QString>& getFiles() const;
     void addFile(const QString& filePath);
     bool cdUpTo(const QString& path);
+    void deleteLater();
+    bool hasPendingDelete();
 
 signals:
     void changeFound(const QString& filePath, const Change type);
     void error(SingleDirMonitor* instance);
     void cdUpped(SingleDirMonitor* instance);
+    void clearForDeletion(SingleDirMonitor* instance);
 
 private:
     QString m_qPath;
@@ -47,6 +52,7 @@ private:
     OVERLAPPED m_overlapped;
     HANDLE m_dir;
     bool m_pending = false;
+    bool m_pendingDelete = false;
 
     bool isMonitored(const QString& path);
     void processNotification();
@@ -57,7 +63,6 @@ private:
     void startFile();
     void resetFile();
     void cdUp();
-    QString firstParent(const QString& filePath);
     QString parseFileName(const std::wstring& fileName);
 };
 
