@@ -16,6 +16,7 @@ Window {
     property int transitionDuration: 150
     property bool saveEnabled: false
     property int errorCount
+    property bool initialized: false
 
     // Hide the window instead of closing it when the close button is clicked
     // @disable-check M16
@@ -28,6 +29,8 @@ Window {
         if (errorCount > 0)
             root.saveEnabled = false
     }
+
+    Component.onCompleted: root.initialized = true
 
     Menu {
         id: monitorMenu
@@ -65,7 +68,9 @@ Window {
             textItem.anchors.bottomMargin: 3
 
             onTriggered: {
-                var monitor = stackView.itemAt(monitorMenu.tabIndex)
+                var loader = stackView.itemAt(monitorMenu.tabIndex)
+                var monitor = loader.item
+
                 monitor.deleteDialog.open()
             }
         }
@@ -156,46 +161,65 @@ Window {
                 Repeater {
                     model: Manager.monitors
 
-                    MonitorPage {
-                        id: monitorPage
-                        monitor: model.edit
+                    Loader {
+                        id: loader
+                        active: true
+                        asynchronous: root.initialized
 
-                        onDeleted: {
-                            if (sidebar.tabBar.tabIndex !== 0)
-                                sidebar.tabBar.tabIndex = sidebar.tabBar.tabIndex - 1
-
-                            Manager.monitors.remove(model.edit.filePath)
+                        onStatusChanged: {
+                            if (loader.status === Loader.Loading)
+                                busyIndicator.running = true
+                            else
+                                busyIndicator.running = false
                         }
 
-                        property int prevErrorCount: 0
+                        sourceComponent: MonitorPage {
+                            id: monitorPage
+                            monitor: model.edit
 
-                        onFileErrorChanged: monitorPage.errorCount += fileError ? 1 : -1
+                            onDeleted: {
+                                if (sidebar.tabBar.tabIndex !== 0)
+                                    sidebar.tabBar.tabIndex = sidebar.tabBar.tabIndex - 1
 
-                        onErrorCountChanged: {
-                            var delta = monitorPage.errorCount - monitorPage.prevErrorCount
-                            root.errorCount += delta
+                                Manager.monitors.remove(model.edit.filePath)
+                            }
 
-                            monitorPage.prevErrorCount = monitorPage.errorCount
+                            property int prevErrorCount: 0
+
+                            onFileErrorChanged: monitorPage.errorCount += fileError ? 1 : -1
+
+                            onErrorCountChanged: {
+                                var delta = monitorPage.errorCount - monitorPage.prevErrorCount
+                                root.errorCount += delta
+
+                                monitorPage.prevErrorCount = monitorPage.errorCount
+                            }
+
+                            onDeletedNotifier: notifier => {
+                                                   delNDialog.name = notifier.notifier.name
+                                                   delNDialog.idx = notifier.index
+                                                   delNDialog.monitor = model.edit
+                                                   delNDialog.open()
+                                               }
+
+                            onRightClicked: notifier => {
+                                                notifierMenu.notifier = notifier
+                                                notifierMenu.monitor = model.edit
+                                                notifierMenu.popup()
+                                            }
                         }
-
-                        onDeletedNotifier: notifier => {
-                                               delNDialog.name = notifier.notifier.name
-                                               delNDialog.idx = notifier.index
-                                               delNDialog.monitor = model.edit
-                                               delNDialog.open()
-                                           }
-
-                        onRightClicked: notifier => {
-                                            notifierMenu.notifier = notifier
-                                            notifierMenu.monitor = model.edit
-                                            notifierMenu.popup()
-                                        }
                     }
                 }
 
                 HomePage {
                     onClickedAddMonitor: sidebar.openAddMonitorDialog()
                 }
+            }
+
+            BusyIndicator {
+                id: busyIndicator
+                anchors.centerIn: parent
+                running: false
             }
         }
     }
