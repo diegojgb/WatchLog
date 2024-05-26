@@ -43,6 +43,8 @@ private:
     TrayIcon* m_trayIcon;
     bool m_error;
     bool m_trayIconInitialized = false;
+
+    Mode toWinFileMode(const std::string mode);
 };
 
 #endif // MANAGER_H

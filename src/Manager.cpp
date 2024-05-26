@@ -2,7 +2,8 @@
 
 
 Manager::Manager(QObject *parent, const json &data)
-    : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false}, m_winFileManager{this, Mode::Manual}
+    : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false},
+      m_winFileManager{this, toWinFileMode(Monitor::jsonGetValue<std::string>(data, "winFileMode", "Manual"))}
 {
     if (data.empty())
         return;
@@ -109,6 +110,19 @@ void Manager::onCheckFailed(const QString &filePath)
 
     auto* monitor = m_monitors.get(filePath);
     monitor->setFileError(true);
+}
+
+Mode Manager::toWinFileMode(const std::string mode)
+{
+    if (mode == "WinApi")
+        return Mode::WinApi;
+    if (mode == "Manual")
+        return Mode::Manual;
+    if (mode == "Mixed")
+        return Mode::Mixed;
+
+    Utils::throwError("Invalid WinFile mode value.");
+    return Mode::Manual; // To prevent compiler warnings.
 }
 
 bool Manager::hadInitErrors() const

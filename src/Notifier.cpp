@@ -117,7 +117,7 @@ WinToastTemplate::Duration Notifier::toWinToastDuration(const QString& duration)
         return WinToastTemplate::Duration::System;
 
     Utils::throwError("Invalid toast duration value.");
-    return WinToastTemplate::Duration::System; // To prevent warnings.
+    return WinToastTemplate::Duration::System; // To prevent compiler warnings.
 }
 
 WinToastTemplate::AudioOption Notifier::mapAudioOption(bool soundEnabled) const
