@@ -225,11 +225,11 @@ void Monitor::setFilePath(const QString &newFilePath)
         if (oldFileStatus == nullptr)
             Utils::showCritical("Error: the following file path wasn't being monitored: " + m_filePath.toStdString());
         else
-            QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
+            QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Monitor::setFileError);
     }
 
     auto* newFileStatus = m_winFileManager.findOrCreate(newFilePath);
-    QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setFileError);
+    QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setFileError);
 
     m_filePath = newFilePath;
 
@@ -321,7 +321,7 @@ void Monitor::setDefaultImage(const QString &newDefaultImage)
         if (oldFileStatus == nullptr)
             Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultImage.toStdString());
         else
-            QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setImageError);
+            QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Monitor::setImageError);
     }
 
     auto imageExtension = std::filesystem::path(newDefaultImage.toStdString()).extension();
@@ -333,7 +333,7 @@ void Monitor::setDefaultImage(const QString &newDefaultImage)
         setImageError(false);
 
         auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultImage);
-        QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setImageError);
+        QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setImageError);
     }
 
     for (int i = 0; i < m_notifiers.rowCount(); i++) {
@@ -362,7 +362,7 @@ void Monitor::setDefaultSound(const QString &newDefaultSound)
         if (oldFileStatus == nullptr)
             Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultSound.toStdString());
         else
-            QObject::disconnect(oldFileStatus, &FileStatus::existsChanged, this, &Monitor::setSoundError);
+            QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Monitor::setSoundError);
     }
 
     if (std::filesystem::path(newDefaultSound.toStdString()).extension() != ".wav"
@@ -372,7 +372,7 @@ void Monitor::setDefaultSound(const QString &newDefaultSound)
         setSoundError(false);
 
         auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultSound);
-        QObject::connect(newFileStatus, &FileStatus::existsChanged, this, &Monitor::setSoundError);
+        QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setSoundError);
     }
 
     for (int i = 0; i < m_notifiers.rowCount(); i++) {

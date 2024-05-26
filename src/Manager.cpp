@@ -2,7 +2,7 @@
 
 
 Manager::Manager(QObject *parent, const json &data)
-    : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false}, m_winFileManager{this}
+    : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false}, m_winFileManager{this, Mode::Manual}
 {
     if (data.empty())
         return;

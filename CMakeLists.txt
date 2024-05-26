@@ -45,6 +45,10 @@ set(SOURCE_FILES
     src/WinFileMonitor.h
     src/WinFileManager.h
     src/WinFileManager.cpp
+    src/FileCheckWorker.h
+    src/FileCheckWorker.cpp
+    src/FileChecker.h
+    src/FileChecker.cpp
 )
 
 qt_add_executable(appWatchLog 

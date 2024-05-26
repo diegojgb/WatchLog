@@ -1,26 +1,57 @@
 #include "WinFileManager.h"
 
 FileStatus::FileStatus(const QString path)
-    : filePath{path},
-      exists{std::filesystem::exists(path.toStdString())}
+    : m_filePath{path},
+      m_exists{std::filesystem::exists(path.toStdString())}
 {}
 
-WinFileManager::WinFileManager(QObject *parent)
-    : QObject{parent}
+const QString &FileStatus::getFilePath() const
 {
-    connect(&m_winFileMonitor, &WinFileMonitor::changeFound, this, &WinFileManager::onChangeFound);
+    return m_filePath;
+}
+
+const bool FileStatus::getExists() const
+{
+    return m_exists;
+}
+
+void FileStatus::updateExists()
+{
+    setExists(std::filesystem::exists(m_filePath.toStdString()));
+}
+
+void FileStatus::setExists(bool newExists)
+{
+    if (m_exists == newExists)
+        return;
+
+    m_exists = newExists;
+
+    emit statusChanged(!newExists);
+}
+
+WinFileManager::WinFileManager(QObject *parent, const Mode mode)
+    : QObject{parent},
+      m_mode{mode}
+{
+    if (mode != Mode::Manual) {
+        m_winFileMonitor = new WinFileMonitor(this);
+        connect(m_winFileMonitor, &WinFileMonitor::changeFound, this, &WinFileManager::onChangeFound);
+    }
 }
 
 FileStatus *WinFileManager::findOrCreate(const QString &path)
 {
     for (auto* file: m_fileList) {
-        if (file->filePath == path)
+        if (file->getFilePath() == path)
             return file;
     }
 
     auto* fs = new FileStatus(path);
     m_fileList.append(fs);
-    m_winFileMonitor.addFile(path);
+
+    if (m_mode != Mode::Manual)
+        m_winFileMonitor->addFile(path);
 
     return fs;
 }
@@ -28,7 +59,7 @@ FileStatus *WinFileManager::findOrCreate(const QString &path)
 FileStatus* WinFileManager::find(const QString &path)
 {
     for (auto* file: m_fileList) {
-        if (file->filePath == path)
+        if (file->getFilePath() == path)
             return file;
     }
 
@@ -37,11 +68,11 @@ FileStatus* WinFileManager::find(const QString &path)
 
 void WinFileManager::onChangeFound(const QString &filePath, const Change type)
 {
-    bool removed = Change::Removed == type;
+    bool newExists = Change::Added == type;
 
     for (auto* file: m_fileList) {
-        if (file->filePath == filePath) {
-            emit file->existsChanged(removed);
+        if (file->getFilePath() == filePath) {
+            file->setExists(newExists);
             return;
         }
     }
