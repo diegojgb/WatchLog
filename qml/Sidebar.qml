@@ -8,9 +8,21 @@ Rectangle {
     property var tabBar: tabBarItem
 
     signal tabRightClicked(int tabIndex)
+    signal rightClicked
 
     function openAddMonitorDialog() {
         addMonitorDialog.open()
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+        onClicked: mouse => {
+                       if (mouse.button === Qt.RightButton) {
+                           control.rightClicked()
+                       }
+                   }
     }
 
     ColumnLayout {

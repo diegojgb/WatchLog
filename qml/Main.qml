@@ -28,17 +28,30 @@ Window {
     Component.onCompleted: root.initialized = true
 
     CustomMenu {
+        id: globalMenu
+
+        CustomMenuItem {
+            text: "Refresh"
+            dark: globalMenu.dark
+            first: true
+            last: true
+
+            onTriggered: {
+
+            }
+        }
+    }
+
+    CustomMenu {
         id: monitorMenu
         dark: true
 
         property int tabIndex
-        property color itemHoverColor: "#4e4f52"
 
         CustomMenuItem {
             text: "Rename"
             first: true
-            textItem.color: "#fff"
-            hoverColor: monitorMenu.itemHoverColor
+            dark: monitorMenu.dark
 
             onTriggered: {
                 var loader = stackView.itemAt(monitorMenu.tabIndex)
@@ -51,8 +64,8 @@ Window {
         CustomMenuItem {
             text: "Delete"
             last: true
+            dark: monitorMenu.dark
             textItem.color: "#ff6d62"
-            hoverColor: monitorMenu.itemHoverColor
             textItem.anchors.top: textItem.parent.top
             textItem.anchors.bottom: textItem.parent.bottom
             textItem.anchors.bottomMargin: 3
@@ -119,6 +132,11 @@ Window {
                                    monitorMenu.tabIndex = idx
                                    monitorMenu.popup()
                                }
+
+            onRightClicked: {
+                globalMenu.dark = true
+                globalMenu.popup()
+            }
         }
 
         // Separator
@@ -184,11 +202,16 @@ Window {
                                                    delNDialog.open()
                                                }
 
-                            onRightClicked: notifier => {
-                                                notifierMenu.notifier = notifier
-                                                notifierMenu.monitor = model.edit
-                                                notifierMenu.popup()
-                                            }
+                            onNotifierRightClicked: notifier => {
+                                                        notifierMenu.notifier = notifier
+                                                        notifierMenu.monitor = model.edit
+                                                        notifierMenu.popup()
+                                                    }
+
+                            onRightClicked: {
+                                globalMenu.dark = false
+                                globalMenu.popup()
+                            }
                         }
                     }
                 }

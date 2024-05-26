@@ -16,12 +16,24 @@ ScrollView {
     property bool fileError: monitor.fileError
 
     signal deleted
-    signal rightClicked(Notifier notifier)
+    signal rightClicked
+    signal notifierRightClicked(Notifier notifier)
     signal deletedNotifier(Notifier notifier)
 
     onFileErrorChanged: {
         if (page.fileError)
             monitor.enabled = false
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+        onClicked: mouse => {
+                       if (mouse.button === Qt.RightButton) {
+                           page.rightClicked()
+                       }
+                   }
     }
 
     Flickable {
@@ -219,7 +231,7 @@ ScrollView {
                     onAddedNew: monitor.addEmptyNotifier()
                     onDeleted: page.deletedNotifier(notifier)
                     onErrorChanged: page.errorCount += error ? 1 : -1
-                    onRightClicked: page.rightClicked(notifier)
+                    onRightClicked: page.notifierRightClicked(notifier)
                 }
             }
         }

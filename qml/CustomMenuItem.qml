@@ -11,13 +11,15 @@ MenuItem {
     property bool first: false
     property bool last: false
     property int radius: 4
-    property color hoverColor: "#eee"
+    property color hoverColor: control.dark ? "#4e4f52" : "#eee"
+    property bool dark: false
 
     contentItem: Text {
         id: text
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
         renderType: Text.NativeRendering
+        color: control.dark ? "#fff" : "#000"
         leftPadding: 5
         text: control.text
         font: control.font
