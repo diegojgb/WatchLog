@@ -19,6 +19,10 @@
 
 using json = nlohmann::json;
 
+// Executes just before the qApp exits.
+void cleanup() {
+    WinToast::instance()->clear();
+}
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +30,8 @@ int main(int argc, char *argv[])
     qputenv("QSG_NO_VSYNC", "1");
 
     QApplication app(argc, argv);
+
+    QObject::connect(&app, &QCoreApplication::aboutToQuit, cleanup);
 
     std::ifstream file("data.json");
     json data;
