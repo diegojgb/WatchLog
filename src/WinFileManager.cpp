@@ -25,6 +25,8 @@ FileStatus *WinFileManager::findOrCreate(const QString &path)
     auto* fs = new FileStatus(path);
     m_fileList.append(fs);
 
+    connect(fs, &FileStatus::allSlotsDisconnected, this, &WinFileManager::onAllSlotsDisconnected);
+
     if (m_mode != Mode::Manual)
         m_winFileMonitor->addFile(path);
 
@@ -53,4 +55,11 @@ void WinFileManager::onChangeFound(const QString &filePath, const Change type)
     }
 
     Utils::throwError("Received change notification from untracked file: " + filePath.toStdString());
+}
+
+void WinFileManager::onAllSlotsDisconnected(FileStatus *instance)
+{
+    m_fileList.removeAll(instance);
+
+    delete instance;
 }

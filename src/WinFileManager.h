@@ -26,6 +26,7 @@ public:
 
 public slots:
     void onChangeFound(const QString& filePath, const Change type);
+    void onAllSlotsDisconnected(FileStatus* instance);
 
 private:
     WinFileMonitor* m_winFileMonitor;

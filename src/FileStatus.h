@@ -2,6 +2,7 @@
 #define FILESTATUS_H
 
 #include <QObject>
+#include <QDebug>
 #include <filesystem>
 
 
@@ -19,6 +20,10 @@ public:
 
 signals:
     void statusChanged(bool removed);
+    void allSlotsDisconnected(FileStatus* instance);
+
+protected:
+    void disconnectNotify(const QMetaMethod& signal) override;
 
 private:
     QString m_filePath;
