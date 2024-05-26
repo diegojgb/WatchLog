@@ -371,12 +371,11 @@ ScrollView {
 
     CustomDialog {
         id: settingsDialog
-        height: 260
+        topPadding: 25
+        bottomPadding: 24
         width: 370
 
         ColumnLayout {
-            anchors.top: parent.top
-            anchors.topMargin: 18
             anchors.left: parent.left
             anchors.leftMargin: 12
             anchors.right: parent.right
@@ -405,6 +404,16 @@ ScrollView {
                 error: monitor.imageError
             }
 
+            Text {
+                Layout.topMargin: -2
+                Layout.leftMargin: 1
+                renderType: Text.NativeRendering
+                text: "File not available."
+                color: "#ff0000"
+                font.pointSize: 8
+                visible: imageBrowser.error
+            }
+
             Label {
                 Layout.topMargin: 10
                 Layout.preferredWidth: parent.width
@@ -419,6 +428,16 @@ ScrollView {
                 filePath: monitor.defaultSound
                 fileDialog.nameFilters: ["WAV files (*.wav)"]
                 error: monitor.soundError
+            }
+
+            Text {
+                Layout.topMargin: -2
+                Layout.leftMargin: 1
+                renderType: Text.NativeRendering
+                text: "File not available."
+                color: "#ff0000"
+                font.pointSize: 8
+                visible: soundBrowser.error
             }
 
             Row {
