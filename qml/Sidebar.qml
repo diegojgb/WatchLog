@@ -155,6 +155,13 @@ Rectangle {
         property bool alreadyMonitored: false
         property string prevFilePath
 
+        function resetFields() {
+            name.text = ""
+            fileBrowser.filePath = ""
+            addMonitorDialog.alreadyMonitored = false
+            fileBrowser.error = false
+        }
+
         ColumnLayout {
             id: dialogColumn
             anchors.left: parent.left
@@ -225,7 +232,10 @@ Rectangle {
 
                 CustomButton {
                     text: "Cancel"
-                    onClicked: addMonitorDialog.close()
+                    onClicked: {
+                        addMonitorDialog.close()
+                        addMonitorDialog.resetFields()
+                    }
                 }
 
                 CustomButton {
@@ -255,6 +265,7 @@ Rectangle {
                         tabBarItem.tabIndex = tabRepeater.count - 1
                         root.saveEnabled = true
                         addMonitorDialog.close()
+                        addMonitorDialog.resetFields()
                     }
                 }
             }
