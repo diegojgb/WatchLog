@@ -33,6 +33,7 @@ public:
     const QString& getPath() const;
     const QList<QString>& getFiles() const;
     void addFile(const QString& filePath);
+    bool removeFile(const QString& filePath);
     bool cdUpTo(const QString& path);
     void deleteLater();
     bool hasPendingDelete();

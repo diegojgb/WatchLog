@@ -17,7 +17,7 @@ public:
     explicit WinFileMonitor(QObject *parent = nullptr);
 
     void addFile(const QString &filePath);
-    void removeFile(const QString &filePath); // Por implementar
+    void removeFile(const QString &filePath);
 
 signals:
     void changeFound(const QString& filePath, const Change type);

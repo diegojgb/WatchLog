@@ -27,7 +27,7 @@ FileStatus *WinFileManager::findOrCreate(const QString &path)
 
     connect(fs, &FileStatus::allSlotsDisconnected, this, &WinFileManager::onAllSlotsDisconnected);
 
-    if (m_mode != Mode::Manual)
+    if (m_winFileMonitor != nullptr)
         m_winFileMonitor->addFile(path);
 
     return fs;
@@ -70,6 +70,9 @@ void WinFileManager::onChangeFound(const QString &filePath, const Change type)
 void WinFileManager::onAllSlotsDisconnected(FileStatus *instance)
 {
     m_fileList.removeAll(instance);
+
+    if (m_winFileMonitor != nullptr)
+        m_winFileMonitor->removeFile(instance->getFilePath());
 
     delete instance;
 }

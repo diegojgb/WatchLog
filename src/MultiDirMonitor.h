@@ -19,6 +19,7 @@ public slots:
     SingleDirMonitor* addDir(const QString& path);
     void removeDir(const QString& path);
     void addFile(const QString& path);
+    void removeFile(const QString& path);
     void start();
     void onCdUpped(SingleDirMonitor* instance);
     void onClearForDeletion(SingleDirMonitor* instance);

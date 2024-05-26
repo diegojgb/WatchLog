@@ -205,6 +205,11 @@ void SingleDirMonitor::addFile(const QString& filePath)
     m_files.append(filePath);
 }
 
+bool SingleDirMonitor::removeFile(const QString &filePath)
+{
+    return m_files.removeAll(filePath) > 0;
+}
+
 bool SingleDirMonitor::isMonitored(const QString &path)
 {
     return m_files.contains(path);

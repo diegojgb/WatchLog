@@ -21,8 +21,14 @@ WinFileMonitor::WinFileMonitor(QObject *parent)
     m_thread->start();
 }
 
-void WinFileMonitor::addFile(const QString &path)
+void WinFileMonitor::addFile(const QString &filePath)
 {
     QMetaObject::invokeMethod(m_worker, "addFile", Qt::QueuedConnection,
-                              Q_ARG(QString, path));
+                              Q_ARG(QString, filePath));
+}
+
+void WinFileMonitor::removeFile(const QString &filePath)
+{
+    QMetaObject::invokeMethod(m_worker, "removeFile", Qt::QueuedConnection,
+                              Q_ARG(QString, filePath));
 }

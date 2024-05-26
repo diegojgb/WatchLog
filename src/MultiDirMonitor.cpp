@@ -60,6 +60,15 @@ void MultiDirMonitor::addFile(const QString &path)
     dir->addFile(path);
 }
 
+void MultiDirMonitor::removeFile(const QString &path)
+{
+    for (auto* monitor: m_dirs) {
+        if (path.startsWith(monitor->getPath()))
+            if (monitor->removeFile(path))
+                break;
+    }
+}
+
 void MultiDirMonitor::start()
 {
     for (auto* dir: m_dirs)
