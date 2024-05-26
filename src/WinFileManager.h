@@ -2,6 +2,8 @@
 #define WINFILEMANAGER_H
 
 #include "WinFileMonitor.h"
+#include "FileChecker.h"
+#include "FileStatus.h"
 #include "Utils.h"
 
 #include <QObject>
@@ -11,27 +13,6 @@ enum class Mode {
     Manual,
     Mixed
 };
-
-class FileStatus: public QObject
-{
-    Q_OBJECT
-
-public:
-    explicit FileStatus(const QString path);
-
-    const QString& getFilePath() const;
-    const bool getExists() const;
-    void updateExists();
-    void setExists(bool newExists);
-
-signals:
-    void statusChanged(bool removed);
-
-private:
-    QString m_filePath;
-    bool m_exists;
-};
-
 
 class WinFileManager: public QObject
 {
@@ -48,6 +29,7 @@ public slots:
 
 private:
     WinFileMonitor* m_winFileMonitor;
+    FileChecker* m_fileChecker;
     QList<FileStatus*> m_fileList;
     const Mode m_mode;
 };

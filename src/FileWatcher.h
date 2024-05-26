@@ -18,7 +18,7 @@ class FileWatcher: public QObject
     Q_OBJECT
 
 public:
-    explicit FileWatcher(QObject* parent, const MonitorCollection &monitors);
+    explicit FileWatcher(QObject* parent, const MonitorCollection& monitors);
     ~FileWatcher();
 
 public slots:

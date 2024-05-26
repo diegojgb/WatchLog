@@ -1,34 +1,5 @@
 #include "WinFileManager.h"
 
-FileStatus::FileStatus(const QString path)
-    : m_filePath{path},
-      m_exists{std::filesystem::exists(path.toStdString())}
-{}
-
-const QString &FileStatus::getFilePath() const
-{
-    return m_filePath;
-}
-
-const bool FileStatus::getExists() const
-{
-    return m_exists;
-}
-
-void FileStatus::updateExists()
-{
-    setExists(std::filesystem::exists(m_filePath.toStdString()));
-}
-
-void FileStatus::setExists(bool newExists)
-{
-    if (m_exists == newExists)
-        return;
-
-    m_exists = newExists;
-
-    emit statusChanged(!newExists);
-}
 
 WinFileManager::WinFileManager(QObject *parent, const Mode mode)
     : QObject{parent},
@@ -37,6 +8,10 @@ WinFileManager::WinFileManager(QObject *parent, const Mode mode)
     if (mode != Mode::Manual) {
         m_winFileMonitor = new WinFileMonitor(this);
         connect(m_winFileMonitor, &WinFileMonitor::changeFound, this, &WinFileManager::onChangeFound);
+    }
+
+    if (mode != Mode::WinApi) {
+        m_fileChecker = new FileChecker(this, m_fileList);
     }
 }
 

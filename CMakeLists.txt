@@ -49,6 +49,8 @@ set(SOURCE_FILES
     src/FileCheckWorker.cpp
     src/FileChecker.h
     src/FileChecker.cpp
+    src/FileStatus.h
+    src/FileStatus.cpp
 )
 
 qt_add_executable(appWatchLog 

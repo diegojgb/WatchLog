@@ -1,9 +1,12 @@
 #ifndef FILECHECKWORKER_H
 #define FILECHECKWORKER_H
 
-#include "WinFileManager.h"
+#include "FileStatus.h"
 
 #include <QObject>
+#include <QDebug>
+#include <QTimerEvent>
+
 
 class FileCheckWorker : public QObject
 {

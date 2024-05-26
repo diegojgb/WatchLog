@@ -2,9 +2,7 @@
 
 FileCheckWorker::FileCheckWorker(QObject *parent, const QList<FileStatus*>& fileList)
     : QObject{parent}, m_fileList{fileList}
-{
-
-}
+{}
 
 void FileCheckWorker::start()
 {
