@@ -30,18 +30,18 @@ class Monitor : public QObject
 
 public:
     static json jsonFindByKey(const json &data, const std::string &key);
+    static void showTypeError(json::type_error e, const std::string &key);
+
+    template<typename T>
+    static T jsonGetValue(const json &data, const std::string &key);
+
+    template<typename T>
+    static T jsonGetValue(const json &data, const std::string &key, const T defaultValue);
 
     explicit Monitor(QObject *parent, const json &monitorData, WinFileManager& winFileManager);
     explicit Monitor(QObject *parent, const QString& name, const QString& filePath, WinFileManager& winFileManager);
 
-    void showTypeError(json::type_error e, const std::string &key);
     json toJSON() const;
-
-    template<typename T>
-    T jsonGetValue(const json &data, const std::string &key);
-
-    template<typename T>
-    T jsonGetValue(const json &data, const std::string &key, const T defaultValue);
 
     const QVarLengthArray<Notifier*>& getEnabledNotifiers() const;
     const bool getManyPerUpdate() const;
