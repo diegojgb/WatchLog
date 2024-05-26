@@ -12,7 +12,8 @@ TextField {
     background: Rectangle {
         id: bg
         color: root.whiteColor
-        border.color: control.readOnly ? "#ababab" : control.activeFocus ? "#41adff" : control.error ? "#ff0000" : "#ababab"
+        border.color: control.activeFocus
+                      && !control.readOnly ? "#41adff" : control.error ? "#ff0000" : "#ababab"
         radius: 2
     }
 }
