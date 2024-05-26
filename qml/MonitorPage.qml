@@ -371,7 +371,7 @@ ScrollView {
 
     CustomDialog {
         id: settingsDialog
-        topPadding: 25
+        topPadding: 23
         bottomPadding: 24
         width: 370
 
