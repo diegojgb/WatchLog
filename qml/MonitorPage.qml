@@ -78,16 +78,9 @@ ScrollView {
                     }
                 }
 
-                Menu {
+                CustomMenu {
                     id: control
                     closePolicy: Popup.CloseOnPressOutsideParent
-
-                    background: Rectangle {
-                        implicitWidth: 150
-                        color: "#fff"
-                        border.color: "#ababab"
-                        radius: 4
-                    }
 
                     CustomMenuItem {
                         text: "Rename"

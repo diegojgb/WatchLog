@@ -27,19 +27,12 @@ Window {
 
     Component.onCompleted: root.initialized = true
 
-    Menu {
+    CustomMenu {
         id: monitorMenu
-        closePolicy: Popup.CloseOnPressOutside
+        dark: true
 
         property int tabIndex
         property color itemHoverColor: "#4e4f52"
-
-        background: Rectangle {
-            implicitWidth: 150
-            color: "#3c3d40"
-            border.color: "#5d5e61"
-            radius: 4
-        }
 
         CustomMenuItem {
             text: "Rename"
@@ -73,19 +66,11 @@ Window {
         }
     }
 
-    Menu {
+    CustomMenu {
         id: notifierMenu
-        closePolicy: Popup.CloseOnPressOutside
 
         property Notifier notifier
         property var monitor
-
-        background: Rectangle {
-            implicitWidth: 150
-            color: "#fff"
-            border.color: "#ababab"
-            radius: 4
-        }
 
         CustomMenuItem {
             text: "Rename"
