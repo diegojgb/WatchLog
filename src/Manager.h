@@ -35,6 +35,7 @@ public slots:
     void updateJSON() const;
     bool addMonitor(const QString& name, const QString& filePath);
     void onCheckFailed(const QString& filePath);
+    void checkFilesNow();
 
 private:
     FileWatcher m_fileWatcher;

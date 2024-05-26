@@ -36,9 +36,7 @@ Window {
             first: true
             last: true
 
-            onTriggered: {
-
-            }
+            onTriggered: Manager.checkFilesNow()
         }
     }
 

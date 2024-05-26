@@ -112,6 +112,11 @@ void Manager::onCheckFailed(const QString &filePath)
     monitor->setFileError(true);
 }
 
+void Manager::checkFilesNow()
+{
+    m_winFileManager.manualCheckNow();
+}
+
 Mode Manager::toWinFileMode(const std::string mode)
 {
     if (mode == "WinApi")

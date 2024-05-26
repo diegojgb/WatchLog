@@ -43,6 +43,16 @@ FileStatus* WinFileManager::find(const QString &path)
     return nullptr;
 }
 
+void WinFileManager::manualCheckNow()
+{
+    if (m_fileChecker == nullptr) {
+        Utils::showInfo("Error: manual mode is disabled. Can't perform a manual check.");
+        return;
+    }
+
+    m_fileChecker->checkNow();
+}
+
 void WinFileManager::onChangeFound(const QString &filePath, const Change type)
 {
     bool newExists = Change::Added == type;

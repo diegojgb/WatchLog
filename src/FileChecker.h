@@ -16,6 +16,8 @@ class FileChecker : public QObject
 public:
     explicit FileChecker(QObject *parent, const QList<FileStatus*>& fileList);
 
+    void checkNow();
+
 private:
     QThread* m_thread;
     FileCheckWorker* m_worker;

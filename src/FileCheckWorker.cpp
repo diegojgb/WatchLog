@@ -26,6 +26,13 @@ void FileCheckWorker::finish()
     emit finished();
 }
 
+void FileCheckWorker::checkNow()
+{
+    checkAll();
+    stop();
+    start();
+}
+
 void FileCheckWorker::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == m_timer) {

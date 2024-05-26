@@ -19,6 +19,7 @@ public slots:
     void start();
     void stop();
     void finish();
+    void checkNow();
 
 signals:
     void finished();

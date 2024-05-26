@@ -16,3 +16,8 @@ FileChecker::FileChecker(QObject *parent, const QList<FileStatus *> &fileList)
 
     m_thread->start();
 }
+
+void FileChecker::checkNow()
+{
+    QMetaObject::invokeMethod(m_worker, "checkNow", Qt::QueuedConnection);
+}

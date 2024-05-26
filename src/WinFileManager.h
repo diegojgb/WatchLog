@@ -23,14 +23,15 @@ public:
 
     FileStatus* findOrCreate(const QString& path);
     FileStatus* find(const QString& path);
+    void manualCheckNow();
 
 public slots:
     void onChangeFound(const QString& filePath, const Change type);
     void onAllSlotsDisconnected(FileStatus* instance);
 
 private:
-    WinFileMonitor* m_winFileMonitor;
-    FileChecker* m_fileChecker;
+    WinFileMonitor* m_winFileMonitor = nullptr;
+    FileChecker* m_fileChecker = nullptr;
     QList<FileStatus*> m_fileList;
     const Mode m_mode;
 };
