@@ -148,7 +148,8 @@ Rectangle {
 
     CustomDialog {
         id: addMonitorDialog
-        height: 250
+        topPadding: 21
+        bottomPadding: 24
         width: 330
 
         property bool alreadyMonitored: false
@@ -156,8 +157,6 @@ Rectangle {
 
         ColumnLayout {
             id: dialogColumn
-            anchors.top: parent.top
-            anchors.topMargin: 14
             anchors.left: parent.left
             anchors.leftMargin: 12
             anchors.right: parent.right
