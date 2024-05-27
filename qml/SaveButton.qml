@@ -1,10 +1,13 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 
 Rectangle {
     id: saveRect
 
     height: 35
+    Layout.preferredHeight: saveRect.height
+
     radius: 3
     state: mouseArea.containsMouse ? "hoveredState" : "normalState"
 

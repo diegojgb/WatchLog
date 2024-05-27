@@ -1,5 +1,5 @@
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls.Fusion
 import QtQuick.Layouts
 
 Rectangle {
@@ -26,8 +26,7 @@ Rectangle {
     }
 
     ColumnLayout {
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors.fill: parent
 
         Row {
             Layout.topMargin: 18
@@ -55,95 +54,115 @@ Rectangle {
             color: '#999'
         }
 
-        ColumnLayout {
-            id: tabBarItem
+        ScrollView {
+            id: scrollView
             Layout.fillWidth: true
-            Layout.topMargin: 8
+            Layout.fillHeight: true
 
-            property int tabIndex: 0
+            Flickable {
+                anchors.fill: parent
+                contentHeight: tabBarItem.height + tabBarItem.anchors.topMargin
+                boundsBehavior: Flickable.StopAtBounds
+                clip: true
 
-            Repeater {
-                id: tabRepeater
-                model: Manager.monitors
+                ColumnLayout {
+                    id: tabBarItem
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.topMargin: 8
 
-                Tab {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 30
-                    Layout.leftMargin: 10
-                    Layout.rightMargin: 10
-                    text: model.edit.name
-                    enabled: model.edit.enabled
-                    selected: tabBarItem.tabIndex === idx
+                    property int tabIndex: 0
 
-                    property int idx: model.index
+                    Repeater {
+                        id: tabRepeater
+                        model: Manager.monitors
 
-                    onClicked: tabBarItem.tabIndex = model.index
-                    onRightClicked: tabRightClicked(idx)
-                }
-            }
+                        Tab {
+                            Layout.fillWidth: true
+                            Layout.preferredHeight: 30
+                            Layout.leftMargin: 10
+                            Layout.rightMargin: 10
+                            text: model.edit.name
+                            enabled: model.edit.enabled
+                            selected: tabBarItem.tabIndex === idx
 
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.topMargin: 4
-                Layout.rightMargin: 12
-                Layout.leftMargin: 12
-                height: 1
-                color: '#444'
-            }
+                            property int idx: model.index
 
-            // Add monitor button
-            Rectangle {
-                Layout.fillWidth: true
-                Layout.preferredHeight: 30
-                Layout.leftMargin: 10
-                Layout.rightMargin: 10
-                color: mouseArea.containsMouse ? "#4d4d4d" : "#2d2e30"
-                radius: 7
-
-                Behavior on color {
-                    ColorAnimation {
-                        duration: root.transitionDuration
-                    }
-                }
-
-                Row {
-                    anchors.fill: parent
-                    anchors.leftMargin: 10
-                    spacing: 6
-
-                    Image {
-                        anchors.verticalCenter: parent.verticalCenter
-                        source: "qrc:/assets/add-new.png"
+                            onClicked: tabBarItem.tabIndex = model.index
+                            onRightClicked: tabRightClicked(idx)
+                        }
                     }
 
-                    Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        renderType: Text.NativeRendering
-                        font.pointSize: 10
-                        color: "white"
-                        text: 'Add monitor'
+                    Rectangle {
+                        Layout.fillWidth: true
+                        Layout.topMargin: 4
+                        Layout.rightMargin: 12
+                        Layout.leftMargin: 12
+                        height: 1
+                        color: '#444'
                     }
-                }
 
-                MouseArea {
-                    id: mouseArea
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    hoverEnabled: true
+                    // Add monitor button
+                    Rectangle {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 30
+                        Layout.leftMargin: 10
+                        Layout.rightMargin: 10
+                        color: mouseArea.containsMouse ? "#4d4d4d" : "#2d2e30"
+                        radius: 7
 
-                    onClicked: addMonitorDialog.open()
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: root.transitionDuration
+                            }
+                        }
+
+                        Row {
+                            anchors.fill: parent
+                            anchors.leftMargin: 10
+                            spacing: 6
+
+                            Image {
+                                anchors.verticalCenter: parent.verticalCenter
+                                source: "qrc:/assets/add-new.png"
+                            }
+
+                            Text {
+                                anchors.verticalCenter: parent.verticalCenter
+                                renderType: Text.NativeRendering
+                                font.pointSize: 10
+                                color: "white"
+                                text: 'Add monitor'
+                            }
+                        }
+
+                        MouseArea {
+                            id: mouseArea
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                            hoverEnabled: true
+
+                            onClicked: addMonitorDialog.open()
+                        }
+                    }
                 }
             }
         }
-    }
 
-    SaveButton {
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.leftMargin: 25
-        anchors.rightMargin: 25
-        anchors.bottomMargin: 25
+        Item {
+            Layout.topMargin: 20
+            Layout.preferredWidth: 1
+            Layout.fillHeight: true
+        }
+
+        SaveButton {
+            id: saveButton
+            Layout.fillWidth: true
+            Layout.bottomMargin: 25
+            Layout.leftMargin: 25
+            Layout.rightMargin: 25
+        }
     }
 
     CustomDialog {
