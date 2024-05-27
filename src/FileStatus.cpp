@@ -32,8 +32,17 @@ void FileStatus::setExists(bool newExists)
     emit statusChanged(!newExists);
 }
 
+void FileStatus::connectNotify(const QMetaMethod &signal)
+{
+    if (signal == QMetaMethod::fromSignal(&FileStatus::statusChanged))
+        m_connectedSlots++;
+}
+
 void FileStatus::disconnectNotify(const QMetaMethod &signal)
 {
-    if (!isSignalConnected(signal))
+    if (signal == QMetaMethod::fromSignal(&FileStatus::statusChanged))
+        m_connectedSlots--;
+
+    if (m_connectedSlots <= 0)
         emit allSlotsDisconnected(this);
 }

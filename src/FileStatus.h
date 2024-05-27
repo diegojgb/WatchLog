@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QMetaMethod>
 #include <filesystem>
 
 
@@ -23,11 +24,13 @@ signals:
     void allSlotsDisconnected(FileStatus* instance);
 
 protected:
+    void connectNotify(const QMetaMethod &signal) override;
     void disconnectNotify(const QMetaMethod& signal) override;
 
 private:
     QString m_filePath;
     bool m_exists;
+    int m_connectedSlots = 0;
 };
 
 #endif // FILESTATUS_H
