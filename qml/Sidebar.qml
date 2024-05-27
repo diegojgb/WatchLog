@@ -58,6 +58,7 @@ Rectangle {
             id: scrollView
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.maximumHeight: tabBarItem.height + tabBarItem.anchors.topMargin
 
             Flickable {
                 anchors.fill: parent
@@ -93,65 +94,64 @@ Rectangle {
                             onRightClicked: tabRightClicked(idx)
                         }
                     }
-
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.topMargin: 4
-                        Layout.rightMargin: 12
-                        Layout.leftMargin: 12
-                        height: 1
-                        color: '#444'
-                    }
-
-                    // Add monitor button
-                    Rectangle {
-                        Layout.fillWidth: true
-                        Layout.preferredHeight: 30
-                        Layout.leftMargin: 10
-                        Layout.rightMargin: 10
-                        color: mouseArea.containsMouse ? "#4d4d4d" : "#2d2e30"
-                        radius: 7
-
-                        Behavior on color {
-                            ColorAnimation {
-                                duration: root.transitionDuration
-                            }
-                        }
-
-                        Row {
-                            anchors.fill: parent
-                            anchors.leftMargin: 10
-                            spacing: 6
-
-                            Image {
-                                anchors.verticalCenter: parent.verticalCenter
-                                source: "qrc:/assets/add-new.png"
-                            }
-
-                            Text {
-                                anchors.verticalCenter: parent.verticalCenter
-                                renderType: Text.NativeRendering
-                                font.pointSize: 10
-                                color: "white"
-                                text: 'Add monitor'
-                            }
-                        }
-
-                        MouseArea {
-                            id: mouseArea
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                            hoverEnabled: true
-
-                            onClicked: addMonitorDialog.open()
-                        }
-                    }
                 }
             }
         }
 
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.topMargin: 4
+            Layout.rightMargin: 12
+            Layout.leftMargin: 12
+            height: 1
+            color: '#444'
+        }
+
+        Rectangle {
+            id: addMonitorButton
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+            Layout.leftMargin: 10
+            Layout.rightMargin: 10
+            color: mouseArea.containsMouse ? "#4d4d4d" : "#2d2e30"
+            radius: 7
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: root.transitionDuration
+                }
+            }
+
+            Row {
+                anchors.fill: parent
+                anchors.leftMargin: 10
+                spacing: 6
+
+                Image {
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "qrc:/assets/add-new.png"
+                }
+
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    renderType: Text.NativeRendering
+                    font.pointSize: 10
+                    color: "white"
+                    text: 'Add monitor'
+                }
+            }
+
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                hoverEnabled: true
+
+                onClicked: addMonitorDialog.open()
+            }
+        }
+
         Item {
-            Layout.topMargin: 20
             Layout.preferredWidth: 1
             Layout.fillHeight: true
         }
@@ -159,6 +159,7 @@ Rectangle {
         SaveButton {
             id: saveButton
             Layout.fillWidth: true
+            Layout.topMargin: 20
             Layout.bottomMargin: 25
             Layout.leftMargin: 25
             Layout.rightMargin: 25
