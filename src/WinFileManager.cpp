@@ -74,5 +74,5 @@ void WinFileManager::onAllSlotsDisconnected(FileStatus *instance)
     if (m_winFileMonitor != nullptr)
         m_winFileMonitor->removeFile(instance->getFilePath());
 
-    delete instance;
+    instance->deleteLater();
 }
