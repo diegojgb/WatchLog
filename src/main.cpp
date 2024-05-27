@@ -36,19 +36,13 @@ int main(int argc, char *argv[])
     std::ifstream file("data.json");
     json data;
 
-    if (file.good())
-    {
-        try
-        {
+    if (file.good()) {
+        try {
             data = json::parse(file);
-        }
-        catch (const json::parse_error& e)
-        {
+        } catch (const json::parse_error& e) {
             std::cerr << "JSON parsing failed: " << e.what() << std::endl;
             return 1;
-        }
-        catch (const std::exception& e)
-        {
+        } catch (const std::exception& e) {
             std::cerr << "Exception caught during JSON parsing: " << e.what() << std::endl;
             return 1;
         }
@@ -58,8 +52,7 @@ int main(int argc, char *argv[])
 
     Manager manager(&app, data);
 
-    if (manager.hadInitErrors())
-    {
+    if (manager.hadInitErrors()) {
         QApplication::quit();
         return 1;
     }

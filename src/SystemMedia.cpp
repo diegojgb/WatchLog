@@ -50,8 +50,7 @@ void SystemMedia::replaceAll(std::string& source, const std::string& from, const
     std::string::size_type lastPos = 0;
     std::string::size_type findPos;
 
-    while(std::string::npos != (findPos = source.find(from, lastPos)))
-    {
+    while(std::string::npos != (findPos = source.find(from, lastPos))) {
         newString.append(source, lastPos, findPos - lastPos);
         newString += to;
         lastPos = findPos + from.length();

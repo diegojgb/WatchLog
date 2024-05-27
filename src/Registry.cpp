@@ -17,9 +17,7 @@ bool Registry::createRegistryKey(HKEY hKeyParent, LPCTSTR subkey) {
             &dwDisposition);
 
     if (Ret != ERROR_SUCCESS)
-    {
         return false;
-    }
 
     RegCloseKey(hKey); //close the key
     return true;

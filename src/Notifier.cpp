@@ -297,12 +297,9 @@ void Notifier::setToastEnabled(bool newToastEnabled)
             return;
     }
 
-    if (!m_soundEnabled && !m_toastEnabled)
-    {
+    if (!m_soundEnabled && !m_toastEnabled) {
         emit enabled(this);
-    }
-    else if (!newToastEnabled && !m_soundEnabled)
-    {
+    } else if (!newToastEnabled && !m_soundEnabled) {
         emit disabled(this);
     }
 
@@ -331,12 +328,9 @@ void Notifier::setSoundEnabled(bool newSoundEnabled)
             return;
     }
 
-    if (!m_soundEnabled && !m_toastEnabled)
-    {
+    if (!m_soundEnabled && !m_toastEnabled) {
         emit enabled(this);
-    }
-    else if (!newSoundEnabled && !m_toastEnabled)
-    {
+    } else if (!newSoundEnabled && !m_toastEnabled) {
         emit disabled(this);
     }
 

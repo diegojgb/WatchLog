@@ -90,12 +90,9 @@ T Monitor::jsonGetValue(const json& data, const std::string& key)
 
     json item = jsonFindByKey(data, key);
 
-    try
-    {
+    try {
         property = item.get<T>();
-    }
-    catch (const json::type_error& e)
-    {
+    } catch (const json::type_error& e) {
         showTypeError(e, key);
     }
 
@@ -107,12 +104,9 @@ T Monitor::jsonGetValue(const json& data, const std::string& key, const T defaul
 {
     T property;
 
-    try
-    {
+    try {
         property = data.value(key, defaultValue);
-    }
-    catch (const json::type_error& e)
-    {
+    } catch (const json::type_error& e) {
         showTypeError(e, key);
     }
 
