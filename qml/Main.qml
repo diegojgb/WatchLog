@@ -156,19 +156,45 @@ Window {
                 anchors.fill: parent
                 currentIndex: sidebar.tabBar.tabIndex
 
+                onCurrentIndexChanged: {
+                    rep.load(currentIndex)
+                }
+
                 Repeater {
+                    id: rep
                     model: Manager.monitors
+
+                    function load(idx) {
+                        if (idx >= rep.count)
+                            return
+
+                        if (rep.itemAt(idx).active) {
+                            return
+                        }
+
+                        rep.itemAt(idx).active = true
+                    }
+
+                    Component.onCompleted: load(1)
 
                     Loader {
                         id: loader
-                        active: true
-                        asynchronous: root.initialized
+                        active: loader.isFirst
+                        asynchronous: !loader.isFirst
 
-                        onStatusChanged: {
-                            if (loader.status === Loader.Loading)
-                                busyIndicator.running = true
-                            else
-                                busyIndicator.running = false
+                        property bool isFirst: model.index === 0
+
+                        BusyIndicator {
+                            id: busyIndicator
+                            anchors.centerIn: parent
+                            running: !loader.isFirst
+                        }
+
+                        onLoaded: {
+                            busyIndicator.running = false
+
+                            if (!loader.isFirst)
+                                rep.load(model.index + 1)
                         }
 
                         sourceComponent: MonitorPage {
@@ -217,12 +243,6 @@ Window {
                 HomePage {
                     onClickedAddMonitor: sidebar.openAddMonitorDialog()
                 }
-            }
-
-            BusyIndicator {
-                id: busyIndicator
-                anchors.centerIn: parent
-                running: false
             }
         }
     }
