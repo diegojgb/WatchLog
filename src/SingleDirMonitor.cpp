@@ -9,6 +9,7 @@ SingleDirMonitor::SingleDirMonitor(QObject* parent, const QString& path)
       m_qParentPath{firstParent(m_qPath)},
       m_wParentPath{m_qParentPath.toStdWString()}
 {
+    m_changeBuff.resize(BUFFER_SIZE);
     startFile();
     m_overlapped.hEvent = this;
 }
@@ -25,7 +26,8 @@ void SingleDirMonitor::startWatching()
 {
      // May need more bits.
     BOOL success = ReadDirectoryChangesW(
-                m_dir, m_changeBuff, 1024, TRUE,
+                m_dir, &m_changeBuff[0],
+                m_changeBuff.size(), TRUE,
                 FILE_NOTIFY_CHANGE_FILE_NAME  |
                 FILE_NOTIFY_CHANGE_DIR_NAME   |
                 FILE_NOTIFY_CHANGE_LAST_WRITE,
@@ -61,7 +63,7 @@ VOID CALLBACK SingleDirMonitor::onDirectoryChange(DWORD dwErrorCode, DWORD dwNum
 
 void SingleDirMonitor::processNotification()
 {
-    FILE_NOTIFY_INFORMATION *event = (FILE_NOTIFY_INFORMATION*)m_changeBuff;
+    FILE_NOTIFY_INFORMATION *event = (FILE_NOTIFY_INFORMATION*)m_changeBuff.data();
     bool dirRemoved = false;
 
     for (;;) {

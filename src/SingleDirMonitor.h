@@ -45,11 +45,13 @@ signals:
     void clearForDeletion(SingleDirMonitor* instance);
 
 private:
+    static const DWORD BUFFER_SIZE = 4096;
+
     QString m_qPath;
     QString m_qParentPath;
     std::wstring m_wParentPath;
     QList<QString> m_files;
-    uint8_t m_changeBuff[1024];
+    std::vector<BYTE> m_changeBuff;
     OVERLAPPED m_overlapped;
     HANDLE m_dir;
     bool m_pending = false;
