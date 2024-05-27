@@ -9,7 +9,7 @@ Window {
     title: qsTr("WatchLog")
 
     width: 841
-    height: 545
+    height: 565
 
     property color accentColor: "#0078d4"
     property color whiteColor: "#fbfbfb"

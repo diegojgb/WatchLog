@@ -54,6 +54,8 @@ Rectangle {
             color: '#999'
         }
 
+        // Using a ScrollView lets the Flickable take as much space
+        // as it can, up to Layout.maximumHeight
         ScrollView {
             id: scrollView
             Layout.fillWidth: true

@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls.Fusion
 import QtQuick.Dialogs
 
-ScrollView {
+Item {
     id: page
     Layout.fillHeight: true
     Layout.fillWidth: true
@@ -40,6 +40,7 @@ ScrollView {
         anchors.fill: parent
         contentHeight: content.height + content.anchors.topMargin
                        + content.anchors.bottomMargin + page.custBottomPadding
+        ScrollBar.vertical: ScrollBar {}
         boundsBehavior: Flickable.StopAtBounds
         focusPolicy: Qt.ClickFocus
 
