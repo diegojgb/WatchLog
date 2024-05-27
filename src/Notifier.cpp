@@ -90,8 +90,8 @@ void Notifier::reset()
     setRegexStr("");
     setTitle(Notifier::getDefaultTitle());
     setDesc(Notifier::getDefaultDesc());
-    setImagePath(Notifier::getDefaultImg());
-    setSoundPath(QString::fromStdString(SystemMedia::getDefaultSound()));
+    setImagePath(m_monitor->defaultImage());
+    setSoundPath(m_monitor->defaultSound());
     setDuration("System");
     setToastEnabled(false);
     setSoundEnabled(false);
