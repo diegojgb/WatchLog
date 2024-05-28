@@ -172,7 +172,7 @@ Item {
                     textField.focused = true
             }
 
-            // Enter or loses focus
+            // Enter or lose focus
             onEditingFinished: {
                 if (textField.text === "") {
                     if (control.newNotifierOngoing)
@@ -212,18 +212,29 @@ Item {
         }
 
         Item {
+            id: rightItem
             Layout.fillHeight: true
             Layout.preferredWidth: childrenRect.width
             Layout.rightMargin: 3
+            visible: rightItem.exclamationVisible || rightItem.optionsVisible
+
+            property bool exclamationVisible: control.notifierError
+                                              && !control.newNotifier
+                                              && !control.newNotifierOngoing
+                                              && exclamation.opacity !== 0
+
+            property bool optionsVisible: !control.newNotifier
+                                          && !control.newNotifierOngoing
+                                          && !textField.focused
+                                          && options.opacity !== 0
+                                          && control.optionsAux
 
             Image {
                 id: exclamation
                 anchors.right: parent.right
                 anchors.rightMargin: 5
                 anchors.verticalCenter: parent.verticalCenter
-                visible: control.notifierError && !control.newNotifier
-                         && !control.newNotifierOngoing
-                         && exclamation.opacity !== 0
+                visible: rightItem.exclamationVisible
 
                 source: "qrc:/assets/exclamation.png"
 
@@ -241,9 +252,7 @@ Item {
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
                 spacing: 5
-                visible: !control.newNotifier && !control.newNotifierOngoing
-                         && !textField.focused && options.opacity !== 0
-                         && control.optionsAux
+                visible: rightItem.optionsVisible
 
                 // Edit Button
                 Rectangle {
