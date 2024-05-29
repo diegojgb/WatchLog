@@ -46,38 +46,43 @@ TabButton {
         }
     }
 
-    contentItem: RowLayout {
-        id: content
-        spacing: 5
+    contentItem: Item {
         anchors.fill: background
 
-        Text {
-            Layout.fillWidth: true
-            Layout.leftMargin: 12
-            topPadding: 2
-            text: control.text
-            font: control.font
-            color: control.textColor
-            elide: Text.ElideRight
-            maximumLineCount: 1
-            renderType: Text.NativeRendering
+        RowLayout {
+            id: content
+            spacing: 5
+            anchors.fill: parent
+            anchors.bottomMargin: 4
 
-            ToolTip.text: control.text
-            ToolTip.visible: truncated && mouseArea.containsMouse
-            ToolTip.delay: 1000
-        }
+            Text {
+                Layout.fillWidth: true
+                Layout.leftMargin: 12
+                topPadding: 2
+                text: control.text
+                font: control.font
+                color: control.textColor
+                elide: Text.ElideRight
+                maximumLineCount: 1
+                renderType: Text.NativeRendering
 
-        Item {
-            Layout.fillWidth: true
-        }
+                ToolTip.text: control.text
+                ToolTip.visible: truncated && mouseArea.containsMouse
+                ToolTip.delay: 1000
+            }
 
-        Rectangle {
-            Layout.rightMargin: 5
-            Layout.topMargin: 3
-            width: 9
-            height: 9
-            radius: width / 2
-            color: control.enabled ? "#009f00" : "#dd0000"
+            Item {
+                Layout.fillWidth: true
+            }
+
+            Rectangle {
+                Layout.rightMargin: 13
+                Layout.topMargin: 3
+                width: 9
+                height: 9
+                radius: width / 2
+                color: control.enabled ? "#009f00" : "#dd0000"
+            }
         }
     }
 
