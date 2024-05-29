@@ -30,7 +30,7 @@ Window {
 
     Popup {
         id: toolTip
-        contentWidth: Math.min(textObj.textWidth + 5, parent.implicitWidth)
+        contentWidth: Math.min(textObj.textWidth + 5, parent.width)
 
         property string text: ""
 
