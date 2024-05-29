@@ -307,7 +307,7 @@ Item {
                     onClicked: {
                         regexField.errorException = false
 
-                        if (!control.notifierError)
+                        if (!regexField.error && !control.notifierError)
                             control.addedNew()
                     }
                 }
