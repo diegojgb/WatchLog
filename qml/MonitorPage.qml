@@ -135,13 +135,14 @@ Item {
                     id: toolTip
                     text: monitor.name
                     visible: nameLabel.truncated && mouseArea.containsMouse
-                    delay: 1000
+                    delay: 500
                     contentWidth: Math.min(textObj.textWidth, nameLabel.width)
 
                     contentItem: Text {
                         id: textObj
                         text: toolTip.text
                         wrapMode: Text.WordWrap
+                        renderType: Text.NativeRendering
 
                         // binding-loop-free width and height:
                         readonly property alias textWidth: textMetrics.boundingRect.width
@@ -153,6 +154,13 @@ Item {
                             text: textObj.text
                             elide: textObj.elide
                         }
+                    }
+
+                    background: Rectangle {
+                        color: "#f0f0f0"
+                        border.color: "#a0a0a0"
+                        border.width: 1
+                        radius: 3
                     }
                 }
 
