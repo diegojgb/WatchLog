@@ -160,7 +160,7 @@ Item {
                 text: notifier.name
                 font: textField.font
                 elide: Qt.ElideRight
-                elideWidth: textField.width - 5
+                elideWidth: textField.width - 8
             }
 
             Timer {
