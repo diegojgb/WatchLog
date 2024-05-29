@@ -17,6 +17,7 @@ Window {
     property bool saveEnabled: false
     property int errorCount
     property bool initialized: false
+    property Popup toolTipItem: toolTip
 
     // Hide the window instead of closing it when the close button is clicked
     // @disable-check M16
@@ -26,6 +27,38 @@ Window {
                }
 
     Component.onCompleted: root.initialized = true
+
+    Popup {
+        id: toolTip
+        contentWidth: Math.min(textObj.textWidth + 5, parent.implicitWidth)
+
+        property string text: ""
+
+        contentItem: Text {
+            id: textObj
+            text: toolTip.text
+            wrapMode: Text.WordWrap
+            renderType: Text.NativeRendering
+
+            // binding-loop-free width and height:
+            readonly property alias textWidth: textMetrics.boundingRect.width
+            readonly property alias textHeight: textMetrics.boundingRect.height
+
+            TextMetrics {
+                id: textMetrics
+                font: textObj.font
+                text: textObj.text
+                elide: textObj.elide
+            }
+        }
+
+        background: Rectangle {
+            color: "#f0f0f0"
+            border.color: "#a0a0a0"
+            border.width: 1
+            radius: 3
+        }
+    }
 
     CustomMenu {
         id: globalMenu

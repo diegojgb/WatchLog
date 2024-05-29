@@ -163,13 +163,21 @@ Item {
                 elideWidth: textField.width - 5
             }
 
-            ToolTip.text: notifier.name
-            ToolTip.visible: textField.hovered && !textField.focused
-                             && notifier.name !== metrics.elidedText
-            ToolTip.delay: 1000
-            ToolTip.toolTip.contentWidth: Math.min(
-                                              textField.implicitWidth,
-                                              ToolTip.toolTip.contentItem.implicitWidth)
+            Timer {
+                id: showTimer
+                interval: 500
+                onTriggered: textField.showToolTip()
+            }
+
+            onHoveredChanged: {
+                if (!textField.focused && textField.hovered
+                        && notifier.name !== metrics.elidedText) {
+                    showTimer.start()
+                } else {
+                    showTimer.stop()
+                    root.toolTipItem.close()
+                }
+            }
 
             onActiveFocusChanged: {
                 if (activeFocus)
@@ -203,6 +211,15 @@ Item {
 
             // Enter only
             onAccepted: parent.forceActiveFocus()
+
+            function showToolTip() {
+                root.toolTipItem.text = notifier.name
+                root.toolTipItem.parent = textField
+                root.toolTipItem.x = Math.round(
+                            (textField.width - root.toolTipItem.width) / 2)
+                root.toolTipItem.y = -root.toolTipItem.height
+                root.toolTipItem.open()
+            }
 
             function custFocus() {
                 textField.custEnabled = true
