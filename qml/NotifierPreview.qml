@@ -35,7 +35,7 @@ Item {
         if (control.newNotifier) {
             control.newNotifier = false
             control.newNotifierOngoing = true
-            textField.text = ""
+            notifier.name = ""
             textField.custFocus()
         }
     }
