@@ -82,7 +82,7 @@ Item {
             Layout.bottomMargin: 2
             Layout.preferredHeight: 12
             Layout.preferredWidth: 12
-            visible: !newNotifierOngoing
+            visible: !control.newNotifierOngoing
 
             Image {
                 id: arrow
