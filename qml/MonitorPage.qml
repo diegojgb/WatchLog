@@ -136,7 +136,8 @@ Item {
                     text: monitor.name
                     visible: nameLabel.truncated && mouseArea.containsMouse
                     delay: 500
-                    contentWidth: Math.min(textObj.textWidth, nameLabel.width)
+                    contentWidth: Math.min(textObj.textWidth + 5,
+                                           nameLabel.width)
 
                     contentItem: Text {
                         id: textObj

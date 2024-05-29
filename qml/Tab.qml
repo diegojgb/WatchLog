@@ -9,6 +9,7 @@ TabButton {
     property color textColor: "#fff"
     property bool selected
     property bool enabled
+    property alias truncated: text.truncated
 
     signal rightClicked
 
@@ -56,6 +57,7 @@ TabButton {
             anchors.bottomMargin: 4
 
             Text {
+                id: text
                 Layout.fillWidth: true
                 Layout.leftMargin: 12
                 topPadding: 2
@@ -65,10 +67,6 @@ TabButton {
                 elide: Text.ElideRight
                 maximumLineCount: 1
                 renderType: Text.NativeRendering
-
-                ToolTip.text: control.text
-                ToolTip.visible: truncated && mouseArea.containsMouse
-                ToolTip.delay: 1000
             }
 
             Item {

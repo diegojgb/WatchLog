@@ -14,6 +14,38 @@ Rectangle {
         addMonitorDialog.open()
     }
 
+    ToolTip {
+        id: toolTip
+        text: "hello"
+        delay: 500
+        contentWidth: Math.min(textObj.textWidth + 5, 300)
+
+        contentItem: Text {
+            id: textObj
+            text: toolTip.text
+            wrapMode: Text.WordWrap
+            renderType: Text.NativeRendering
+
+            // binding-loop-free width and height:
+            readonly property alias textWidth: textMetrics.boundingRect.width
+            readonly property alias textHeight: textMetrics.boundingRect.height
+
+            TextMetrics {
+                id: textMetrics
+                font: textObj.font
+                text: textObj.text
+                elide: textObj.elide
+            }
+        }
+
+        background: Rectangle {
+            color: "#f0f0f0"
+            border.color: "#a0a0a0"
+            border.width: 1
+            radius: 3
+        }
+    }
+
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
@@ -81,7 +113,10 @@ Rectangle {
                         id: tabRepeater
                         model: Manager.monitors
 
+                        property ToolTip toolTipAlias: toolTip
+
                         Tab {
+                            id: tabItem
                             Layout.fillWidth: true
                             Layout.preferredHeight: 30
                             Layout.leftMargin: 10
@@ -89,6 +124,15 @@ Rectangle {
                             text: model.edit.name
                             enabled: model.edit.enabled
                             selected: tabBarItem.tabIndex === idx
+                            onHoveredChanged: {
+                                if (tabItem.truncated && tabItem.hovered) {
+                                    tabRepeater.toolTipAlias.parent = tabItem
+                                    tabRepeater.toolTipAlias.text = model.edit.name
+                                    tabRepeater.toolTipAlias.visible = true
+                                } else {
+                                    tabRepeater.toolTipAlias.visible = false
+                                }
+                            }
 
                             property int idx: model.index
 
