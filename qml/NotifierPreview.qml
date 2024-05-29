@@ -164,8 +164,12 @@ Item {
             }
 
             ToolTip.text: notifier.name
-            ToolTip.visible: hovered && notifier.name !== metrics.elidedText
+            ToolTip.visible: textField.hovered && !textField.focused
+                             && notifier.name !== metrics.elidedText
             ToolTip.delay: 1000
+            ToolTip.toolTip.contentWidth: Math.min(
+                                              textField.implicitWidth,
+                                              ToolTip.toolTip.contentItem.implicitWidth)
 
             onActiveFocusChanged: {
                 if (activeFocus)

@@ -120,6 +120,7 @@ Item {
             }
 
             Label {
+                id: nameLabel
                 Layout.fillWidth: true
                 Layout.rightMargin: settingsButton.width
                 Layout.topMargin: -26
@@ -130,9 +131,15 @@ Item {
                 maximumLineCount: 1
                 renderType: Text.NativeRendering
 
-                ToolTip.text: monitor.name
-                ToolTip.visible: truncated && mouseArea.containsMouse
-                ToolTip.delay: 1000
+                ToolTip {
+                    id: toolTip
+                    text: monitor.name
+                    visible: nameLabel.truncated && mouseArea.containsMouse
+                    delay: 1000
+                    contentWidth: Math.min(nameLabel.width,
+                                           toolTip.contentItem.implicitWidth)
+                }
+
                 MouseArea {
                     id: mouseArea
                     anchors.fill: parent
