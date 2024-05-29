@@ -136,8 +136,24 @@ Item {
                     text: monitor.name
                     visible: nameLabel.truncated && mouseArea.containsMouse
                     delay: 1000
-                    contentWidth: Math.min(nameLabel.width,
-                                           toolTip.contentItem.implicitWidth)
+                    contentWidth: Math.min(textObj.textWidth, nameLabel.width)
+
+                    contentItem: Text {
+                        id: textObj
+                        text: toolTip.text
+                        wrapMode: Text.WordWrap
+
+                        // binding-loop-free width and height:
+                        readonly property alias textWidth: textMetrics.boundingRect.width
+                        readonly property alias textHeight: textMetrics.boundingRect.height
+
+                        TextMetrics {
+                            id: textMetrics
+                            font: textObj.font
+                            text: textObj.text
+                            elide: textObj.elide
+                        }
+                    }
                 }
 
                 MouseArea {
