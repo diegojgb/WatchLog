@@ -188,15 +188,11 @@ void Notifier::setImagePath(const QString &newImagePath)
 
     auto imageExtension = std::filesystem::path(newImagePath.toStdString()).extension();
 
-    if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png"
-            || !std::filesystem::exists(newImagePath.toStdString())) {
-        setImageFileError(true);
-    } else {
-        setImageFileError(false);
+    setImageFileError(imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png"
+            || !std::filesystem::exists(newImagePath.toStdString()));
 
-        auto* newFileStatus = m_winFileManager.findOrCreate(newImagePath);
-        QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Notifier::setImageFileError);
-    }
+    auto* newFileStatus = m_winFileManager.findOrCreate(newImagePath);
+    QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Notifier::setImageFileError);
 
     m_imagePath = newImagePath;
     m_templ.setImagePath(newImagePath.toStdWString());
@@ -375,15 +371,11 @@ void Notifier::setSoundPath(const QString &newSoundPath)
             QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Notifier::setSoundFileError);
     }
 
-    if (std::filesystem::path(newSoundPath.toStdString()).extension() != ".wav"
-            || !std::filesystem::exists(newSoundPath.toStdString())) {
-        setSoundFileError(true);
-    } else {
-        setSoundFileError(false);
+    setSoundFileError(std::filesystem::path(newSoundPath.toStdString()).extension() != ".wav"
+            || !std::filesystem::exists(newSoundPath.toStdString()));
 
-        auto* newFileStatus = m_winFileManager.findOrCreate(newSoundPath);
-        QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Notifier::setSoundFileError);
-    }
+    auto* newFileStatus = m_winFileManager.findOrCreate(newSoundPath);
+    QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Notifier::setSoundFileError);
 
     m_soundPath = newSoundPath;
 

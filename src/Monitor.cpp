@@ -320,15 +320,11 @@ void Monitor::setDefaultImage(const QString &newDefaultImage)
 
     auto imageExtension = std::filesystem::path(newDefaultImage.toStdString()).extension();
 
-    if (imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png"
-            || !std::filesystem::exists(newDefaultImage.toStdString())) {
-        setImageError(true);
-    } else {
-        setImageError(false);
-
-        auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultImage);
-        QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setImageError);
-    }
+    setImageError(imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png"
+            || !std::filesystem::exists(newDefaultImage.toStdString()));
+    
+    auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultImage);
+    QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setImageError);
 
     for (int i = 0; i < m_notifiers.rowCount(); i++) {
         if (m_notifiers.at(i)->imagePath() == m_defaultImage)
@@ -359,15 +355,11 @@ void Monitor::setDefaultSound(const QString &newDefaultSound)
             QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Monitor::setSoundError);
     }
 
-    if (std::filesystem::path(newDefaultSound.toStdString()).extension() != ".wav"
-            || !std::filesystem::exists(newDefaultSound.toStdString())) {
-        setSoundError(true);
-    } else {
-        setSoundError(false);
+    setSoundError(std::filesystem::path(newDefaultSound.toStdString()).extension() != ".wav"
+            || !std::filesystem::exists(newDefaultSound.toStdString()));
 
-        auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultSound);
-        QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setSoundError);
-    }
+    auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultSound);
+    QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setSoundError);
 
     for (int i = 0; i < m_notifiers.rowCount(); i++) {
         if (m_notifiers.at(i)->soundPath() == m_defaultSound)
