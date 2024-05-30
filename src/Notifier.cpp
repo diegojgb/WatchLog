@@ -140,7 +140,7 @@ void Notifier::setTitle(const QString &newTitle)
     QString titleCopy = newTitle;
     m_templ.setTextField(titleCopy
                        .replace("${regex}", m_regexStr)
-                       .replace("${name}", m_name)
+                       .replace("${name}", m_monitor->name())
                        .toStdWString(), WinToastTemplate::FirstLine);
 
     emit titleChanged();
@@ -161,7 +161,7 @@ void Notifier::setDesc(const QString &newDesc)
     QString descCopy = newDesc;
     m_templ.setTextField(descCopy
                        .replace("${regex}", m_regexStr)
-                       .replace("${name}", m_name)
+                       .replace("${name}", m_monitor->name())
                        .toStdWString(), WinToastTemplate::SecondLine);
 
     emit descChanged();
