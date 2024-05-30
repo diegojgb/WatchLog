@@ -179,7 +179,7 @@ Item {
             Layout.leftMargin: descLabel.width + firstItem.spacing + 1
             Layout.topMargin: -2
             renderType: Text.NativeRendering
-            text: "File not available."
+            text: "File invalid or unavailable."
             color: "#ff0000"
             font.pointSize: 8
             visible: imageBrowser.error
@@ -219,7 +219,7 @@ Item {
             Layout.leftMargin: descLabel.width + firstItem.spacing + 1
             Layout.topMargin: -2
             renderType: Text.NativeRendering
-            text: "File not available."
+            text: "File invalid or unavailable."
             color: "#ff0000"
             font.pointSize: 8
             visible: soundBrowser.error
