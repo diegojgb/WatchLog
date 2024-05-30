@@ -197,6 +197,8 @@ Window {
                     id: rep
                     model: Manager.monitors
 
+                    property bool monitorsAtStart: true
+
                     function load(idx) {
                         if (idx >= rep.count)
                             return
@@ -208,14 +210,20 @@ Window {
                         rep.itemAt(idx).active = true
                     }
 
-                    Component.onCompleted: load(1)
+                    Component.onCompleted: {
+                        if (rep.count <= 0)
+                            rep.monitorsAtStart = false
+                        else
+                            rep.load(1)
+                    }
 
                     Loader {
                         id: loader
                         active: loader.isFirst
                         asynchronous: !loader.isFirst
 
-                        property bool isFirst: model.index === 0
+                        property bool isFirst: rep.monitorsAtStart
+                                               && model.index === 0
 
                         BusyIndicator {
                             id: busyIndicator
