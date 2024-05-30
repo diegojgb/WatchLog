@@ -187,9 +187,16 @@ Window {
             StackLayout {
                 id: stackView
                 anchors.fill: parent
-                currentIndex: sidebar.tabBar.tabIndex
+                currentIndex: stackView.tabBarIndex
+
+                property int tabBarIndex: sidebar.tabBar.tabIndex
+
+                onTabBarIndexChanged: stackView.currentIndex = stackView.tabBarIndex
 
                 onCurrentIndexChanged: {
+                    if (stackView.currentIndex !== stackView.tabBarIndex)
+                        stackView.currentIndex = stackView.tabBarIndex
+
                     rep.load(currentIndex)
                 }
 
