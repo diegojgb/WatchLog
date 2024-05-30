@@ -18,7 +18,7 @@ RowLayout {
     FileDialog {
         id: fileDialogItem
         title: "Select a file"
-        selectedFile: "file:///" + control.filePath
+        selectedFile: !control.error ? "file:///" + control.filePath : "file:///"
         fileMode: FileDialog.OpenFile
 
         onAccepted: {
