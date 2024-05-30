@@ -77,9 +77,13 @@ void FileWatcher::onFileChanged(FileData* fileData)
             if (!std::regex_search(line, notifier->getRegex()))
                 continue;
 
-            if (notifier->toastEnabled()) {
+            if (notifier->toastEnabled())
                 emit matchFound(notifier->getTempl());
-            } else {
+
+            if (!notifier->toastEnabled()
+                || notifier->soundEnabled()
+                && notifier->getTempl().audioOption() == WinToastTemplate::AudioOption::Silent)
+            {
                 std::wstring playCommand;
 
                 playCommand = m_soundsHash.value(notifier->soundPath(), L"default");

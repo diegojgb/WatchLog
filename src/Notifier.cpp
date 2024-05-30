@@ -377,6 +377,11 @@ void Notifier::setSoundPath(const QString &newSoundPath)
     auto* newFileStatus = m_winFileManager.findOrCreate(newSoundPath);
     QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Notifier::setSoundFileError);
 
+    if (newSoundPath.toStdString() == SystemMedia::getDefaultSound())
+        m_templ.setAudioOption(mapAudioOption(true));
+    else
+        m_templ.setAudioOption(mapAudioOption(false));
+
     m_soundPath = newSoundPath;
 
     emit soundPathChanged();
