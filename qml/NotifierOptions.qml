@@ -160,7 +160,7 @@ Item {
                 id: imageBrowser
                 backgroundColor: root.whiteColor
                 fieldHeight: 23
-                filePath: notifier.imagePath
+                filePath: !notifier.imageFileError ? notifier.imagePath : ""
                 fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"]
                 error: notifier.imageFileError
 
@@ -200,7 +200,7 @@ Item {
                 id: soundBrowser
                 backgroundColor: root.whiteColor
                 fieldHeight: 23
-                filePath: notifier.soundPath
+                filePath: !notifier.soundFileError ? notifier.soundPath : ""
                 fileDialog.nameFilters: ["WAV files (*.wav)"]
                 error: notifier.soundFileError
 

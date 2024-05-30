@@ -200,7 +200,7 @@ Item {
                 id: mainFileBrowser
                 Layout.topMargin: 15
                 Layout.rightMargin: 10
-                filePath: monitor.filePath
+                filePath: !page.fileError ? monitor.filePath : ""
                 error: page.fileError
 
                 onFileAccepted: {
@@ -432,7 +432,7 @@ Item {
 
             FileBrowser {
                 id: imageBrowser
-                filePath: monitor.defaultImage
+                filePath: !monitor.imageError ? monitor.defaultImage : ""
                 fileDialog.nameFilters: ["Image files (*.jpg *.jpeg *.png)"]
                 error: monitor.imageError
             }
@@ -458,7 +458,7 @@ Item {
 
             FileBrowser {
                 id: soundBrowser
-                filePath: monitor.defaultSound
+                filePath: !monitor.soundError ? monitor.defaultSound : ""
                 fileDialog.nameFilters: ["WAV files (*.wav)"]
                 error: monitor.soundError
             }
