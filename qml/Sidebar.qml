@@ -86,18 +86,16 @@ Rectangle {
             color: '#999'
         }
 
-        // Using a ScrollView lets the Flickable take as much space
-        // as it can, up to Layout.maximumHeight
-        ScrollView {
-            id: scrollView
+        ColumnLayout {
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.maximumHeight: tabBarItem.height + tabBarItem.anchors.topMargin
 
             Flickable {
-                anchors.fill: parent
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.maximumHeight: tabBarItem.height + tabBarItem.anchors.topMargin
                 contentHeight: tabBarItem.height + tabBarItem.anchors.topMargin
                 boundsBehavior: Flickable.StopAtBounds
+                ScrollBar.vertical: ScrollBar {}
                 clip: true
 
                 ColumnLayout {
@@ -142,58 +140,58 @@ Rectangle {
                     }
                 }
             }
-        }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.topMargin: 4
-            Layout.rightMargin: 12
-            Layout.leftMargin: 12
-            height: 1
-            color: '#444'
-        }
-
-        Rectangle {
-            id: addMonitorButton
-            Layout.fillWidth: true
-            Layout.preferredHeight: 30
-            Layout.leftMargin: 10
-            Layout.rightMargin: 10
-            color: mouseArea.containsMouse ? "#4d4d4d" : "#2d2e30"
-            radius: 7
-
-            Behavior on color {
-                ColorAnimation {
-                    duration: root.transitionDuration
-                }
+            Rectangle {
+                Layout.fillWidth: true
+                Layout.topMargin: 4
+                Layout.rightMargin: 12
+                Layout.leftMargin: 12
+                height: 1
+                color: '#444'
             }
 
-            Row {
-                anchors.fill: parent
-                anchors.leftMargin: 10
-                spacing: 6
+            Rectangle {
+                id: addMonitorButton
+                Layout.fillWidth: true
+                Layout.preferredHeight: 30
+                Layout.leftMargin: 10
+                Layout.rightMargin: 10
+                color: mouseArea.containsMouse ? "#4d4d4d" : "#2d2e30"
+                radius: 7
 
-                Image {
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: "qrc:/assets/add-new.png"
+                Behavior on color {
+                    ColorAnimation {
+                        duration: root.transitionDuration
+                    }
                 }
 
-                Text {
-                    anchors.verticalCenter: parent.verticalCenter
-                    renderType: Text.NativeRendering
-                    font.pointSize: 10
-                    color: "white"
-                    text: 'Add monitor'
+                Row {
+                    anchors.fill: parent
+                    anchors.leftMargin: 10
+                    spacing: 6
+
+                    Image {
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: "qrc:/assets/add-new.png"
+                    }
+
+                    Text {
+                        anchors.verticalCenter: parent.verticalCenter
+                        renderType: Text.NativeRendering
+                        font.pointSize: 10
+                        color: "white"
+                        text: 'Add monitor'
+                    }
                 }
-            }
 
-            MouseArea {
-                id: mouseArea
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                hoverEnabled: true
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
 
-                onClicked: addMonitorDialog.open()
+                    onClicked: addMonitorDialog.open()
+                }
             }
         }
 
