@@ -3,7 +3,7 @@
 
 Manager::Manager(QObject *parent, const json &data)
     : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false},
-      m_winFileManager{this, toWinFileMode(Monitor::jsonGetValue<std::string>(data, "winFileMode", "Manual"))}
+      m_winFileManager{this, data.empty() ? Mode::Manual : toWinFileMode(Monitor::jsonGetValue<std::string>(data, "winFileMode", "Manual"))}
 {
     if (data.empty())
         return;
