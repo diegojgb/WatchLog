@@ -100,11 +100,11 @@ private:
     WinFileManager& m_winFileManager;
     QVarLengthArray<Notifier*> m_enabledNotifiers;
     NotifierList m_notifiers;
-    std::string m_staticDefaultImage;
     QString m_name; 
     QString m_filePath;
     QString m_defaultImage;
     QString m_defaultSound;
+    QString m_staticDefaultImage;
     bool m_manyPerUpdate;
     bool m_enabled = false;
     bool m_fileError = false;

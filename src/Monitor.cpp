@@ -10,10 +10,10 @@ Monitor::Monitor(QObject *parent, const json &monitorData, WinFileManager& winFi
     setFilePath(QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath")));
     setName(QString::fromStdString(jsonGetValue<std::string>(monitorData, "name")));
 
-    m_staticDefaultImage = jsonGetValue<std::string>(monitorData, "staticDefaultImage", Notifier::getDefaultImg().toStdString());
-    auto imagePath = jsonGetValue<std::string>(monitorData, "defaultImage", staticImagePath);
-    auto qImagePath = QString::fromStdString(imagePath);
-    setDefaultImage(QFileInfo(qImagePath).canonicalFilePath());
+    auto staticImage = jsonGetValue<std::string>(monitorData, "staticDefaultImage", Notifier::getDefaultImg().toStdString());
+    auto imagePath = jsonGetValue<std::string>(monitorData, "defaultImage", staticImage);
+    m_staticDefaultImage = QString::fromStdString(imagePath);
+    setDefaultImage(QFileInfo(m_staticDefaultImage).canonicalFilePath());
 
     auto soundPath = jsonGetValue<std::string>(monitorData, "defaultSound", SystemMedia::getDefaultSound());
     setDefaultSound(QString::fromStdString(soundPath));
@@ -50,12 +50,12 @@ json Monitor::toJSON() const
     obj["enabled"] = m_enabled;
     obj["notifiers"] = json::array();
     obj["manyPerUpdate"] = m_manyPerUpdate;
-    if (m_defaultImage.toStdString() != m_staticDefaultImage)
+    if (m_defaultImage != QFileInfo(m_staticDefaultImage).canonicalFilePath())
         obj["defaultImage"] = m_defaultImage.toStdString();
     if (m_defaultSound.toStdString() != SystemMedia::getDefaultSound())
         obj["defaultSound"] = m_defaultSound.toStdString();
-    if (m_staticDefaultImage != Notifier::getDefaultImg().toStdString())
-        obj["staticDefaultImage"] = m_staticDefaultImage;
+    if (m_staticDefaultImage != Notifier::getDefaultImg())
+        obj["staticDefaultImage"] = m_staticDefaultImage.toStdString();
 
     for (int i = 0; i < m_notifiers.rowCount() - 1; i++)
         obj["notifiers"].push_back(m_notifiers.at(i)->toJSON());
