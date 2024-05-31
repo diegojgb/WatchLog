@@ -50,9 +50,12 @@ json Monitor::toJSON() const
     obj["enabled"] = m_enabled;
     obj["notifiers"] = json::array();
     obj["manyPerUpdate"] = m_manyPerUpdate;
-    obj["defaultImage"] = m_defaultImage.toStdString();
-    obj["defaultSound"] = m_defaultSound.toStdString();
-    obj["staticDefaultImage"] = m_staticDefaultImage;
+    if (m_defaultImage.toStdString() != m_staticDefaultImage)
+        obj["defaultImage"] = m_defaultImage.toStdString();
+    if (m_defaultSound.toStdString() != SystemMedia::getDefaultSound())
+        obj["defaultSound"] = m_defaultSound.toStdString();
+    if (m_staticDefaultImage != Notifier::getDefaultImg().toStdString())
+        obj["staticDefaultImage"] = m_staticDefaultImage;
 
     for (int i = 0; i < m_notifiers.rowCount() - 1; i++)
         obj["notifiers"].push_back(m_notifiers.at(i)->toJSON());
