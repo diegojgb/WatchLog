@@ -16,9 +16,12 @@ TrayIcon::TrayIcon(QObject* parent, QObject* root, HWND hwnd)
 
     initWinToast();
 
+    QQuickWindow* windowRoot = qobject_cast<QQuickWindow*>(m_root);
+
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &TrayIcon::trayIconActivated);
-    connect(this, SIGNAL(singleClick()), m_root, SLOT(showNormal()));
-    connect(this, SIGNAL(singleClick()), this, SLOT(bringToTop()));
+    connect(this, &TrayIcon::singleClick, windowRoot, &QQuickWindow::showNormal);
+    connect(this, &TrayIcon::singleClick, this, &TrayIcon::bringToTop);
+    connect(&m_dialog, &ExitDialog::noClicked, qApp, &QCoreApplication::quit);
 }
 
 void TrayIcon::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -32,13 +35,31 @@ void TrayIcon::bringToTop()
     SetForegroundWindow(m_hwnd);
 }
 
+void TrayIcon::tryQuitApp()
+{
+    bool unsavedChanges = m_root->property("saveEnabled").toBool();
+
+    if (!unsavedChanges) {
+        qApp->quit();
+        return;
+    }
+
+    if (m_dialog.exec() == QDialog::Accepted) {
+        emit saveRequested();
+        qApp->quit();
+    }
+}
+
 QMenu* TrayIcon::createMenu()
 {
+    QQuickWindow* windowRoot = qobject_cast<QQuickWindow*>(m_root);
+
     QAction *restoreAction = new QAction(QObject::tr("&Restore"), m_root);
-    m_root->connect(restoreAction, SIGNAL(triggered()), m_root, SLOT(showNormal()));
-    m_root->connect(restoreAction, SIGNAL(triggered()), this, SLOT(bringToTop()));
+    m_root->connect(restoreAction, &QAction::triggered, windowRoot, &QQuickWindow::showNormal);
+    m_root->connect(restoreAction, &QAction::triggered, this, &TrayIcon::bringToTop);
+
     QAction *quitAction = new QAction(QObject::tr("&Quit"), m_root);
-    m_root->connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    m_root->connect(quitAction, &QAction::triggered, this, &TrayIcon::tryQuitApp);
 
     QMenu *trayIconMenu = new QMenu();
     trayIconMenu->addAction(restoreAction);

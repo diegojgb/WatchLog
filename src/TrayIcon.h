@@ -5,12 +5,14 @@
 #include "ToastHandler.h"
 #include "Registry.h"
 #include "wintoastlib.h"
+#include "ExitDialog.h"
 
 #include <QObject>
 #include <QAction>
 #include <QMenu>
 #include <QApplication>
 #include <QSystemTrayIcon>
+#include <QQuickWindow>
 #include <Windows.h>
 
 
@@ -24,14 +26,17 @@ public slots:
     void sendNotification(const WinToastTemplate& templ);
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void bringToTop();
+    void tryQuitApp();
 
 signals:
     void singleClick();
+    void saveRequested();
 
 private:
     QObject* m_root;
     HWND m_hwnd;
     QSystemTrayIcon* m_trayIcon;
+    ExitDialog m_dialog;
 
     QMenu* createMenu();
     void initWinToast();

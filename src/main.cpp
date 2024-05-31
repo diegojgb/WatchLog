@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     qputenv("QSG_NO_VSYNC", "1");
 
     QApplication app(argc, argv);
+    app.setStyle("windowsvista");
 
     QObject::connect(&app, &QCoreApplication::aboutToQuit, cleanup);
 

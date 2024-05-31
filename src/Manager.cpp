@@ -44,7 +44,8 @@ void Manager::initTrayIcon(QObject *parent, QObject *root, HWND &hwnd)
 
     m_trayIcon = new TrayIcon(parent, root, hwnd);
 
-    QObject::connect(&m_fileWatcher, &FileWatcher::matchFound, m_trayIcon, &TrayIcon::sendNotification);
+    connect(&m_fileWatcher, &FileWatcher::matchFound, m_trayIcon, &TrayIcon::sendNotification);
+    connect(m_trayIcon, &TrayIcon::saveRequested, this, &Manager::updateJSON);
 
     m_trayIconInitialized = true;
 }
