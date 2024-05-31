@@ -10,8 +10,10 @@ Monitor::Monitor(QObject *parent, const json &monitorData, WinFileManager& winFi
     setFilePath(QString::fromStdString(jsonGetValue<std::string>(monitorData, "filePath")));
     setName(QString::fromStdString(jsonGetValue<std::string>(monitorData, "name")));
 
-    auto imagePath = jsonGetValue<std::string>(monitorData, "defaultImage", Notifier::getDefaultImg().toStdString());
-    setDefaultImage(QString::fromStdString(imagePath));
+    m_staticDefaultImage = jsonGetValue<std::string>(monitorData, "staticDefaultImage", Notifier::getDefaultImg().toStdString());
+    auto imagePath = jsonGetValue<std::string>(monitorData, "defaultImage", staticImagePath);
+    auto qImagePath = QString::fromStdString(imagePath);
+    setDefaultImage(QFileInfo(qImagePath).canonicalFilePath());
 
     auto soundPath = jsonGetValue<std::string>(monitorData, "defaultSound", SystemMedia::getDefaultSound());
     setDefaultSound(QString::fromStdString(soundPath));
@@ -50,6 +52,7 @@ json Monitor::toJSON() const
     obj["manyPerUpdate"] = m_manyPerUpdate;
     obj["defaultImage"] = m_defaultImage.toStdString();
     obj["defaultSound"] = m_defaultSound.toStdString();
+    obj["staticDefaultImage"] = m_staticDefaultImage;
 
     for (int i = 0; i < m_notifiers.rowCount() - 1; i++)
         obj["notifiers"].push_back(m_notifiers.at(i)->toJSON());
