@@ -4,6 +4,7 @@ import QtQuick.Layouts
 
 Rectangle {
     id: control
+    color: "transparent"
 
     property var tabBar: tabBarItem
 

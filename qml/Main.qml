@@ -28,6 +28,16 @@ Window {
 
     Component.onCompleted: root.initialized = true
 
+    Timer {
+        id: refreshTimer
+        interval: 30
+        repeat: false
+        onRunningChanged: {
+            stackView.opacity = refreshTimer.running ? 0 : 1
+            sidebar.opacity = refreshTimer.running ? 0 : 1
+        }
+    }
+
     Popup {
         id: toolTip
         contentWidth: Math.min(textObj.textWidth + 5, parent.width)
@@ -69,7 +79,10 @@ Window {
             first: true
             last: true
 
-            onTriggered: Manager.checkFilesNow()
+            onTriggered: {
+                refreshTimer.start()
+                Manager.checkFilesNow()
+            }
         }
     }
 
@@ -152,21 +165,24 @@ Window {
         anchors.fill: parent
         spacing: 0
 
-        // Sidebar
-        Sidebar {
-            id: sidebar
+        Rectangle {
             Layout.fillHeight: true
             Layout.preferredWidth: 190
             color: '#2d2e30'
 
-            onTabRightClicked: idx => {
-                                   monitorMenu.tabIndex = idx
-                                   monitorMenu.popup()
-                               }
+            Sidebar {
+                id: sidebar
+                anchors.fill: parent
 
-            onRightClicked: {
-                globalMenu.dark = true
-                globalMenu.popup()
+                onTabRightClicked: idx => {
+                                       monitorMenu.tabIndex = idx
+                                       monitorMenu.popup()
+                                   }
+
+                onRightClicked: {
+                    globalMenu.dark = true
+                    globalMenu.popup()
+                }
             }
         }
 
@@ -177,7 +193,6 @@ Window {
             color: "#2b2b2b"
         }
 
-        // Mainbar
         Rectangle {
             id: mainbar
             Layout.fillHeight: true
