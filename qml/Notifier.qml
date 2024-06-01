@@ -6,7 +6,6 @@ Column {
     id: control
 
     property var notifier
-    property bool monitorEnabled
     property int index
     property bool newNotifier: false
     property bool error: !control.newNotifier && (preview.error
@@ -37,7 +36,6 @@ Column {
         optionsItem.opacity: exp.show ? 1 : 0
         exclamationItem.opacity: exp.show ? 0 : 1
         notifierError: control.error
-        monitorEnabled: control.monitorEnabled
 
         onDeleted: control.deleted()
         onRightClicked: {
