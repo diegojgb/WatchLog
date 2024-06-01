@@ -15,6 +15,7 @@ Item {
     property Image exclamationItem: exclamation
     property bool textFieldError: textField.error
     property bool optionsAux: true
+    required property bool monitorEnabled
     required property bool notifierError
 
     signal rightClicked
@@ -356,7 +357,8 @@ Item {
 
             CusSwitch {
                 checked: notifier.toastEnabled
-                enabled: !control.notifierError && !control.newNotifierOngoing
+                enabled: control.monitorEnabled && !control.notifierError
+                         && !control.newNotifierOngoing
                 backgroundColor_on: root.accentColor
 
                 property bool loaded: false
@@ -370,7 +372,8 @@ Item {
             }
             CusSwitch {
                 checked: notifier.soundEnabled
-                enabled: !control.notifierError && !control.newNotifierOngoing
+                enabled: control.monitorEnabled && !control.notifierError
+                         && !control.newNotifierOngoing
                 backgroundColor_on: root.accentColor
 
                 property bool loaded: false

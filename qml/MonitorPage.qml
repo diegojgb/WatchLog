@@ -260,6 +260,7 @@ Item {
                     newNotifier: model.index === monitor.notifiers.rowCount(
                                      ) - 1
                     notifier: model.display
+                    monitorEnabled: monitor.enabled
 
                     onAddedNew: monitor.addEmptyNotifier()
                     onDeleted: page.deletedNotifier(notifier)
