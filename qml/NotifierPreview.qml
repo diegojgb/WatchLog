@@ -355,34 +355,57 @@ Item {
             visible: !control.newNotifier
             spacing: 8
 
-            CusSwitch {
-                checked: notifier.toastEnabled
-                enabled: control.monitorEnabled && !control.notifierError
-                         && !control.newNotifierOngoing
-                backgroundColor_on: root.accentColor
+            Item {
+                width: toastSwitch.width
+                height: toastSwitch.height
 
-                property bool loaded: false
-                Component.onCompleted: loaded = true
+                CusSwitch {
+                    id: toastSwitch
+                    checked: notifier.toastEnabled
+                    enabled: control.monitorEnabled && !control.notifierError
+                             && !control.newNotifierOngoing
+                    backgroundColor_on: root.accentColor
 
-                onCheckedChanged: {
-                    notifier.toastEnabled = checked
-                    if (loaded)
-                        root.saveEnabled = true
+                    property bool loaded: false
+                    Component.onCompleted: loaded = true
+
+                    onCheckedChanged: {
+                        notifier.toastEnabled = checked
+                        if (loaded)
+                            root.saveEnabled = true
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    z: toastSwitch.enabled ? -1 : 1
                 }
             }
-            CusSwitch {
-                checked: notifier.soundEnabled
-                enabled: control.monitorEnabled && !control.notifierError
-                         && !control.newNotifierOngoing
-                backgroundColor_on: root.accentColor
 
-                property bool loaded: false
-                Component.onCompleted: loaded = true
+            Item {
+                width: soundSwitch.width
+                height: soundSwitch.height
 
-                onCheckedChanged: {
-                    notifier.soundEnabled = checked
-                    if (loaded)
-                        root.saveEnabled = true
+                CusSwitch {
+                    id: soundSwitch
+                    checked: notifier.soundEnabled
+                    enabled: control.monitorEnabled && !control.notifierError
+                             && !control.newNotifierOngoing
+                    backgroundColor_on: root.accentColor
+
+                    property bool loaded: false
+                    Component.onCompleted: loaded = true
+
+                    onCheckedChanged: {
+                        notifier.soundEnabled = checked
+                        if (loaded)
+                            root.saveEnabled = true
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    z: soundSwitch.enabled ? -1 : 1
                 }
             }
         }
