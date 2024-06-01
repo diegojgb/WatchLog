@@ -30,7 +30,7 @@ Window {
 
     Timer {
         id: refreshTimer
-        interval: 30
+        interval: 20
         repeat: false
         onRunningChanged: {
             stackView.opacity = refreshTimer.running ? 0 : 1
