@@ -21,12 +21,14 @@ public:
     explicit FileWatcher(QObject* parent, const MonitorCollection& monitors);
     ~FileWatcher();
 
+    void addAllMonitors();
+
+    Q_INVOKABLE void addFilePath(const QString &filePath);
+    Q_INVOKABLE void removeFilePath(const QString &filePath);
+
 public slots:
     void onFileChanged(FileData* fileData);
-    void addFilePath(const QString &filePath);
-    void removeFilePath(const QString &filePath);
     void changeFilePath(const QString &oldKey, const QString &newKey);
-    void addAllMonitors();
 
 signals:
     void matchFound(const WinToastTemplate& templ);

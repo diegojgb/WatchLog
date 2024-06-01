@@ -8,18 +8,19 @@
 #include <QTimerEvent>
 
 
-class FileCheckWorker : public QObject
+class FileCheckWorker: public QObject
 {
     Q_OBJECT
 
 public:
     explicit FileCheckWorker(QObject *parent, const QList<FileStatus*>& fileList);
 
+    Q_INVOKABLE void stop();
+    Q_INVOKABLE void checkNow();
+
 public slots:
     void start();
-    void stop();
     void finish();
-    void checkNow();
 
 signals:
     void finished();

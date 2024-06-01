@@ -29,13 +29,14 @@ public:
 
     MonitorCollection* monitors();
 
+    Q_INVOKABLE bool addMonitor(const QString& name, const QString& filePath);
+    Q_INVOKABLE void checkFilesNow();
+
 public slots:
     void disableMonitor(const Monitor* monitor);
     void enableMonitor(const Monitor* monitor);
     void updateJSON() const;
-    bool addMonitor(const QString& name, const QString& filePath);
     void onCheckFailed(const QString& filePath);
-    void checkFilesNow();
 
 private:
     FileWatcher m_fileWatcher;

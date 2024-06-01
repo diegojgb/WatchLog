@@ -10,9 +10,10 @@
 #include <QDir>
 
 
-class WinFileMonitor : public QObject
+class WinFileMonitor: public QObject
 {
     Q_OBJECT
+
 public:
     explicit WinFileMonitor(QObject *parent = nullptr);
 

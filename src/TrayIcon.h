@@ -16,9 +16,10 @@
 #include <Windows.h>
 
 
-class TrayIcon : public QObject
+class TrayIcon: public QObject
 {
     Q_OBJECT
+
 public:
     explicit TrayIcon(QObject *parent, QObject *root, HWND hwnd);
 

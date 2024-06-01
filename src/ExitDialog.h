@@ -10,7 +10,7 @@
 #include <QStyle>
 
 
-class ExitDialog : public QDialog
+class ExitDialog: public QDialog
 {
     Q_OBJECT
 

@@ -6,7 +6,7 @@
 #include <QObject>
 #include <QAbstractListModel>
 
-class NotifierList : public QAbstractListModel
+class NotifierList: public QAbstractListModel
 {
     Q_OBJECT
 
@@ -18,10 +18,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-public slots:
-    void append(Notifier* notifier);
-    void removeAt(int i);
-    Notifier* at(int i) const;
+    Q_INVOKABLE void append(Notifier* notifier);
+    Q_INVOKABLE void removeAt(int i);
+    Q_INVOKABLE Notifier* at(int i) const;
 
 private:
     QList<Notifier*> m_notifiers;

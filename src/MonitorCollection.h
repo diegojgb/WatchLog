@@ -14,7 +14,8 @@ struct MonitorData {
     explicit MonitorData(const QString path, Monitor* monitor);
 };
 
-class MonitorCollection : public QAbstractListModel
+
+class MonitorCollection: public QAbstractListModel
 {
     Q_OBJECT
 

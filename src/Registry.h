@@ -6,6 +6,7 @@
 #include <Windows.h>
 #include <tchar.h>
 
+
 class Registry
 {
 public:

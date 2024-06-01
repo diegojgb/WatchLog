@@ -9,12 +9,14 @@
 
 namespace fs = std::filesystem;
 
+
 enum class Change {
     Added,
     Removed,
     RenamedTo,
     RenamedFrom
 };
+
 
 class SingleDirMonitor: public QObject
 {

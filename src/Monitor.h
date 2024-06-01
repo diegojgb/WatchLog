@@ -11,9 +11,10 @@
 
 using json = nlohmann::json;
 
+
 class Notifier; // Forward declaration.
 
-class Monitor : public QObject
+class Monitor: public QObject
 {
     Q_OBJECT
 
@@ -75,11 +76,12 @@ public:
     bool soundError() const;
     void setSoundError(bool newSoundError);
 
+    Q_INVOKABLE void addEmptyNotifier();
+    Q_INVOKABLE void removeNotifier(int i);
+
 public slots:
     void notifierDisabled(Notifier* notifier);
     void notifierEnabled(Notifier* notifier);
-    void addEmptyNotifier();
-    void removeNotifier(int i);
 
 signals:
     void monitorEnabled(const Monitor* monitor);

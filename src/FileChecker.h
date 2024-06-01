@@ -9,7 +9,7 @@
 #include <QCoreApplication>
 
 
-class FileChecker : public QObject
+class FileChecker: public QObject
 {
     Q_OBJECT
 

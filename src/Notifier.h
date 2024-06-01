@@ -18,7 +18,7 @@ using json = nlohmann::json;
 
 class Monitor; // Forward declaration.
 
-class Notifier : public QObject
+class Notifier: public QObject
 {
     Q_OBJECT
 
@@ -96,8 +96,7 @@ public:
 
     bool regexError() const;
 
-public slots:
-    void reset();
+    Q_INVOKABLE void reset();
 
 signals:
     void disabled(Notifier* notifier);

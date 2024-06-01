@@ -8,11 +8,13 @@
 
 #include <QObject>
 
+
 enum class Mode {
     WinApi,
     Manual,
     Mixed
 };
+
 
 class WinFileManager: public QObject
 {
