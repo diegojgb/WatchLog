@@ -1,6 +1,9 @@
 # WatchLog
 
-<img src="https://github.com/diegojgb/WatchLog/blob/main/screenshot.png">
+<img src="https://github.com/diegojgb/WatchLog/blob/main/screenshots/screenshot1.png">
+<img src="https://github.com/diegojgb/WatchLog/blob/main/screenshots/screenshot2.png">
+<img src="https://github.com/diegojgb/WatchLog/blob/main/screenshots/screenshot3.png">
+<img src="https://github.com/diegojgb/WatchLog/blob/main/screenshots/screenshot4.png">
 
 ## What is it?
 
