@@ -4,7 +4,6 @@
 #include <Windows.h>
 #include <iostream>
 #include <QObject>
-#include <QDebug>
 #include <QDir>
 
 namespace fs = std::filesystem;

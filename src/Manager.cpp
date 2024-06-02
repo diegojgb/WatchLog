@@ -83,7 +83,6 @@ void Manager::updateJSON() const
     if (outFile.is_open()) {
         outFile << obj.dump(4); // dump(4) prettifies it with 4 spaces indentation.
         outFile.close();
-        qDebug() << "JSON data saved to data.json";
     } else {
         Utils::throwError("Manager: Failed to open data.json for writing");
     }

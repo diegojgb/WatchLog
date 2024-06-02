@@ -4,7 +4,6 @@
 #include "FileStatus.h"
 
 #include <QObject>
-#include <QDebug>
 #include <QTimerEvent>
 
 

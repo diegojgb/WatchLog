@@ -7,7 +7,6 @@
 #include <Windows.h>
 #include <QFileSystemWatcher>
 #include <QTimerEvent>
-#include <QDebug>
 #include <fstream>
 
 

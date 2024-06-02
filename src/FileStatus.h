@@ -2,7 +2,6 @@
 #define FILESTATUS_H
 
 #include <QObject>
-#include <QDebug>
 #include <QMetaMethod>
 #include <filesystem>
 
