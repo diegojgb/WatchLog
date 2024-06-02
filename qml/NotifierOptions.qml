@@ -10,6 +10,7 @@ Item {
     property int cusTopMargin
     property int custBottomMargin
     property bool newNotifier: false
+    property alias cancelHovered: loader.cancelHovered
     required property bool notifierError
 
     signal canceled
@@ -280,6 +281,10 @@ Item {
         }
 
         Loader {
+            id: loader
+
+            property bool cancelHovered: false
+
             Layout.alignment: Qt.AlignRight | Qt.AlignTop
             Layout.topMargin: -12
             Layout.bottomMargin: 6
@@ -293,11 +298,15 @@ Item {
                 spacing: 5
 
                 CustomButton {
+                    id: cancelButton
                     text: "Cancel"
+
                     onClicked: {
                         regexField.errorException = true
                         control.canceled()
                     }
+
+                    onHoveredChanged: loader.cancelHovered = cancelButton.hovered
                 }
 
                 CustomButton {

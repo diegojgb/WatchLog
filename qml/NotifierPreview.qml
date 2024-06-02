@@ -15,6 +15,7 @@ Item {
     property Image exclamationItem: exclamation
     property bool textFieldError: textField.error
     property bool optionsAux: true
+    property bool cancelHovered: false
     required property bool notifierError
 
     signal rightClicked
@@ -43,8 +44,9 @@ Item {
     function cancelNew() {
         control.newNotifier = true
         control.newNotifierOngoing = false
-        textField.text = "Add notification"
+        notifier.name = "Add notification"
         textField.custUnfocus()
+        textField.error = false
     }
 
     function finishNew() {
@@ -187,7 +189,7 @@ Item {
             // Enter or lose focus
             onEditingFinished: {
                 if (textField.text === "") {
-                    if (control.newNotifierOngoing)
+                    if (control.newNotifierOngoing && !control.cancelHovered)
                         textField.error = true
                     else
                         textField.text = notifier.name

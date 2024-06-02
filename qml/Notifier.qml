@@ -36,6 +36,7 @@ Column {
         optionsItem.opacity: exp.show ? 1 : 0
         exclamationItem.opacity: exp.show ? 0 : 1
         notifierError: control.error
+        cancelHovered: exp.cancelHovered
 
         onDeleted: control.deleted()
         onRightClicked: {
@@ -65,6 +66,8 @@ Column {
                 preview.optionsAux = true
         }
 
+        property bool cancelHovered: false
+
         NotifierOptions {
             id: options
             anchors.left: parent.left
@@ -76,6 +79,8 @@ Column {
             custBottomMargin: 13
             notifier: control.notifier
             notifierError: control.error
+
+            onCancelHoveredChanged: exp.cancelHovered = options.cancelHovered
 
             onCanceled: {
                 exp.show = false
