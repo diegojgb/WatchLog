@@ -59,7 +59,8 @@ Item {
                 Layout.preferredWidth: 30
                 Layout.preferredHeight: 30
                 Layout.alignment: Qt.AlignRight
-                color: settingsButtonMa.containsMouse ? "#ccc" : root.whiteColor
+                color: settingsButtonMa.containsMouse
+                       || settingsMenu.visible ? "#ccc" : root.whiteColor
                 radius: 4
 
                 Behavior on color {
@@ -81,18 +82,18 @@ Item {
                     cursorShape: Qt.PointingHandCursor
 
                     onClicked: {
-                        if (control.visible) {
-                            control.close()
+                        if (settingsMenu.visible) {
+                            settingsMenu.close()
                             return
                         }
-                        var x = parent.width - control.width
+                        var x = parent.width - settingsMenu.width
                         var y = parent.height
-                        control.popup(x, y)
+                        settingsMenu.popup(x, y)
                     }
                 }
 
                 CustomMenu {
-                    id: control
+                    id: settingsMenu
                     closePolicy: Popup.CloseOnPressOutsideParent
 
                     CustomMenuItem {
