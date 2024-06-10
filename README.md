@@ -46,7 +46,7 @@ Any time there is a new line added to the log, it is tested agaisn't all regex p
 
 5. When finished, click on "Add". After that, you can enable the Toast and/or Sound option(s).
 6. Monitor as many text files as you want, and have a separate set of regex/notifications for each one (as many as you want).
-7. Get notified with a Windows toast notification, and/or a sound, which can be the Windows default or a custom user-defined sound.
+7. When a match is found, you will receive a Windows toast notification and/or a sound alert. The sound can be the Windows default or a custom user-defined sound.
 
 ## Hidden settings in data.json
 
@@ -82,7 +82,7 @@ Monitors consist of the following properties:
 | `name` (required) | string | None | Monitor's name. Can be any string. |
 | `filePath` (required) | string | None | Absolute path of the file to be monitored. You can use either "/" or "\\\\" in the address. |
 | `enabled` | boolean | `true` | Initial state of the monitor (on/off). |
-| `manyPerUpdate` | boolean | `true` | When disabled, if two potential matches come in a single file update, only the first one will be found. |
+| `manyPerUpdate` | boolean | `false` | When disabled, if two potential matches come in a single file update, only the first one will be found. |
 | `staticDefaultImage` | string | None | Overrides the application-wide default for this specific monitor. It must be a jpg/jpeg/png file. |
 | `defaultImage` | string | `"./assets/information.png"` | Default image used for Notifiers that do not specify an image. 60x60 is the recommended image size. It must be a jpg/jpeg/png file. |
 | `defaultSound` | string | `"%SystemDrive%/Windows/Media/Windows Notify System Generic.wav"` | Default sound used for Notifiers that do not specify a sound file. It must be a wav file. |
@@ -127,16 +127,16 @@ Each monitor includes one or more notifiers, each containing a specific regex pa
     
 | Property | Type | Default | Description |
 |--|--|--|--|
-| `name` (required) | string | None | Notifier's name. Usually describes under what conditions the it triggers a notification. |
+| `name` (required) | string | None | Notifier's name. Usually describes under what conditions it triggers a notification. |
 | `pattern` (required) | string | None | The regex pattern to be searched for. |
 | `title` | string | `"Match found in ${name}"` | Title displayed in the toast notification. ${name} is a placeholder for the containing Monitor's name. |
 | `desc` | string | `"For regex: ${regex}"` | Description displayed in the toast notification. ${regex} is a placeholder for the regex pattern. |
-| `soundFile` | string | `"%SystemDrive%/Windows/Media/Windows Notify System Generic.wav"` | Sound to be played either with or without a toast notification. |
-| `image` | string | Monitor's `defaultImage` value | Path to the image to be displayed inside the toast notification. 60x60 is the recommended image size. |
+| `soundFile` | string | Monitor's `defaultSound` | Sound to be played either with or without a toast notification. |
+| `image` | string | Monitor's `defaultImage` | Path to the image to be displayed inside the toast notification. 60x60 is the recommended image size. |
 | `duration` | string | `"System"` | Toast notification display time. Can be either "System", "Short" or "Long". Durations for each setting are defined within the Windows configuration. |
-| `toast` | boolean | `true` | Sets wether a toast notification will show or not when a match is found. |
+| `toast` | boolean | `true` | Sets wether a toast notification will be shown when a match is found. |
 | `sound` | boolean | `true` | Sets wether a sound alert will be played when a match is found. |
-| `sticky` | boolean | `true` | When enabled, toast notifications are displayed until dismissed (they don't go away). |
+| `sticky` | boolean | `false` | When enabled, toast notifications are displayed until dismissed (they don't go away). |
 
 #### Full Notifier example
 
@@ -235,4 +235,4 @@ This app uses a modified version of WinToast, that allows the removal of previou
 
 ## Limitations
 
-- Spamming many Windows toasts in a short period of time can lead to unexpected behavior, that may continue until the application is restarted. Just triggering two toast notifications within milliseconds of each other is enough to break it, that's the reason behind the ["manyPerUpdate"](#monitor) property, which, if set to false, prevents the triggering of multiple notifications on a single file update.
+- Spamming many Windows toasts in a short period of time can lead to unexpected behavior, that may continue until the application is restarted. Just triggering two toast notifications within milliseconds from each other is enough to break it, that's the reason behind the ["manyPerUpdate"](#monitor) property, which, if set to false, prevents the triggering of multiple notifications on a single file update.
