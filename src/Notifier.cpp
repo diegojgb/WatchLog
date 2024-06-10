@@ -29,8 +29,8 @@ void Notifier::initializeConstants() {
     }
 }
 
-Notifier::Notifier(QObject *parent, WinFileManager& winFileManager, QString name, QString regexStr,
-                   QString title, QString desc, QString imagePath, QString soundPath, QString duration,
+Notifier::Notifier(QObject *parent, WinFileManager& winFileManager, QString imagePath, QString soundPath,
+                   QString name, QString regexStr, QString title, QString desc, QString duration,
                    bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent},
       m_monitor{qobject_cast<Monitor*>(parent)},
@@ -42,8 +42,8 @@ Notifier::Notifier(QObject *parent, WinFileManager& winFileManager, QString name
     setToastEnabled(toastEnabled);
     setSoundEnabled(soundEnabled);
     setDuration(duration);
-    setSoundPath(soundPath);
     setImagePath(imagePath);
+    setSoundPath(soundPath);
     setTitle(title);
     setDesc(desc);
     setSticky(sticky);

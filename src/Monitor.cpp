@@ -138,8 +138,8 @@ void Monitor::readNotifiers(const json &data)
         bool soundEnabled = jsonGetValue<bool>(item, "sound", true);
         bool sticky = jsonGetValue<bool>(item, "sticky", false);
 
-        Notifier* newNotifier = new Notifier(this, m_winFileManager, name, regexStr, title, desc, imagePath,
-                                             soundPath, duration, toastEnabled, soundEnabled, sticky);
+        Notifier* newNotifier = new Notifier(this, m_winFileManager, imagePath, soundPath, name, regexStr,
+                                             title, desc, duration, toastEnabled, soundEnabled, sticky);
 
         m_notifiers.append(newNotifier);
 
@@ -186,8 +186,9 @@ void Monitor::notifierEnabled(Notifier* notifier)
 // Add a notifier that represents a "new notifier" object.
 void Monitor::addEmptyNotifier()
 {
-    Notifier* newNotifier = new Notifier(this, m_winFileManager);
+    Notifier* newNotifier = new Notifier(this, m_winFileManager, m_defaultImage, m_defaultSound);
     m_notifiers.append(newNotifier);
+
     QObject::connect(newNotifier, &Notifier::enabled, this, &Monitor::notifierEnabled);
     QObject::connect(newNotifier, &Notifier::disabled, this, &Monitor::notifierDisabled);
 }
