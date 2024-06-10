@@ -4,6 +4,8 @@
 <img src="https://github.com/diegojgb/WatchLog/blob/main/screenshots/screenshot2.png">
 <img src="https://github.com/diegojgb/WatchLog/blob/main/screenshots/screenshot3.png">
 <img src="https://github.com/diegojgb/WatchLog/blob/main/screenshots/screenshot4.png">
+<div align="center"><img src="https://github.com/diegojgb/WatchLog/blob/main/screenshots/screenshot5.png"></div>
+
 
 ## What is it?
 
