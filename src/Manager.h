@@ -5,6 +5,7 @@
 #include "Monitor.h"
 #include "MonitorCollection.h"
 #include "TrayIcon.h"
+#include "Settings.h"
 
 #include <QObject>
 #include <QHash>
@@ -18,6 +19,7 @@ class Manager: public QObject
     Q_OBJECT
 
     Q_PROPERTY(MonitorCollection* monitors READ monitors CONSTANT)
+    Q_PROPERTY(Settings* settings READ settings CONSTANT)
 
 public:
     explicit Manager(QObject *parent, const json &monitorsData);
@@ -28,6 +30,7 @@ public:
     json toJSON() const;
 
     MonitorCollection* monitors();
+    Settings* settings();
 
     Q_INVOKABLE bool addMonitor(const QString& name, const QString& filePath);
     Q_INVOKABLE void checkFilesNow();
@@ -43,6 +46,7 @@ private:
     MonitorCollection m_monitors;
     WinFileManager m_winFileManager;
     TrayIcon* m_trayIcon;
+    Settings m_settings;
     bool m_error;
     bool m_trayIconInitialized = false;
 

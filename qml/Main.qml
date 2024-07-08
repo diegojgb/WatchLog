@@ -5,7 +5,7 @@ import QtQuick.Layouts
 Window {
     id: root
 
-    visible: true
+    visible: !Manager.settings.startMinimized
     title: qsTr("WatchLog")
 
     width: 841

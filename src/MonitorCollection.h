@@ -7,7 +7,8 @@
 #include <QAbstractListModel>
 
 
-struct MonitorData {
+struct MonitorData
+{
     QString filePath;
     Monitor* monitor;
 

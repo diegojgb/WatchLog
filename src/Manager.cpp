@@ -139,3 +139,8 @@ MonitorCollection* Manager::monitors()
 {
     return &m_monitors;
 }
+
+Settings* Manager::settings()
+{
+    return &m_settings;
+}

@@ -20,8 +20,21 @@
 using json = nlohmann::json;
 
 // Executes just before the qApp exits.
-void cleanup() {
+void cleanup()
+{
     WinToast::instance()->clear();
+}
+
+bool readArgs(int argc, char* argv[], Manager &manager)
+{
+    for (int i = 1; i < argc; i++) {
+        if (std::strcmp(argv[i], "--minimized") == 0)
+            manager.settings()->setStartMinimized(true);
+        else
+            return false;
+    }
+
+    return true;
 }
 
 int main(int argc, char *argv[])
@@ -55,6 +68,13 @@ int main(int argc, char *argv[])
 
     if (manager.hadInitErrors()) {
         QApplication::quit();
+        return 1;
+    }
+
+    bool validArgs = readArgs(argc, argv, manager); // Read and process command line arguments.
+
+    if (!validArgs) {
+        Utils::showCritical("Invalid command line argument(s).");
         return 1;
     }
 
