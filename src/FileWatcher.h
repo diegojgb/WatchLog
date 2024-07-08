@@ -32,7 +32,6 @@ public slots:
 
 signals:
     void matchFound(const WinToastTemplate& templ);
-    void fileReset();
     void checkFailed(const QString& filePath);
 
 private:
