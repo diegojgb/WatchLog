@@ -10,7 +10,7 @@ class Settings : public QObject
     Q_PROPERTY(bool startMinimized READ startMinimized WRITE setStartMinimized NOTIFY startMinimizedChanged FINAL)
 
 public:
-    explicit Settings(QObject *parent = nullptr);
+    explicit Settings(QObject* parent = nullptr);
 
     bool startMinimized() const;
     void setStartMinimized(bool newStartMinimized);

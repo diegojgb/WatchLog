@@ -25,7 +25,7 @@ void cleanup()
     WinToast::instance()->clear();
 }
 
-bool readArgs(int argc, char* argv[], Manager &manager)
+bool readArgs(int argc, char* argv[], Manager& manager)
 {
     for (int i = 1; i < argc; i++) {
         if (std::strcmp(argv[i], "--minimized") == 0)
@@ -37,7 +37,7 @@ bool readArgs(int argc, char* argv[], Manager &manager)
     return true;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
     qputenv("QSG_NO_VSYNC", "1");
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
     SetWindowPos(windowHandle, 0, 0, 0, width-1, height, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
     // Tray icon (using Qt Widgets).
-    QObject *root = engine.rootObjects().at(0);
+    QObject* root = engine.rootObjects().at(0);
 
     manager.initTrayIcon(&app, root, windowHandle);
 

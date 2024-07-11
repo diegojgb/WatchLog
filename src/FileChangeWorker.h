@@ -41,21 +41,21 @@ class FileChangeWorker: public QObject
     Q_PROPERTY(int pollingRate READ pollingRate WRITE setPollingRate NOTIFY pollingRateChanged FINAL)
 
 public:
-    explicit FileChangeWorker(QObject *parent = nullptr);
+    explicit FileChangeWorker(QObject* parent = nullptr);
     ~FileChangeWorker();
 
-    static HANDLE getHandle(const QString &filePath);
+    static HANDLE getHandle(const QString& filePath);
 
     int pollingRate() const;
     void setPollingRate(int newPollingRate);
 
-    Q_INVOKABLE void addPath(const QString &filePath);
-    Q_INVOKABLE void removePath(const QString &filePath);
+    Q_INVOKABLE void addPath(const QString& filePath);
+    Q_INVOKABLE void removePath(const QString& filePath);
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
 
 public slots:
-    void onCheckFailed(const QString &filePath);
+    void onCheckFailed(const QString& filePath);
     void finish();
 
 signals:
@@ -77,7 +77,7 @@ private:
 
     void checkAll();
     void pathToSignal(const QString& path);
-    void removeFromList(const QString &filePath);
+    void removeFromList(const QString& filePath);
 };
 
 #endif // FILECHANGEWORKER_H

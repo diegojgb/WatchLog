@@ -11,7 +11,7 @@ class FileStatus: public QObject
     Q_OBJECT
 
 public:
-    explicit FileStatus(const QString path, QObject *parent = nullptr);
+    explicit FileStatus(const QString path, QObject* parent = nullptr);
 
     const QString& getFilePath() const;
     const bool getExists() const;
@@ -23,7 +23,7 @@ signals:
     void allSlotsDisconnected(FileStatus* instance);
 
 protected:
-    void connectNotify(const QMetaMethod &signal) override;
+    void connectNotify(const QMetaMethod& signal) override;
     void disconnectNotify(const QMetaMethod& signal) override;
 
 private:

@@ -54,14 +54,14 @@ QMenu* TrayIcon::createMenu()
 {
     QQuickWindow* windowRoot = qobject_cast<QQuickWindow*>(m_root);
 
-    QAction *restoreAction = new QAction(QObject::tr("&Restore"), m_root);
+    QAction* restoreAction = new QAction(QObject::tr("&Restore"), m_root);
     m_root->connect(restoreAction, &QAction::triggered, windowRoot, &QQuickWindow::showNormal);
     m_root->connect(restoreAction, &QAction::triggered, this, &TrayIcon::bringToTop);
 
-    QAction *quitAction = new QAction(QObject::tr("&Quit"), m_root);
+    QAction* quitAction = new QAction(QObject::tr("&Quit"), m_root);
     m_root->connect(quitAction, &QAction::triggered, this, &TrayIcon::tryQuitApp);
 
-    QMenu *trayIconMenu = new QMenu();
+    QMenu* trayIconMenu = new QMenu();
     trayIconMenu->addAction(restoreAction);
     trayIconMenu->addAction(quitAction);
     trayIconMenu->setStyleSheet("QMenu { background-color: white; padding: 2px; }\

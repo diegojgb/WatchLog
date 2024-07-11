@@ -30,17 +30,17 @@ class Monitor: public QObject
     Q_PROPERTY(bool soundError READ soundError NOTIFY soundErrorChanged FINAL)
 
 public:
-    static json jsonFindByKey(const json &data, const std::string &key);
-    static void showTypeError(json::type_error e, const std::string &key);
+    static json jsonFindByKey(const json& data, const std::string& key);
+    static void showTypeError(json::type_error e, const std::string& key);
 
     template<typename T>
-    static T jsonGetValue(const json &data, const std::string &key);
+    static T jsonGetValue(const json& data, const std::string& key);
 
     template<typename T>
-    static T jsonGetValue(const json &data, const std::string &key, const T defaultValue);
+    static T jsonGetValue(const json& data, const std::string& key, const T defaultValue);
 
-    explicit Monitor(QObject *parent, const json &monitorData, WinFileManager& winFileManager);
-    explicit Monitor(QObject *parent, const QString& name, const QString& filePath, WinFileManager& winFileManager);
+    explicit Monitor(QObject* parent, const json& monitorData, WinFileManager& winFileManager);
+    explicit Monitor(QObject* parent, const QString& name, const QString& filePath, WinFileManager& winFileManager);
 
     json toJSON() const;
 
@@ -48,10 +48,10 @@ public:
     const bool getManyPerUpdate() const;
 
     QString name() const;
-    void setName(const QString &newName);
+    void setName(const QString& newName);
 
     QString filePath() const;
-    void setFilePath(const QString &newFilePath);
+    void setFilePath(const QString& newFilePath);
 
     bool enabled() const;
     void setEnabled(bool newEnabled);
@@ -65,10 +65,10 @@ public:
     NotifierList* notifiers();
 
     QString defaultImage() const;
-    void setDefaultImage(const QString &newDefaultImage);
+    void setDefaultImage(const QString& newDefaultImage);
 
     QString defaultSound() const;
-    void setDefaultSound(const QString &newDefaultSound);
+    void setDefaultSound(const QString& newDefaultSound);
 
     bool imageError() const;
     void setImageError(bool newImageError);
@@ -115,7 +115,7 @@ private:
     bool m_soundError = false;
     int m_enabledNotifierCount = 0;
 
-    void readNotifiers(const json &data);
+    void readNotifiers(const json& data);
 };
 
 #endif // MONITOR_H

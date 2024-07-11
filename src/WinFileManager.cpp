@@ -1,7 +1,7 @@
 #include "WinFileManager.h"
 
 
-WinFileManager::WinFileManager(QObject *parent, const Mode mode)
+WinFileManager::WinFileManager(QObject* parent, const Mode mode)
     : QObject{parent},
       m_mode{mode}
 {
@@ -15,7 +15,7 @@ WinFileManager::WinFileManager(QObject *parent, const Mode mode)
     }
 }
 
-FileStatus *WinFileManager::findOrCreate(const QString &path)
+FileStatus* WinFileManager::findOrCreate(const QString& path)
 {
     for (auto* file: m_fileList) {
         if (file->getFilePath() == path)
@@ -33,7 +33,7 @@ FileStatus *WinFileManager::findOrCreate(const QString &path)
     return fs;
 }
 
-FileStatus* WinFileManager::find(const QString &path)
+FileStatus* WinFileManager::find(const QString& path)
 {
     for (auto* file: m_fileList) {
         if (file->getFilePath() == path)
@@ -53,7 +53,7 @@ void WinFileManager::manualCheckNow()
     m_fileChecker->checkNow();
 }
 
-void WinFileManager::onChangeFound(const QString &filePath, const Change type)
+void WinFileManager::onChangeFound(const QString& filePath, const Change type)
 {
     bool newExists = Change::Added == type;
 
@@ -67,7 +67,7 @@ void WinFileManager::onChangeFound(const QString &filePath, const Change type)
     Utils::throwError("Received change notification from untracked file: " + filePath.toStdString());
 }
 
-void WinFileManager::onAllSlotsDisconnected(FileStatus *instance)
+void WinFileManager::onAllSlotsDisconnected(FileStatus* instance)
 {
     m_fileList.removeAll(instance);
 

@@ -23,12 +23,12 @@ public:
 
     void addAllMonitors();
 
-    Q_INVOKABLE void addFilePath(const QString &filePath);
-    Q_INVOKABLE void removeFilePath(const QString &filePath);
+    Q_INVOKABLE void addFilePath(const QString& filePath);
+    Q_INVOKABLE void removeFilePath(const QString& filePath);
 
 public slots:
     void onFileChanged(FileData* fileData);
-    void changeFilePath(const QString &oldKey, const QString &newKey);
+    void changeFilePath(const QString& oldKey, const QString& newKey);
 
 signals:
     void matchFound(const WinToastTemplate& templ);

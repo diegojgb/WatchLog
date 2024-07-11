@@ -1,7 +1,7 @@
 #include "Manager.h"
 
 
-Manager::Manager(QObject *parent, const json &data)
+Manager::Manager(QObject* parent, const json& data)
     : QObject{parent}, m_fileWatcher{this, m_monitors}, m_error{false},
       m_winFileManager{this, data.empty() ? Mode::Manual : toWinFileMode(Monitor::jsonGetValue<std::string>(data, "winFileMode", "Manual"))}
 {
@@ -37,7 +37,7 @@ Manager::Manager(QObject *parent, const json &data)
     connect(&m_fileWatcher, &FileWatcher::checkFailed, this, &Manager::onCheckFailed);
 }
 
-void Manager::initTrayIcon(QObject *parent, QObject *root, HWND &hwnd)
+void Manager::initTrayIcon(QObject* parent, QObject* root, HWND& hwnd)
 {
     if (m_trayIconInitialized)
         Utils::throwError("Tray icon can only be initialized once.");
@@ -88,7 +88,7 @@ void Manager::updateJSON() const
     }
 }
 
-bool Manager::addMonitor(const QString &name, const QString &filePath)
+bool Manager::addMonitor(const QString& name, const QString& filePath)
 {
     if (m_monitors.contains(filePath))
         return false;
@@ -104,7 +104,7 @@ bool Manager::addMonitor(const QString &name, const QString &filePath)
     return true;
 }
 
-void Manager::onCheckFailed(const QString &filePath)
+void Manager::onCheckFailed(const QString& filePath)
 {
     Utils::showInfo("Couldn't check the following file: " + filePath.toStdString());
 

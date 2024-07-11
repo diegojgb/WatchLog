@@ -1,13 +1,13 @@
 #include "FileStatus.h"
 
 
-FileStatus::FileStatus(const QString path, QObject *parent)
+FileStatus::FileStatus(const QString path, QObject* parent)
     : QObject{parent},
       m_filePath{path},
       m_exists{std::filesystem::exists(path.toStdString())}
 {}
 
-const QString &FileStatus::getFilePath() const
+const QString& FileStatus::getFilePath() const
 {
     return m_filePath;
 }
@@ -32,13 +32,13 @@ void FileStatus::setExists(bool newExists)
     emit statusChanged(!newExists);
 }
 
-void FileStatus::connectNotify(const QMetaMethod &signal)
+void FileStatus::connectNotify(const QMetaMethod& signal)
 {
     if (signal == QMetaMethod::fromSignal(&FileStatus::statusChanged))
         m_connectedSlots++;
 }
 
-void FileStatus::disconnectNotify(const QMetaMethod &signal)
+void FileStatus::disconnectNotify(const QMetaMethod& signal)
 {
     if (signal == QMetaMethod::fromSignal(&FileStatus::statusChanged))
         m_connectedSlots--;

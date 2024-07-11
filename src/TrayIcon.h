@@ -21,7 +21,7 @@ class TrayIcon: public QObject
     Q_OBJECT
 
 public:
-    explicit TrayIcon(QObject *parent, QObject *root, HWND hwnd);
+    explicit TrayIcon(QObject* parent, QObject* root, HWND hwnd);
 
 public slots:
     void sendNotification(const WinToastTemplate& templ);

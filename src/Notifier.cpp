@@ -29,7 +29,7 @@ void Notifier::initializeConstants() {
     }
 }
 
-Notifier::Notifier(QObject *parent, WinFileManager& winFileManager, QString imagePath, QString soundPath,
+Notifier::Notifier(QObject* parent, WinFileManager& winFileManager, QString imagePath, QString soundPath,
                    QString name, QString regexStr, QString title, QString desc, QString duration,
                    bool toastEnabled, bool soundEnabled, bool sticky)
     : QObject{parent},
@@ -51,12 +51,12 @@ Notifier::Notifier(QObject *parent, WinFileManager& winFileManager, QString imag
     m_initialized = true;
 }
 
-const std::regex &Notifier::getRegex() const
+const std::regex& Notifier::getRegex() const
 {
     return m_regex;
 }
 
-const WinToastTemplate &Notifier::getTempl() const
+const WinToastTemplate& Notifier::getTempl() const
 {
     return m_templ;
 }
@@ -130,7 +130,7 @@ QString Notifier::title() const
     return m_title;
 }
 
-void Notifier::setTitle(const QString &newTitle)
+void Notifier::setTitle(const QString& newTitle)
 {
     if (m_initialized && m_title == newTitle)
         return;
@@ -151,7 +151,7 @@ QString Notifier::desc() const
     return m_desc;
 }
 
-void Notifier::setDesc(const QString &newDesc)
+void Notifier::setDesc(const QString& newDesc)
 {
     if (m_initialized && m_desc == newDesc)
         return;
@@ -172,7 +172,7 @@ QString Notifier::imagePath() const
     return m_imagePath;
 }
 
-void Notifier::setImagePath(const QString &newImagePath)
+void Notifier::setImagePath(const QString& newImagePath)
 {
     if (m_initialized && m_imagePath == newImagePath)
         return;
@@ -224,7 +224,7 @@ QString Notifier::regexStr() const
     return m_regexStr;
 }
 
-void Notifier::setRegexStr(const QString &newRegexStr)
+void Notifier::setRegexStr(const QString& newRegexStr)
 {
     if (m_initialized && m_regexStr == newRegexStr)
         return;
@@ -263,7 +263,7 @@ QString Notifier::name() const
     return m_name;
 }
 
-void Notifier::setName(const QString &newName)
+void Notifier::setName(const QString& newName)
 {
     if (m_initialized && m_name == newName)
         return;
@@ -357,7 +357,7 @@ QString Notifier::soundPath() const
     return m_soundPath;
 }
 
-void Notifier::setSoundPath(const QString &newSoundPath)
+void Notifier::setSoundPath(const QString& newSoundPath)
 {
     if (m_initialized && m_soundPath == newSoundPath)
         return;

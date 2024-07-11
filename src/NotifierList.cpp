@@ -1,6 +1,6 @@
 #include "NotifierList.h"
 
-NotifierList::NotifierList(QObject *parent)
+NotifierList::NotifierList(QObject* parent)
     : QAbstractListModel{parent}
 {}
 

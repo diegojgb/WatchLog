@@ -4,7 +4,7 @@
 namespace fs = std::filesystem;
 
 
-WinFileMonitor::WinFileMonitor(QObject *parent)
+WinFileMonitor::WinFileMonitor(QObject* parent)
     : QObject{parent}
 {
     m_worker = new MultiDirMonitor();
@@ -21,13 +21,13 @@ WinFileMonitor::WinFileMonitor(QObject *parent)
     m_thread->start();
 }
 
-void WinFileMonitor::addFile(const QString &filePath)
+void WinFileMonitor::addFile(const QString& filePath)
 {
     QMetaObject::invokeMethod(m_worker, "addFile", Qt::QueuedConnection,
                               Q_ARG(QString, filePath));
 }
 
-void WinFileMonitor::removeFile(const QString &filePath)
+void WinFileMonitor::removeFile(const QString& filePath)
 {
     QMetaObject::invokeMethod(m_worker, "removeFile", Qt::QueuedConnection,
                               Q_ARG(QString, filePath));

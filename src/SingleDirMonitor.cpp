@@ -63,7 +63,7 @@ VOID CALLBACK SingleDirMonitor::onDirectoryChange(DWORD dwErrorCode, DWORD dwNum
 
 void SingleDirMonitor::processNotification()
 {
-    FILE_NOTIFY_INFORMATION *event = (FILE_NOTIFY_INFORMATION*)m_changeBuff.data();
+    FILE_NOTIFY_INFORMATION* event = (FILE_NOTIFY_INFORMATION*)m_changeBuff.data();
     bool dirRemoved = false;
 
     for (;;) {
@@ -95,7 +95,7 @@ void SingleDirMonitor::processNotification()
     }
 }
 
-bool SingleDirMonitor::onRemoved(const QString &filePath)
+bool SingleDirMonitor::onRemoved(const QString& filePath)
 {
     if (isMonitored(filePath))
         emit changeFound(filePath, Change::Removed);
@@ -103,13 +103,13 @@ bool SingleDirMonitor::onRemoved(const QString &filePath)
     return wasDirRemoved(filePath);
 }
 
-void SingleDirMonitor::onAdded(const QString &filePath)
+void SingleDirMonitor::onAdded(const QString& filePath)
 {
     if (isMonitored(filePath))
         emit changeFound(filePath, Change::Added);
 }
 
-bool SingleDirMonitor::wasDirRemoved(const QString &filePath)
+bool SingleDirMonitor::wasDirRemoved(const QString& filePath)
 {
     return filePath == m_qPath;
 }
@@ -160,7 +160,7 @@ void SingleDirMonitor::cdUp()
     emit cdUpped(this);
 }
 
-bool SingleDirMonitor::cdUpTo(const QString &path)
+bool SingleDirMonitor::cdUpTo(const QString& path)
 {
     if (!m_qPath.startsWith(path))
         return false;
@@ -197,7 +197,7 @@ const QString& SingleDirMonitor::getPath() const
     return m_qPath;
 }
 
-const QList<QString> &SingleDirMonitor::getFiles() const
+const QList<QString>& SingleDirMonitor::getFiles() const
 {
     return m_files;
 }
@@ -207,18 +207,18 @@ void SingleDirMonitor::addFile(const QString& filePath)
     m_files.append(filePath);
 }
 
-bool SingleDirMonitor::removeFile(const QString &filePath)
+bool SingleDirMonitor::removeFile(const QString& filePath)
 {
     return m_files.removeAll(filePath) > 0;
 }
 
-bool SingleDirMonitor::isMonitored(const QString &path)
+bool SingleDirMonitor::isMonitored(const QString& path)
 {
     return m_files.contains(path);
 }
 
 // static
-QString SingleDirMonitor::firstAvailable(const QString &filePath)
+QString SingleDirMonitor::firstAvailable(const QString& filePath)
 {
     QFileInfo dir(filePath);
 
@@ -235,7 +235,7 @@ QString SingleDirMonitor::firstAvailable(const QString &filePath)
 }
 
 // static
-QString SingleDirMonitor::firstParent(const QString &filePath)
+QString SingleDirMonitor::firstParent(const QString& filePath)
 {
     QFileInfo dir(filePath);
 

@@ -15,10 +15,10 @@ class WinFileMonitor: public QObject
     Q_OBJECT
 
 public:
-    explicit WinFileMonitor(QObject *parent = nullptr);
+    explicit WinFileMonitor(QObject* parent = nullptr);
 
-    void addFile(const QString &filePath);
-    void removeFile(const QString &filePath);
+    void addFile(const QString& filePath);
+    void removeFile(const QString& filePath);
 
 signals:
     void changeFound(const QString& filePath, const Change type);

@@ -42,13 +42,13 @@ void FileWatcher::changeFilePath(const QString& oldKey, const QString& newKey)
     addFilePath(newKey);
 }
 
-void FileWatcher::addFilePath(const QString &filePath)
+void FileWatcher::addFilePath(const QString& filePath)
 {
     QMetaObject::invokeMethod(m_watcher, "addPath", Qt::QueuedConnection,
                               Q_ARG(QString, filePath));
 }
 
-void FileWatcher::removeFilePath(const QString &filePath)
+void FileWatcher::removeFilePath(const QString& filePath)
 {
     QMetaObject::invokeMethod(m_watcher, "removePath", Qt::QueuedConnection,
                               Q_ARG(QString, filePath));

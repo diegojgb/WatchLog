@@ -41,7 +41,7 @@ public:
     static const QString& getDefaultDesc();
     static const QString& getDefaultImg();
 
-    explicit Notifier(QObject *parent,
+    explicit Notifier(QObject* parent,
                       WinFileManager& winFileManager,
                       QString imagePath = Notifier::getDefaultImg(),
                       QString soundPath = QString::fromStdString(SystemMedia::getDefaultSound()),
@@ -59,13 +59,13 @@ public:
     json toJSON() const;
 
     QString title() const;
-    void setTitle(const QString &newTitle);
+    void setTitle(const QString& newTitle);
 
     QString desc() const;
-    void setDesc(const QString &newDesc);
+    void setDesc(const QString& newDesc);
 
     QString imagePath() const;
-    void setImagePath(const QString &newimagePath);
+    void setImagePath(const QString& newimagePath);
 
     QString duration() const;
     void setDuration(QString newDuration);
@@ -74,7 +74,7 @@ public:
     void setRegexStr(const QString &newRegexStr);
 
     QString name() const;
-    void setName(const QString &newName);
+    void setName(const QString& newName);
 
     bool toastEnabled() const;
     void setToastEnabled(bool newToastEnabled);
@@ -86,7 +86,7 @@ public:
     void setSticky(bool newSticky);
 
     QString soundPath() const;
-    void setSoundPath(const QString &newSoundPath);
+    void setSoundPath(const QString& newSoundPath);
 
     bool imageFileError() const;
     void setImageFileError(bool newImageFileError);

@@ -2,7 +2,7 @@
 #include "Notifier.h"
 
 
-Monitor::Monitor(QObject *parent, const json &monitorData, WinFileManager& winFileManager)
+Monitor::Monitor(QObject* parent, const json& monitorData, WinFileManager& winFileManager)
     : QObject{parent},
       m_manyPerUpdate{jsonGetValue<bool>(monitorData, "manyPerUpdate", false)},
       m_winFileManager{winFileManager}
@@ -26,7 +26,7 @@ Monitor::Monitor(QObject *parent, const json &monitorData, WinFileManager& winFi
     m_initialized = true;
 }
 
-Monitor::Monitor(QObject *parent, const QString &name, const QString &filePath, WinFileManager& winFileManager)
+Monitor::Monitor(QObject* parent, const QString& name, const QString& filePath, WinFileManager& winFileManager)
     : QObject{parent},
       m_manyPerUpdate{false},
       m_winFileManager{winFileManager}
@@ -63,7 +63,7 @@ json Monitor::toJSON() const
     return obj;
 }
 
-const QVarLengthArray<Notifier *> &Monitor::getEnabledNotifiers() const
+const QVarLengthArray<Notifier*>& Monitor::getEnabledNotifiers() const
 {
     return m_enabledNotifiers;
 }
@@ -73,7 +73,7 @@ const bool Monitor::getManyPerUpdate() const
     return m_manyPerUpdate;
 }
 
-json Monitor::jsonFindByKey(const json &data, const std::string &key) {
+json Monitor::jsonFindByKey(const json& data, const std::string& key) {
     if (!data.contains(key))
         Utils::throwError("Missing a \""+key+"\" property for some element in data.json");
 
@@ -119,7 +119,7 @@ T Monitor::jsonGetValue(const json& data, const std::string& key, const T defaul
     return property;
 }
 
-void Monitor::readNotifiers(const json &data)
+void Monitor::readNotifiers(const json& data)
 {
     if (!data.is_array())
        Utils::throwError("Invalid notifiers array in JSON");
@@ -158,7 +158,7 @@ QString Monitor::name() const
     return m_name;
 }
 
-void Monitor::setName(const QString &newName)
+void Monitor::setName(const QString& newName)
 {
     if (m_initialized && m_name == newName)
         return;
@@ -215,7 +215,7 @@ QString Monitor::filePath() const
     return m_filePath;
 }
 
-void Monitor::setFilePath(const QString &newFilePath)
+void Monitor::setFilePath(const QString& newFilePath)
 {
     if (m_initialized && m_filePath == newFilePath)
         return;
@@ -311,7 +311,7 @@ QString Monitor::defaultImage() const
     return m_defaultImage;
 }
 
-void Monitor::setDefaultImage(const QString &newDefaultImage)
+void Monitor::setDefaultImage(const QString& newDefaultImage)
 {
     if (m_defaultImage == newDefaultImage)
         return;
@@ -348,7 +348,7 @@ QString Monitor::defaultSound() const
     return m_defaultSound;
 }
 
-void Monitor::setDefaultSound(const QString &newDefaultSound)
+void Monitor::setDefaultSound(const QString& newDefaultSound)
 {
     if (m_defaultSound == newDefaultSound)
         return;

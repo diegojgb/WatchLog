@@ -22,9 +22,9 @@ class Manager: public QObject
     Q_PROPERTY(Settings* settings READ settings CONSTANT)
 
 public:
-    explicit Manager(QObject *parent, const json &monitorsData);
+    explicit Manager(QObject* parent, const json& monitorsData);
 
-    void initTrayIcon(QObject* parent, QObject* root, HWND &hwnd);
+    void initTrayIcon(QObject* parent, QObject* root, HWND& hwnd);
 
     bool hadInitErrors() const;
     json toJSON() const;

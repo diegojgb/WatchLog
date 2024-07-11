@@ -1,5 +1,6 @@
 #include "FileChangeWorker.h"
 
+
 FILETIME FileData::timeAux;
 
 FileData::FileData(const QString path)
@@ -54,7 +55,7 @@ void FileData::startFile()
     file.seekg(0, std::ios::end);
 }
 
-FileChangeWorker::FileChangeWorker(QObject *parent)
+FileChangeWorker::FileChangeWorker(QObject* parent)
     : QObject{parent}
 {
     m_qWatcher = new QFileSystemWatcher();
@@ -69,7 +70,7 @@ FileChangeWorker::~FileChangeWorker()
     m_qWatcher->deleteLater();
 }
 
-HANDLE FileChangeWorker::getHandle(const QString &filePath)
+HANDLE FileChangeWorker::getHandle(const QString& filePath)
 {
     HANDLE hFile = CreateFile(filePath.toStdWString().c_str(), GENERIC_READ,
         FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
@@ -96,7 +97,7 @@ void FileChangeWorker::pathToSignal(const QString& path)
     }
 }
 
-void FileChangeWorker::addPath(const QString &filePath)
+void FileChangeWorker::addPath(const QString& filePath)
 {
     m_qWatcher->addPath(filePath);
     auto* fileData = new FileData(filePath);
@@ -108,13 +109,13 @@ void FileChangeWorker::addPath(const QString &filePath)
     connect(fileData, &FileData::checkFailed, this, &FileChangeWorker::onCheckFailed);
 }
 
-void FileChangeWorker::removePath(const QString &filePath)
+void FileChangeWorker::removePath(const QString& filePath)
 {
     m_qWatcher->removePath(filePath);
     removeFromList(filePath);
 }
 
-void FileChangeWorker::removeFromList(const QString &filePath)
+void FileChangeWorker::removeFromList(const QString& filePath)
 {
     for (int i = 0; i < m_files.size(); i++) {
         if (m_files[i]->filePath == filePath) {
@@ -127,7 +128,7 @@ void FileChangeWorker::removeFromList(const QString &filePath)
         stop();
 }
 
-void FileChangeWorker::onCheckFailed(const QString &filePath)
+void FileChangeWorker::onCheckFailed(const QString& filePath)
 {
     emit checkFailed(filePath);
     removePath(filePath);

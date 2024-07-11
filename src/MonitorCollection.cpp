@@ -5,7 +5,7 @@ MonitorData::MonitorData(const QString path, Monitor* monitor)
     : filePath{path}, monitor{monitor}
 {}
 
-MonitorCollection::MonitorCollection(QObject *parent)
+MonitorCollection::MonitorCollection(QObject* parent)
     : QAbstractListModel{parent}
 {}
 
@@ -30,7 +30,7 @@ QVariant MonitorCollection::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-Monitor* MonitorCollection::get(const QString &filePath) const
+Monitor* MonitorCollection::get(const QString& filePath) const
 {
     auto* monitorData = getMonitorData(filePath);
 
@@ -40,17 +40,17 @@ Monitor* MonitorCollection::get(const QString &filePath) const
     return monitorData->monitor;
 }
 
-Monitor *MonitorCollection::getAt(const int i) const
+Monitor* MonitorCollection::getAt(const int i) const
 {
     return m_list[i]->monitor;
 }
 
-bool MonitorCollection::contains(const QString &filePath) const
+bool MonitorCollection::contains(const QString& filePath) const
 {
     return getMonitorData(filePath) != nullptr;
 }
 
-bool MonitorCollection::insert(const QString &filePath, Monitor* monitor)
+bool MonitorCollection::insert(const QString& filePath, Monitor* monitor)
 {
     if (contains(filePath))
         return false;
@@ -64,7 +64,7 @@ bool MonitorCollection::insert(const QString &filePath, Monitor* monitor)
     return true;
 }
 
-void MonitorCollection::remove(const QString &filePath)
+void MonitorCollection::remove(const QString& filePath)
 {
     for (int i = 0; i < m_list.size(); i++) {
         if (m_list[i]->filePath != filePath)
@@ -89,7 +89,7 @@ void MonitorCollection::removeAt(int i)
     delete m_list.takeAt(i);
 }
 
-MonitorData *MonitorCollection::getMonitorData(const QString &filePath) const
+MonitorData* MonitorCollection::getMonitorData(const QString& filePath) const
 {
     for (auto* monitorData: m_list) {
         if (monitorData->filePath == filePath) {

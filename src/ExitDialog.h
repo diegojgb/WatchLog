@@ -15,7 +15,7 @@ class ExitDialog: public QDialog
     Q_OBJECT
 
 public:
-    explicit ExitDialog(QWidget *parent = nullptr);
+    explicit ExitDialog(QWidget* parent = nullptr);
 
 signals:
     void noClicked();

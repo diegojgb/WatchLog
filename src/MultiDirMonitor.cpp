@@ -3,7 +3,7 @@
 namespace fs = std::filesystem;
 
 
-MultiDirMonitor::MultiDirMonitor(QObject *parent)
+MultiDirMonitor::MultiDirMonitor(QObject* parent)
     : QObject{parent}
 {}
 
@@ -30,7 +30,7 @@ void MultiDirMonitor::removeDir(const QString& path)
     }
 }
 
-void MultiDirMonitor::addFile(const QString &path)
+void MultiDirMonitor::addFile(const QString& path)
 {
     for (auto* monitor: m_dirs) {
         if (path.startsWith(monitor->getPath())) {
@@ -60,7 +60,7 @@ void MultiDirMonitor::addFile(const QString &path)
     dir->addFile(path);
 }
 
-void MultiDirMonitor::removeFile(const QString &path)
+void MultiDirMonitor::removeFile(const QString& path)
 {
     for (auto* monitor: m_dirs) {
         if (path.startsWith(monitor->getPath()))
@@ -75,7 +75,7 @@ void MultiDirMonitor::start()
         dir->startWatching();
 }
 
-void MultiDirMonitor::onCdUpped(SingleDirMonitor *instance)
+void MultiDirMonitor::onCdUpped(SingleDirMonitor* instance)
 {
     for (auto* monitor: m_dirs) {
         if (instance == monitor)
@@ -87,7 +87,7 @@ void MultiDirMonitor::onCdUpped(SingleDirMonitor *instance)
     }
 }
 
-void MultiDirMonitor::onClearForDeletion(SingleDirMonitor *instance)
+void MultiDirMonitor::onClearForDeletion(SingleDirMonitor* instance)
 {
     delete instance;
 }

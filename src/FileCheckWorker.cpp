@@ -1,6 +1,6 @@
 #include "FileCheckWorker.h"
 
-FileCheckWorker::FileCheckWorker(QObject *parent, const QList<FileStatus*>& fileList)
+FileCheckWorker::FileCheckWorker(QObject* parent, const QList<FileStatus*>& fileList)
     : QObject{parent}, m_fileList{fileList}
 {}
 
@@ -33,7 +33,7 @@ void FileCheckWorker::checkNow()
     start();
 }
 
-void FileCheckWorker::timerEvent(QTimerEvent *event)
+void FileCheckWorker::timerEvent(QTimerEvent* event)
 {
     if (event->timerId() == m_timer) {
         checkAll();

@@ -21,7 +21,7 @@ class WinFileManager: public QObject
     Q_OBJECT
 
 public:
-    explicit WinFileManager(QObject *parent, const Mode mode);
+    explicit WinFileManager(QObject* parent, const Mode mode);
 
     FileStatus* findOrCreate(const QString& path);
     FileStatus* find(const QString& path);

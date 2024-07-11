@@ -14,7 +14,7 @@ class MultiDirMonitor: public QObject
     Q_OBJECT
 
 public:
-    MultiDirMonitor(QObject *parent = nullptr);
+    MultiDirMonitor(QObject* parent = nullptr);
 
     Q_INVOKABLE SingleDirMonitor* addDir(const QString& path);
     Q_INVOKABLE void addFile(const QString& path);

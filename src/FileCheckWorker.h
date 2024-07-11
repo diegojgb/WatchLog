@@ -12,7 +12,7 @@ class FileCheckWorker: public QObject
     Q_OBJECT
 
 public:
-    explicit FileCheckWorker(QObject *parent, const QList<FileStatus*>& fileList);
+    explicit FileCheckWorker(QObject* parent, const QList<FileStatus*>& fileList);
 
     Q_INVOKABLE void stop();
     Q_INVOKABLE void checkNow();
