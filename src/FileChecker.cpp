@@ -1,7 +1,8 @@
 #include "FileChecker.h"
 
 
-FileChecker::FileChecker(QObject *parent, const QList<FileStatus *> &fileList)
+FileChecker::FileChecker(QObject* parent, const QList<FileStatus*>& fileList)
+    : QObject{parent}
 {
     m_worker = new FileCheckWorker(nullptr, fileList);
     m_thread = new QThread(this);
