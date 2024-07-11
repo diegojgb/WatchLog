@@ -9,6 +9,10 @@ TextField {
     property bool error: false
     property Rectangle backgroundItem: bg
 
+    Keys.onEscapePressed: {
+        control.focus = false
+    }
+
     background: Rectangle {
         id: bg
         color: root.whiteColor
