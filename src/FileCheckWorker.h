@@ -27,7 +27,7 @@ signals:
 private:
     const QList<FileStatus*>& m_fileList;
 
-    int m_timer;
+    int m_timer{};
     int m_pollingRate = 10000;
     bool m_running = false;
 

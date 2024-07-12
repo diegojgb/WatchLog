@@ -5,10 +5,10 @@ namespace fs = std::filesystem;
 
 
 WinFileMonitor::WinFileMonitor(QObject* parent)
-    : QObject{parent}
+    : QObject{parent},
+      m_worker{new MultiDirMonitor()},
+      m_thread{new QThread(this)}
 {
-    m_worker = new MultiDirMonitor();
-    m_thread = new QThread(this);
     m_worker->moveToThread(m_thread);
 
     connect(m_thread, &QThread::started, m_worker, &MultiDirMonitor::start);

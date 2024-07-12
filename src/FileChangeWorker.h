@@ -67,9 +67,9 @@ signals:
 
 private:
     QList<FileData*> m_files;
-    QFileSystemWatcher* m_qWatcher;
+    QFileSystemWatcher* m_qWatcher{};
 
-    int m_timer;
+    int m_timer{};
     int m_pollingRate = 200;
     bool m_running = false;
 

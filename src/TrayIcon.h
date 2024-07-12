@@ -34,9 +34,9 @@ signals:
     void saveRequested();
 
 private:
-    QObject* m_root;
+    QObject* m_root{};
     HWND m_hwnd;
-    QSystemTrayIcon* m_trayIcon;
+    QSystemTrayIcon* m_trayIcon{};
     ExitDialog m_dialog;
 
     QMenu* createMenu();

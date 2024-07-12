@@ -24,8 +24,8 @@ signals:
     void changeFound(const QString& filePath, const Change type);
 
 private:
-    QThread* m_thread;
-    MultiDirMonitor* m_worker;
+    QThread* m_thread{};
+    MultiDirMonitor* m_worker{};
 };
 
 #endif // WINFILEMONITOR_H

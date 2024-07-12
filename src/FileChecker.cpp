@@ -2,10 +2,10 @@
 
 
 FileChecker::FileChecker(QObject* parent, const QList<FileStatus*>& fileList)
-    : QObject{parent}
+    : QObject{parent},
+      m_worker{new FileCheckWorker(nullptr, fileList)},
+      m_thread{new QThread(this)}
 {
-    m_worker = new FileCheckWorker(nullptr, fileList);
-    m_thread = new QThread(this);
     m_worker->moveToThread(m_thread);
 
     connect(m_thread, &QThread::started, m_worker, &FileCheckWorker::start);

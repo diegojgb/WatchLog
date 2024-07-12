@@ -4,11 +4,13 @@ using namespace WinToastLib;
 
 
 TrayIcon::TrayIcon(QObject* parent, QObject* root, HWND hwnd)
-    : QObject{parent}, m_root{root}, m_hwnd{hwnd}
+    : QObject{parent},
+      m_root{root},
+      m_hwnd{hwnd},
+      m_trayIcon{new QSystemTrayIcon(root)}
 {
     QMenu* trayIconMenu = createMenu();
 
-    m_trayIcon = new QSystemTrayIcon(m_root);
     m_trayIcon->setContextMenu(trayIconMenu);
     m_trayIcon->setIcon(QIcon(":/assets/watchlog-logo.ico"));
     m_trayIcon->setToolTip("WatchLog");

@@ -19,8 +19,8 @@ public:
     void checkNow();
 
 private:
-    QThread* m_thread;
-    FileCheckWorker* m_worker;
+    QThread* m_thread{};
+    FileCheckWorker* m_worker{};
 };
 
 #endif // FILECHECKER_H

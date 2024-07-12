@@ -45,9 +45,9 @@ private:
     FileWatcher m_fileWatcher;
     MonitorCollection m_monitors;
     WinFileManager m_winFileManager;
-    TrayIcon* m_trayIcon;
+    TrayIcon* m_trayIcon{};
     Settings m_settings;
-    bool m_error;
+    bool m_error{};
     bool m_trayIconInitialized = false;
 
     Mode toWinFileMode(const std::string mode);

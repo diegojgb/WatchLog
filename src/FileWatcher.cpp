@@ -2,10 +2,11 @@
 
 
 FileWatcher::FileWatcher(QObject* parent, const MonitorCollection& monitors)
-    : QObject{parent}, m_monitors{monitors}
+    : QObject{parent},
+      m_monitors{monitors},
+      m_watcher{new FileChangeWorker()},
+      m_thread{new QThread(this)}
 {
-    m_watcher = new FileChangeWorker();
-    m_thread = new QThread(this);
     m_watcher->moveToThread(m_thread);
 
     connect(qApp, &QCoreApplication::aboutToQuit, m_watcher, &FileChangeWorker::finish);

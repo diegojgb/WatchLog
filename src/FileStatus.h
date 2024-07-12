@@ -28,7 +28,7 @@ protected:
 
 private:
     QString m_filePath;
-    bool m_exists;
+    bool m_exists{};
     int m_connectedSlots = 0;
 };
 

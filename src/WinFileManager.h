@@ -32,8 +32,8 @@ public slots:
     void onAllSlotsDisconnected(FileStatus* instance);
 
 private:
-    WinFileMonitor* m_winFileMonitor = nullptr;
-    FileChecker* m_fileChecker = nullptr;
+    WinFileMonitor* m_winFileMonitor{};
+    FileChecker* m_fileChecker{};
     QList<FileStatus*> m_fileList;
     const Mode m_mode;
 };

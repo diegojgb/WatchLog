@@ -56,9 +56,9 @@ void FileData::startFile()
 }
 
 FileChangeWorker::FileChangeWorker(QObject* parent)
-    : QObject{parent}
+    : QObject{parent},
+      m_qWatcher{new QFileSystemWatcher()}
 {
-    m_qWatcher = new QFileSystemWatcher();
     connect(m_qWatcher, &QFileSystemWatcher::fileChanged, this, &FileChangeWorker::pathToSignal);
 }
 
