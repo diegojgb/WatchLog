@@ -32,6 +32,7 @@ public slots:
 signals:
     void singleClick();
     void saveRequested();
+    void aboutClicked();
 
 private:
     QObject* m_root{};

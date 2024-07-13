@@ -13,5 +13,8 @@
         <file>assets/settings.png</file>
         <file>assets/home-image.png</file>
         <file>assets/exclamation.png</file>
+        <file>assets/watchlog-logo-big.png</file>
+        <file>assets/close.png</file>
+        <file>assets/close-hovered.png</file>
     </qresource>
 </RCC>

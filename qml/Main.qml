@@ -18,6 +18,12 @@ Window {
     property int errorCount
     property bool initialized: false
     property Popup toolTipItem: toolTip
+    property int prevTab: 0
+
+    function showAboutPage() {
+        root.prevTab = sidebar.tabBar.tabIndex
+        sidebar.tabBar.tabIndex = stackView.count - 1
+    }
 
     // Hide the window instead of closing it when the close button is clicked
     // @disable-check M16
@@ -27,6 +33,14 @@ Window {
                }
 
     Component.onCompleted: root.initialized = true
+
+    Connections {
+        target: Manager
+
+        function onAboutClicked() {
+            root.showAboutPage()
+        }
+    }
 
     Timer {
         id: refreshTimer
@@ -305,6 +319,10 @@ Window {
 
                 HomePage {
                     onClickedAddMonitor: sidebar.openAddMonitorDialog()
+                }
+
+                AboutPage {
+                    onClosed: sidebar.tabBar.tabIndex = root.prevTab
                 }
             }
         }

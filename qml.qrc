@@ -20,5 +20,7 @@
         <file>qml/HomePage.qml</file>
         <file>qml/FilledButton.qml</file>
         <file>qml/CustomMenu.qml</file>
+        <file>qml/AboutPage.qml</file>
+        <file>qml/LabelSeparator.qml</file>
     </qresource>
 </RCC>

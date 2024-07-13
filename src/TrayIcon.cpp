@@ -56,6 +56,11 @@ QMenu* TrayIcon::createMenu()
 {
     QQuickWindow* windowRoot = qobject_cast<QQuickWindow*>(m_root);
 
+    QAction* aboutAction = new QAction(QObject::tr("&About WatchLog..."), m_root);
+    m_root->connect(aboutAction, &QAction::triggered, this, &TrayIcon::aboutClicked);
+    m_root->connect(aboutAction, &QAction::triggered, windowRoot, &QQuickWindow::showNormal);
+    m_root->connect(aboutAction, &QAction::triggered, this, &TrayIcon::bringToTop);
+
     QAction* restoreAction = new QAction(QObject::tr("&Restore"), m_root);
     m_root->connect(restoreAction, &QAction::triggered, windowRoot, &QQuickWindow::showNormal);
     m_root->connect(restoreAction, &QAction::triggered, this, &TrayIcon::bringToTop);
@@ -64,10 +69,11 @@ QMenu* TrayIcon::createMenu()
     m_root->connect(quitAction, &QAction::triggered, this, &TrayIcon::tryQuitApp);
 
     QMenu* trayIconMenu = new QMenu();
+    trayIconMenu->addAction(aboutAction);
     trayIconMenu->addAction(restoreAction);
     trayIconMenu->addAction(quitAction);
     trayIconMenu->setStyleSheet("QMenu { background-color: white; padding: 2px; }\
-                                QMenu::item { color: black; background-color: transparent; padding: 4px 40px 4px 12px; }\
+                                QMenu::item { color: black; background-color: transparent; padding: 4px 40px 4px 20px; }\
                                 QMenu::item:selected { color: white; background-color: #0078d4; border: 0px; }");
 
     return trayIconMenu;

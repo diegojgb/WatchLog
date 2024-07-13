@@ -2,22 +2,25 @@
 #include "FileWatcher.h"
 #include "Manager.h"
 #include "TrayIcon.h"
+#include "SystemMenuEventFilter.h"
 
 #include <QApplication>
 #include <QQmlApplicationEngine>
-#include <dwmapi.h>
 #include <QQuickWindow>
 #include <QQmlContext>
 #include <QVariant>
 #include <Qstring>
 #include <QGuiApplication>
 #include <QObject>
-
 #include <QDir>
-#include <fstream>
 #include <QMessageBox>
 
+#include <fstream>
+#include <windows.h>
+#include <dwmapi.h>
+
 using json = nlohmann::json;
+
 
 // Executes just before the qApp exits.
 void cleanup()
@@ -35,6 +38,12 @@ bool readArgs(int argc, char* argv[], Manager& manager)
     }
 
     return true;
+}
+
+void addCustomMenu(HWND hwnd) {
+    HMENU hMenu = GetSystemMenu(hwnd, FALSE);
+    InsertMenu(hMenu, 0, MF_BYPOSITION | MF_STRING, IDM_ABOUTBOX, TEXT("About WatchLog..."));
+    InsertMenu(hMenu, 1, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
 }
 
 int main(int argc, char* argv[])
@@ -124,6 +133,12 @@ int main(int argc, char* argv[])
     QObject* root = engine.rootObjects().at(0);
 
     manager.initTrayIcon(&app, root, windowHandle);
+
+    // Add "About" item to system menu.
+    addCustomMenu(windowHandle);
+    SystemMenuEventFilter* eventFilter = new SystemMenuEventFilter();
+    app.installNativeEventFilter(eventFilter);
+    QObject::connect(eventFilter, &SystemMenuEventFilter::aboutClicked, &manager, &Manager::aboutClicked);
 
     return app.exec();
 }

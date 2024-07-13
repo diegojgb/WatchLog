@@ -53,6 +53,7 @@ set(SOURCE_FILES
     src/ExitDialog.cpp
     src/Settings.h
     src/Settings.cpp
+    src/SystemMenuEventFilter.h
 )
 
 qt_add_executable(appWatchLog 

@@ -35,6 +35,9 @@ public:
     Q_INVOKABLE bool addMonitor(const QString& name, const QString& filePath);
     Q_INVOKABLE void checkFilesNow();
 
+signals:
+    void aboutClicked();
+
 public slots:
     void disableMonitor(const Monitor* monitor);
     void enableMonitor(const Monitor* monitor);
