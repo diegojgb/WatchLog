@@ -21,6 +21,9 @@ Window {
     property int prevTab: 0
 
     function showAboutPage() {
+        if (sidebar.tabBar.tabIndex == stackView.count - 1)
+            return
+
         root.prevTab = sidebar.tabBar.tabIndex
         sidebar.tabBar.tabIndex = stackView.count - 1
     }

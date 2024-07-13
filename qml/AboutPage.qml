@@ -68,7 +68,7 @@ Pane {
                         // renderType: Text.NativeRendering
                     }
                     Label {
-                        text: 'Version 1.3.0'
+                        text: 'Version 1.3.0-dev.2'
                         font.pointSize: 12
                         // renderType: Text.NativeRendering
                     }
