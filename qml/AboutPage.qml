@@ -89,7 +89,7 @@ Pane {
             }
 
             Label {
-                Layout.leftMargin: 24
+                Layout.leftMargin: 26
                 text: 'Released: July 2024'
                 font.pointSize: 10
                 renderType: Text.NativeRendering
