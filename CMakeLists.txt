@@ -11,8 +11,6 @@ qt_standard_project_setup()
 
 add_subdirectory(WinToast)
 
-set(app_icon_resource "${CMAKE_CURRENT_SOURCE_DIR}/assets/watchlog.rc")
-
 set(SOURCE_FILES
     src/FileWatcher.h
     src/FileWatcher.cpp
@@ -61,7 +59,8 @@ qt_add_executable(appWatchLog
     src/main.cpp
     qml.qrc
     assets.qrc
-    ${app_icon_resource}
+    assets/watchlog.rc  # icon resource.
+    assets/version.rc
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
