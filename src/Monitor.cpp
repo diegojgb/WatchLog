@@ -75,7 +75,7 @@ const bool Monitor::getManyPerUpdate() const
 
 json Monitor::jsonFindByKey(const json& data, const std::string& key) {
     if (!data.contains(key))
-        Utils::throwError("Missing a \""+key+"\" property for some element in data.json");
+        Utils::throwError("Missing a \"" + QString::fromStdString(key) + "\" property for some element in data.json");
 
     return data[key];
 }
@@ -86,7 +86,7 @@ void Monitor::showTypeError(json::type_error e, const std::string& key)
     std::regex toRemove("\\[.*\\] *");
     std::string newErrorStr = std::regex_replace(errorStr, toRemove, " ");
 
-    Utils::throwError("JSON: \""+key+"\"" + newErrorStr);
+    Utils::throwError("JSON: \"" + QString::fromStdString(key) + "\"" + QString::fromStdString(newErrorStr));
 }
 
 template <typename T>
@@ -224,7 +224,7 @@ void Monitor::setFilePath(const QString& newFilePath)
         auto* oldFileStatus = m_winFileManager.find(m_filePath);
 
         if (oldFileStatus == nullptr)
-            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_filePath.toStdString());
+            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_filePath);
         else
             QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Monitor::setFileError);
     }
@@ -234,7 +234,7 @@ void Monitor::setFilePath(const QString& newFilePath)
 
     m_filePath = newFilePath;
 
-    bool exists = std::filesystem::exists(newFilePath.toStdString());
+    bool exists = std::filesystem::exists(newFilePath.toStdWString());
 
     if (!exists)
         setFileError(true);
@@ -320,15 +320,15 @@ void Monitor::setDefaultImage(const QString& newDefaultImage)
         auto* oldFileStatus = m_winFileManager.find(m_defaultImage);
 
         if (oldFileStatus == nullptr)
-            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultImage.toStdString());
+            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultImage);
         else
             QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Monitor::setImageError);
     }
 
-    auto imageExtension = std::filesystem::path(newDefaultImage.toStdString()).extension();
+    auto imageExtension = std::filesystem::path(newDefaultImage.toStdWString()).extension();
 
     setImageError(imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png"
-            || !std::filesystem::exists(newDefaultImage.toStdString()));
+            || !std::filesystem::exists(newDefaultImage.toStdWString()));
     
     auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultImage);
     QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setImageError);
@@ -357,13 +357,13 @@ void Monitor::setDefaultSound(const QString& newDefaultSound)
         auto* oldFileStatus = m_winFileManager.find(m_defaultSound);
 
         if (oldFileStatus == nullptr)
-            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultSound.toStdString());
+            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_defaultSound);
         else
             QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Monitor::setSoundError);
     }
 
-    setSoundError(std::filesystem::path(newDefaultSound.toStdString()).extension() != ".wav"
-            || !std::filesystem::exists(newDefaultSound.toStdString()));
+    setSoundError(std::filesystem::path(newDefaultSound.toStdWString()).extension() != ".wav"
+            || !std::filesystem::exists(newDefaultSound.toStdWString()));
 
     auto* newFileStatus = m_winFileManager.findOrCreate(newDefaultSound);
     QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Monitor::setSoundError);

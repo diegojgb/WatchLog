@@ -107,7 +107,7 @@ bool Manager::addMonitor(const QString& name, const QString& filePath)
 
 void Manager::onCheckFailed(const QString& filePath)
 {
-    Utils::showInfo("Couldn't check the following file: " + filePath.toStdString());
+    Utils::showInfo("Couldn't check the following file: " + filePath);
 
     auto* monitor = m_monitors.get(filePath);
     monitor->setFileError(true);

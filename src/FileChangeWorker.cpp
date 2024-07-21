@@ -47,7 +47,7 @@ void FileData::startFile()
     if (file.is_open())
         file.close();
 
-    file = std::ifstream(filePath.toStdString());
+    file = std::ifstream(filePath.toStdWString());
 
     if (!file.is_open())
         emit checkFailed(filePath);

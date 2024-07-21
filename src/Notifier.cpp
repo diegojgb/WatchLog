@@ -181,15 +181,15 @@ void Notifier::setImagePath(const QString& newImagePath)
         auto* oldFileStatus = m_winFileManager.find(m_imagePath);
 
         if (oldFileStatus == nullptr)
-            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_imagePath.toStdString());
+            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_imagePath);
         else
             QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Notifier::setImageFileError);
     }
 
-    auto imageExtension = std::filesystem::path(newImagePath.toStdString()).extension();
+    auto imageExtension = std::filesystem::path(newImagePath.toStdWString()).extension();
 
     setImageFileError(imageExtension != ".jpg" && imageExtension != ".jpeg" && imageExtension != ".png"
-            || !std::filesystem::exists(newImagePath.toStdString()));
+            || !std::filesystem::exists(newImagePath.toStdWString()));
 
     auto* newFileStatus = m_winFileManager.findOrCreate(newImagePath);
     QObject::connect(newFileStatus, &FileStatus::statusChanged, this, &Notifier::setImageFileError);
@@ -366,7 +366,7 @@ void Notifier::setSoundPath(const QString& newSoundPath)
         auto* oldFileStatus = m_winFileManager.find(m_soundPath);
 
         if (oldFileStatus == nullptr)
-            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_soundPath.toStdString());
+            Utils::showCritical("Error: the following file path wasn't being monitored: " + m_soundPath);
         else
             QObject::disconnect(oldFileStatus, &FileStatus::statusChanged, this, &Notifier::setSoundFileError);
     }

@@ -1,18 +1,18 @@
 #include "Utils.h"
 
 
-void Utils::showCritical(std::string errorStr)
+void Utils::showCritical(QString errorStr)
 {
-    QMessageBox::critical(nullptr, QObject::tr("WatchLog"), QObject::tr(errorStr.c_str()));
+    QMessageBox::critical(nullptr, "WatchLog", errorStr);
 }
 
-void Utils::throwError(std::string errorStr)
+void Utils::throwError(QString errorStr)
 {
     showCritical(errorStr);
-    throw std::runtime_error(errorStr);
+    throw std::runtime_error(errorStr.toStdString());
 }
 
-void Utils::showInfo(std::string infoStr)
+void Utils::showInfo(QString infoStr)
 {
-    QMessageBox::information(nullptr, QObject::tr("WatchLog"), QObject::tr(infoStr.c_str()));
+    QMessageBox::information(nullptr, "WatchLog", infoStr);
 }

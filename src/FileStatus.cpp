@@ -4,7 +4,7 @@
 FileStatus::FileStatus(const QString path, QObject* parent)
     : QObject{parent},
       m_filePath{path},
-      m_exists{std::filesystem::exists(path.toStdString())}
+      m_exists{std::filesystem::exists(path.toStdWString())}
 {}
 
 const QString& FileStatus::getFilePath() const
@@ -19,7 +19,7 @@ const bool FileStatus::getExists() const
 
 void FileStatus::updateExists()
 {
-    setExists(std::filesystem::exists(m_filePath.toStdString()));
+    setExists(std::filesystem::exists(m_filePath.toStdWString()));
 }
 
 void FileStatus::setExists(bool newExists)

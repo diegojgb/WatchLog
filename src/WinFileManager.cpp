@@ -64,7 +64,7 @@ void WinFileManager::onChangeFound(const QString& filePath, const Change type)
         }
     }
 
-    Utils::throwError("Received change notification from untracked file: " + filePath.toStdString());
+    Utils::throwError("Received change notification from untracked file: " + filePath);
 }
 
 void WinFileManager::onAllSlotsDisconnected(FileStatus* instance)
