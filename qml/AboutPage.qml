@@ -65,12 +65,10 @@ Pane {
                         text: 'WatchLog'
                         font.pointSize: 18
                         font.weight: Font.DemiBold
-                        // renderType: Text.NativeRendering
                     }
                     Label {
                         text: 'Version 1.3.0-dev.2'
                         font.pointSize: 12
-                        // renderType: Text.NativeRendering
                     }
                 }
             }
