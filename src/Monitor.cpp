@@ -12,8 +12,8 @@ Monitor::Monitor(QObject* parent, const json& monitorData, WinFileManager& winFi
 
     auto staticImage = jsonGetValue<std::string>(monitorData, "staticDefaultImage", Notifier::getDefaultImg().toStdString());
     auto imagePath = jsonGetValue<std::string>(monitorData, "defaultImage", staticImage);
-    m_staticDefaultImage = QString::fromStdString(imagePath);
-    setDefaultImage(QFileInfo(m_staticDefaultImage).canonicalFilePath());
+    m_staticDefaultImage = QString::fromStdString(staticImage);
+    setDefaultImage(QFileInfo(QString::fromStdString(imagePath)).canonicalFilePath());
 
     auto soundPath = jsonGetValue<std::string>(monitorData, "defaultSound", SystemMedia::getDefaultSound());
     setDefaultSound(QString::fromStdString(soundPath));

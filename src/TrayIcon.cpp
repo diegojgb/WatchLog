@@ -85,18 +85,18 @@ void TrayIcon::initWinToast()
         Utils::throwError("WinToast: Error, your system in not supported!");
 
     WinToast::instance()->setAppName(L"WatchLog");
-    const auto aumi = WinToast::configureAUMI(L"ObinXYZ", L"WatchLog", L"MatchNotification", L"1.0");
+    const auto aumi = WinToast::configureAUMI(L"diegojgb", L"WatchLog", L"MatchNotification");
     WinToast::instance()->setAppUserModelId(aumi);
     WinToast::instance()->setShortcutPolicy(WinToast::ShortcutPolicy::SHORTCUT_POLICY_IGNORE);
 
     // Add icon and name to registry, so Windows can display them in toast notifications.
-    if (!Registry::createRegistryKey(HKEY_CURRENT_USER, L"Software\\Classes\\AppUserModelId\\ObinXYZ.WatchLog.MatchNotification.1.0")) {
+    if (!Registry::createRegistryKey(HKEY_CURRENT_USER, L"Software\\Classes\\AppUserModelId\\diegojgb.WatchLog.MatchNotification")) {
         Utils::throwError("Error opening or creating new Registry key");
     }
 
     if (!Registry::writeStringInRegistry(
                 HKEY_CURRENT_USER,
-                L"Software\\Classes\\AppUserModelId\\ObinXYZ.WatchLog.MatchNotification.1.0",
+                L"Software\\Classes\\AppUserModelId\\diegojgb.WatchLog.MatchNotification",
                 L"DisplayName",
                 L"WatchLog")) {
         Utils::throwError("Error saving toast DisplayName Regitry value");
@@ -106,7 +106,7 @@ void TrayIcon::initWinToast()
     defaultIcon.replace("/", "\\");
     if (!Registry::writeStringInRegistry(
                 HKEY_CURRENT_USER,
-                L"Software\\Classes\\AppUserModelId\\ObinXYZ.WatchLog.MatchNotification.1.0",
+                L"Software\\Classes\\AppUserModelId\\diegojgb.WatchLog.MatchNotification",
                 L"IconUri",
                 defaultIcon.toStdWString().c_str())) {
         Utils::throwError("Error saving toast IconUri Regitry value");
