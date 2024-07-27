@@ -119,15 +119,13 @@ int main(int argc, char* argv[])
     // Redraw the Window. For Windows 10, which doesn't automatically change the title bar color to dark upon change.
     // It's a hacky solution, forces a redraw by resizing the window.
     RECT rect;
-    int width;
-    int height;
 
     if(GetWindowRect(windowHandle, &rect)) {
-        width = rect.right - rect.left;
-        height = rect.bottom - rect.top;
-    }
+        int width = rect.right - rect.left;
+        int height = rect.bottom - rect.top;
 
-    SetWindowPos(windowHandle, 0, 0, 0, width-1, height, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+        SetWindowPos(windowHandle, 0, 0, 0, width-1, height, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+    }
 
     // Tray icon (using Qt Widgets).
     QObject* root = engine.rootObjects().at(0);
