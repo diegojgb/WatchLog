@@ -28,7 +28,7 @@ Any time there is a new line added to the log, it is tested agaisn't all regex p
 ## Installation
 
 - You can download the latest release from [here](https://github.com/diegojgb/WatchLog/releases/latest "https://github.com/diegojgb/WatchLog/releases/latest")
-- It is a standalone executable. It reads its configuration from a single "data.json" file.
+- To run the application, you must have the [Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist) installed on your system.
 
 ## Usage
 
@@ -222,8 +222,8 @@ A Notifier using all of its default values on non-required properties would look
 
 If you want to work on the application and build it by yourself using Qt Creator, Visual Studio, or your preferred method, you need to include these 2 dependencies on your project:
 
-- [JSON for Modern C++](https://github.com/nlohmann/json "https://github.com/nlohmann/json") - by [mohabouje](https://github.com/mohabouje "https://github.com/mohabouje").
-- [Fork of WinToast](https://github.com/diegojgb/WinToast "https://github.com/diegojgb/WinToast") - by [nlohmann](https://github.com/nlohmann "https://github.com/nlohmann").
+- [JSON for Modern C++](https://github.com/nlohmann/json "https://github.com/nlohmann/json") - by [nlohmann](https://github.com/nlohmann "https://github.com/nlohmann").
+- [Fork of WinToast](https://github.com/diegojgb/WinToast "https://github.com/diegojgb/WinToast") - by [mohabouje](https://github.com/mohabouje "https://github.com/mohabouje").
 
 ### JSON for Modern C++
 
